@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.ovatar.gnome.helper</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Ovatar Ltd</string>
+    <key>SMAuthorizedClients</key>
+    <array>
+        <string>anchor apple generic and certificate leaf[subject.CN] = "Apple Development: Joe Barbour (9292KA78DX)"</string>
+    </array>
+	<key>CFBundleName</key>
+	<string>com.ovatar.gnome.helper</string>
+	<key>CFBundleDisplayName</key>
+	<string>com.ovatar.gnome.helper</string>
+</dict>
+</plist>
