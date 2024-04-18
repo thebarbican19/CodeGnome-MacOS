@@ -8,13 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var process:ProcessManager
+
     var body: some View {
         VStack {
-            Button("Grant") {
-                ProcessManager.shared.processInstallHelper()
+            if process.helper == .undetermined {
+                Button("Grant") {
+                    ProcessManager.shared.processInstallHelper()
+                    
+                }
+                
+            }
+            else {
+                Text(process.helper.rawValue).onTapGesture {
+                    ProcessManager.shared.processInstallHelper()
+                    
+                }
                 
             }
             
+            Text(process.message).fontWeight(.bold)
+            
+
         }
         .padding()
         

@@ -6,3 +6,11 @@
 //
 
 import Foundation
+import Combine
+
+class WindowManager: ObservableObject {
+    static var shared = WindowManager()
+    
+    //@Published var active:WindowTypes? = .main
+    
+}

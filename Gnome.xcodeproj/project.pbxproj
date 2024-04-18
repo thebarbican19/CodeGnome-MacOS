@@ -22,7 +22,10 @@
 		D852200A2BCF6BBF00C1D8FB /* GHelperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8521FF02BCEE2A700C1D8FB /* GHelperManager.swift */; };
 		D852200C2BCF6C6900C1D8FB /* com.ovatar.gnome.brain in CopyFiles */ = {isa = PBXBuildFile; fileRef = D85220032BCF6B9A00C1D8FB /* com.ovatar.gnome.brain */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D852200D2BCF6CE000C1D8FB /* GHelperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8521FF02BCEE2A700C1D8FB /* GHelperManager.swift */; };
-		D852200F2BCF7FB400C1D8FB /* launchd.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8521FEE2BCEE1D500C1D8FB /* launchd.plist */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D85220112BD0227F00C1D8FB /* GProcessModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8521FF52BCEE4D700C1D8FB /* GProcessModel.swift */; };
+		D85220132BD0295700C1D8FB /* GHelperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85220122BD0295700C1D8FB /* GHelperModel.swift */; };
+		D85220142BD0296700C1D8FB /* GHelperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85220122BD0295700C1D8FB /* GHelperModel.swift */; };
+		D895EFFF2BD1BA0E0068C6D5 /* OTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895EFFE2BD1BA0E0068C6D5 /* OTaskManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,7 +45,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				D852200F2BCF7FB400C1D8FB /* launchd.plist in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -59,8 +61,6 @@
 		D8521FDC2BCEDE8500C1D8FB /* GWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GWindowManager.swift; sourceTree = "<group>"; };
 		D8521FDE2BCEDE9800C1D8FB /* GMainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMainController.swift; sourceTree = "<group>"; };
 		D8521FE02BCEDEA400C1D8FB /* GOnboardingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GOnboardingController.swift; sourceTree = "<group>"; };
-		D8521FE82BCEE0C500C1D8FB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		D8521FED2BCEE0E500C1D8FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8521FEE2BCEE1D500C1D8FB /* launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = launchd.plist; sourceTree = "<group>"; };
 		D8521FEF2BCEE21400C1D8FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D8521FF02BCEE2A700C1D8FB /* GHelperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHelperManager.swift; sourceTree = "<group>"; };
@@ -69,6 +69,8 @@
 		D85220032BCF6B9A00C1D8FB /* com.ovatar.gnome.brain */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.ovatar.gnome.brain; sourceTree = BUILT_PRODUCTS_DIR; };
 		D85220052BCF6B9B00C1D8FB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D852200B2BCF6BE000C1D8FB /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
+		D85220122BD0295700C1D8FB /* GHelperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHelperModel.swift; sourceTree = "<group>"; };
+		D895EFFE2BD1BA0E0068C6D5 /* OTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTaskManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +95,6 @@
 			isa = PBXGroup;
 			children = (
 				D8521FCA2BCEDDDA00C1D8FB /* Gnome */,
-				D8521FE72BCEE0C500C1D8FB /* GnomeHelper */,
 				D85220042BCF6B9B00C1D8FB /* com.ovatar.gnome.brain */,
 				D8521FC92BCEDDDA00C1D8FB /* Products */,
 			);
@@ -117,6 +118,7 @@
 				D8521FDA2BCEDE7900C1D8FB /* GPersistanceManager.swift */,
 				D8521FDC2BCEDE8500C1D8FB /* GWindowManager.swift */,
 				D8521FF22BCEE32800C1D8FB /* GProcessManager.swift */,
+				D895EFFE2BD1BA0E0068C6D5 /* OTaskManager.swift */,
 				D8521FF52BCEE4D700C1D8FB /* GProcessModel.swift */,
 				D8521FDE2BCEDE9800C1D8FB /* GMainController.swift */,
 				D8521FE02BCEDEA400C1D8FB /* GOnboardingController.swift */,
@@ -135,20 +137,12 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		D8521FE72BCEE0C500C1D8FB /* GnomeHelper */ = {
-			isa = PBXGroup;
-			children = (
-				D8521FE82BCEE0C500C1D8FB /* main.swift */,
-				D8521FED2BCEE0E500C1D8FB /* Info.plist */,
-			);
-			path = GnomeHelper;
-			sourceTree = "<group>";
-		};
 		D85220042BCF6B9B00C1D8FB /* com.ovatar.gnome.brain */ = {
 			isa = PBXGroup;
 			children = (
 				D85220052BCF6B9B00C1D8FB /* main.swift */,
 				D8521FF02BCEE2A700C1D8FB /* GHelperManager.swift */,
+				D85220122BD0295700C1D8FB /* GHelperModel.swift */,
 				D852200B2BCF6BE000C1D8FB /* info.plist */,
 				D8521FEE2BCEE1D500C1D8FB /* launchd.plist */,
 			);
@@ -253,6 +247,8 @@
 				D852200D2BCF6CE000C1D8FB /* GHelperManager.swift in Sources */,
 				D8521FE12BCEDEA400C1D8FB /* GOnboardingController.swift in Sources */,
 				D8521FDF2BCEDE9800C1D8FB /* GMainController.swift in Sources */,
+				D85220142BD0296700C1D8FB /* GHelperModel.swift in Sources */,
+				D895EFFF2BD1BA0E0068C6D5 /* OTaskManager.swift in Sources */,
 				D8521FCE2BCEDDDB00C1D8FB /* ContentView.swift in Sources */,
 				D8521FF62BCEE4D700C1D8FB /* GProcessModel.swift in Sources */,
 				D8521FCC2BCEDDDB00C1D8FB /* GnomeApp.swift in Sources */,
@@ -265,6 +261,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D85220062BCF6B9B00C1D8FB /* main.swift in Sources */,
+				D85220132BD0295700C1D8FB /* GHelperModel.swift in Sources */,
+				D85220112BD0227F00C1D8FB /* GProcessModel.swift in Sources */,
 				D852200A2BCF6BBF00C1D8FB /* GHelperManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +453,7 @@
 		D85220082BCF6B9B00C1D8FB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
 				DEVELOPMENT_TEAM = QYKKXLKZD6;
@@ -474,6 +473,7 @@
 		D85220092BCF6B9B00C1D8FB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
 				DEVELOPMENT_TEAM = QYKKXLKZD6;
