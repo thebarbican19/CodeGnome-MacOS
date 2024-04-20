@@ -25,7 +25,10 @@
 		D85220112BD0227F00C1D8FB /* GProcessModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8521FF52BCEE4D700C1D8FB /* GProcessModel.swift */; };
 		D85220132BD0295700C1D8FB /* GHelperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85220122BD0295700C1D8FB /* GHelperModel.swift */; };
 		D85220142BD0296700C1D8FB /* GHelperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85220122BD0295700C1D8FB /* GHelperModel.swift */; };
-		D895EFFF2BD1BA0E0068C6D5 /* OTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895EFFE2BD1BA0E0068C6D5 /* OTaskManager.swift */; };
+		D895EFFF2BD1BA0E0068C6D5 /* GTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */; };
+		D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0052BD2C4740068C6D5 /* GExtensions.swift */; };
+		D895F0082BD2C4D30068C6D5 /* GTaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0072BD2C4D30068C6D5 /* GTaskModel.swift */; };
+		D895F00A2BD327220068C6D5 /* GSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0092BD327220068C6D5 /* GSettingsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -70,7 +73,10 @@
 		D85220052BCF6B9B00C1D8FB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D852200B2BCF6BE000C1D8FB /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
 		D85220122BD0295700C1D8FB /* GHelperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHelperModel.swift; sourceTree = "<group>"; };
-		D895EFFE2BD1BA0E0068C6D5 /* OTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTaskManager.swift; sourceTree = "<group>"; };
+		D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskManager.swift; sourceTree = "<group>"; };
+		D895F0052BD2C4740068C6D5 /* GExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GExtensions.swift; sourceTree = "<group>"; };
+		D895F0072BD2C4D30068C6D5 /* GTaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskModel.swift; sourceTree = "<group>"; };
+		D895F0092BD327220068C6D5 /* GSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GSettingsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,11 +121,9 @@
 				D8521FEF2BCEE21400C1D8FB /* Info.plist */,
 				D8521FCB2BCEDDDB00C1D8FB /* GnomeApp.swift */,
 				D8521FCD2BCEDDDB00C1D8FB /* ContentView.swift */,
-				D8521FDA2BCEDE7900C1D8FB /* GPersistanceManager.swift */,
-				D8521FDC2BCEDE8500C1D8FB /* GWindowManager.swift */,
-				D8521FF22BCEE32800C1D8FB /* GProcessManager.swift */,
-				D895EFFE2BD1BA0E0068C6D5 /* OTaskManager.swift */,
-				D8521FF52BCEE4D700C1D8FB /* GProcessModel.swift */,
+				D895F0052BD2C4740068C6D5 /* GExtensions.swift */,
+				D895F0002BD22B5C0068C6D5 /* Models */,
+				D895F0012BD22B680068C6D5 /* Managers */,
 				D8521FDE2BCEDE9800C1D8FB /* GMainController.swift */,
 				D8521FE02BCEDEA400C1D8FB /* GOnboardingController.swift */,
 				D8521FCF2BCEDDE300C1D8FB /* Assets.xcassets */,
@@ -149,6 +153,27 @@
 			path = com.ovatar.gnome.brain;
 			sourceTree = "<group>";
 		};
+		D895F0002BD22B5C0068C6D5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D8521FF52BCEE4D700C1D8FB /* GProcessModel.swift */,
+				D895F0072BD2C4D30068C6D5 /* GTaskModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D895F0012BD22B680068C6D5 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				D8521FDA2BCEDE7900C1D8FB /* GPersistanceManager.swift */,
+				D8521FDC2BCEDE8500C1D8FB /* GWindowManager.swift */,
+				D8521FF22BCEE32800C1D8FB /* GProcessManager.swift */,
+				D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */,
+				D895F0092BD327220068C6D5 /* GSettingsManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -166,6 +191,8 @@
 			dependencies = (
 			);
 			name = Gnome;
+			packageProductDependencies = (
+			);
 			productName = Gnome;
 			productReference = D8521FC82BCEDDDA00C1D8FB /* Gnome.app */;
 			productType = "com.apple.product-type.application";
@@ -214,6 +241,8 @@
 				Base,
 			);
 			mainGroup = D8521FBF2BCEDDDA00C1D8FB;
+			packageReferences = (
+			);
 			productRefGroup = D8521FC92BCEDDDA00C1D8FB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -246,13 +275,16 @@
 				D8521FDD2BCEDE8500C1D8FB /* GWindowManager.swift in Sources */,
 				D852200D2BCF6CE000C1D8FB /* GHelperManager.swift in Sources */,
 				D8521FE12BCEDEA400C1D8FB /* GOnboardingController.swift in Sources */,
+				D895F00A2BD327220068C6D5 /* GSettingsManager.swift in Sources */,
 				D8521FDF2BCEDE9800C1D8FB /* GMainController.swift in Sources */,
 				D85220142BD0296700C1D8FB /* GHelperModel.swift in Sources */,
-				D895EFFF2BD1BA0E0068C6D5 /* OTaskManager.swift in Sources */,
+				D895EFFF2BD1BA0E0068C6D5 /* GTaskManager.swift in Sources */,
 				D8521FCE2BCEDDDB00C1D8FB /* ContentView.swift in Sources */,
 				D8521FF62BCEE4D700C1D8FB /* GProcessModel.swift in Sources */,
 				D8521FCC2BCEDDDB00C1D8FB /* GnomeApp.swift in Sources */,
 				D8521FF32BCEE32800C1D8FB /* GProcessManager.swift in Sources */,
+				D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */,
+				D895F0082BD2C4D30068C6D5 /* GTaskModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,11 +18,17 @@ class PersistenceManager:ObservableObject {
     
     static var container: ModelContainer = {
         do {
-            let configurations = ModelConfiguration()
-//            let schema = Schema([AccountObject.self, ErrorObject.self, QueueObject.self, MessageObject.self, FolderObject.self])
-            let schema = Schema([])
+            guard let directory = PersistenceManager.shared.hosted(file: "PersistantDB") else {
+                fatalError("Could not create ModelDirectory")
+
+            }
+            
+            let configurations = ModelConfiguration(url:directory)
+            let schema = Schema([TaskObject.self])
             let container = try ModelContainer(for: schema, configurations: configurations)
-                     
+            
+            print("Persistant File: " ,directory)
+            
             return container
             
         }
@@ -65,10 +71,10 @@ class PersistenceManager:ObservableObject {
     
     private func changes(_ model: any PersistentModel) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-//            if let _ = model as? AccountObject {
-//                AccountManager.shared.accounts = AccountManager.shared.accountList(nil)
-//                
-//            }
+            if let _ = model as? TaskManager {
+                TaskManager.shared.tasks = TaskManager.shared.taskList()
+                
+            }
 //            else if let _ = model as? MessageObject {
 //                MessageManager.shared.messages = MessageManager.shared.messageList(nil)
 //                
@@ -77,5 +83,36 @@ class PersistenceManager:ObservableObject {
         }
         
     }
+    
+    func hosted(file:String?) -> URL? {
+        guard let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+            return nil
+            
+        }
+        
+        let directory = support.appendingPathComponent("Gnome")
+        
+        if !FileManager.default.fileExists(atPath: directory.path) {
+            do {
+                try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+                
+            }
+            catch {
+                print("Could not create directory: \(error)")
+                return nil
+                
+            }
+            
+        }
+        
+        if let file = file {
+            return directory.appending(path: file)
+
+        }
+        
+        return directory
+        
+    }
+
     
 }

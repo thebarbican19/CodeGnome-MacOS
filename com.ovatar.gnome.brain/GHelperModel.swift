@@ -21,15 +21,6 @@ import Foundation
         
     }
     
-    var title:String {
-        switch self {
-            case .todo : return "TODO"
-            case .done : return "DONE"
-            
-        }
-        
-    }
-    
 }
 
 @objc enum HelperState:Int {
@@ -41,7 +32,7 @@ import Foundation
 
 @objc(HelperProtocol) protocol HelperProtocol {
     func brainCheckin()
-    func brainTaskFound(_ type:HelperTaskState, task:String, line:Int, directory:String)
+    func brainTaskFound(_ type:HelperTaskState, task:String, line:Int, directory:String, total:Int)
     func brainSetup(_ completion: @escaping (HelperState) -> Void)
 
 }

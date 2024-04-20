@@ -11,9 +11,12 @@ import SwiftUI
 struct GnomeApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
+    let persitence = PersistenceManager.container
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(persitence)
                 .environmentObject(ProcessManager.shared)
                 .environmentObject(WindowManager.shared)
 

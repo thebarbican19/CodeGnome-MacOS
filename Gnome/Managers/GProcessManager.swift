@@ -34,11 +34,10 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
         return true
         
     }
-
-    func brainTaskFound(_ type: HelperTaskState, task: String, line: Int, directory: String) {
+        
+    func brainTaskFound(_ type: HelperTaskState, task: String, line: Int, directory: String, total:Int) {
         DispatchQueue.main.async {
-            TaskManager.shared.taskChecker(type, task: task, line: line, directory: directory)
-            ProcessManager.shared.message = "\(type.title) - \(task) on line #\(line)"
+            TaskManager.shared.taskCreate(type, task: task, line: line, directory: directory, total:total)
 
         }
         

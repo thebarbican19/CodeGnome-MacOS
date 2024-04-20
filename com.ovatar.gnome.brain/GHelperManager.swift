@@ -24,7 +24,7 @@ final class HelperManager: NSObject, HelperProtocol {
     
     func brainSetup(_ completion: @escaping (HelperState) -> Void) {
         DispatchQueue.main.async {
-            self.timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+            self.timer = Timer.scheduledTimer(withTimeInterval: 1.2, repeats: true) { [weak self] _ in
                 self?.helperSearchFiles()
                 self?.helperCheckin()
                 
@@ -45,7 +45,7 @@ final class HelperManager: NSObject, HelperProtocol {
         
     }
     
-    func brainTaskFound(_ type: HelperTaskState, task: String, line: Int, directory: String) {
+    func brainTaskFound(_ type: HelperTaskState, task: String, line: Int, directory: String, total:Int) {
         os_log("Received Task in Helper: %@", task)
 
     }
@@ -72,16 +72,15 @@ final class HelperManager: NSObject, HelperProtocol {
         
     }
     
-   
-    
     @objc private func helperRetriveContent(_ directory:String) {
         if FileManager.default.fileExists(atPath: directory) {
             if directory.contains("Application Support") == false {
                 do {
                     let content = try String(contentsOfFile: directory, encoding: String.Encoding.utf8)
+                    let lines = content.components(separatedBy: .newlines)
                     var number:Int = 1
                     
-                    for line in content.components(separatedBy: .newlines) {
+                    for line in lines {
                         let pattern = "^\\s*//\\s*##\\s?(TODO:|DONE:)(.*)"
                         let regex = try! NSRegularExpression(pattern: pattern, options: [.anchorsMatchLines])
                         let results = regex.matches(in: line, options: [], range: NSRange(line.startIndex..., in: line))
@@ -92,7 +91,7 @@ final class HelperManager: NSObject, HelperProtocol {
                                 let task = line[taskRange].trimmingCharacters(in: .whitespacesAndNewlines)
                                   
                                 if let tag = tag {
-                                    self.helperSendCallback(tag, task: task, line: number, directory: directory)
+                                    self.helperSendCallback(tag, task: task, line: number, directory: directory, total: lines.count)
 
                                 }
                                 
@@ -119,7 +118,7 @@ final class HelperManager: NSObject, HelperProtocol {
         }
     }
 
-    @objc private func helperSendCallback(_ type: HelperTaskState, task: String, line: Int, directory: String) {
+    @objc private func helperSendCallback(_ type: HelperTaskState, task: String, line: Int, directory: String, total:Int) {
         let connection = NSXPCConnection(machServiceName: "com.ovatar.gnome.brain.mach", options: [])
         connection.remoteObjectInterface = NSXPCInterface(with: HelperProtocol.self)
         connection.interruptionHandler = {
@@ -134,7 +133,7 @@ final class HelperManager: NSObject, HelperProtocol {
             os_log("Error communicating with main app: %@", error.localizedDescription)
         }) 
         as? HelperProtocol {
-            proxy.brainTaskFound(type, task: task, line: line, directory: directory)
+            proxy.brainTaskFound(type, task: task, line: line, directory: directory, total:total)
             
         }
         else {
