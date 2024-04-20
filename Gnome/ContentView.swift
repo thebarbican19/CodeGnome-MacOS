@@ -47,6 +47,8 @@ struct ContentView: View {
 
                         Text(task.importance.rawValue)
 
+                        Text(task.project ?? "No Project")
+
                     }
                     
                 }

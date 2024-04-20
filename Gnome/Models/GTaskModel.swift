@@ -21,6 +21,7 @@ class TaskObject:Equatable,Hashable {
     var directory:String
     var language:TaskLanguage
     var importance:TaskImportance
+    var project:String?
 
     init(_ state:HelperTaskState, task: String, line: Int, directory: String) {
         self.id = UUID()
@@ -33,6 +34,7 @@ class TaskObject:Equatable,Hashable {
         self.directory = directory
         self.language = .init(file: directory)
         self.importance = .init(string: task)
+        self.project = TaskManager.shared.taskProjectName(directory: directory)
         
    }
     

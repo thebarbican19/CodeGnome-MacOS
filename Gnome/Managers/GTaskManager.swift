@@ -21,7 +21,6 @@ class TaskManager {
             self.taskExpire()
             
         }.store(in: &updates)
-        // ##TODO: If tasks are updated functionality to be complete
         
     }
     
@@ -40,7 +39,8 @@ class TaskManager {
 
                         if state == .done {
                             AppSoundEffects.complete.play()
-                            
+                            WindowManager.shared.windowOpen(.main, present: .present)
+
                         }
                         
                     }
@@ -54,6 +54,7 @@ class TaskManager {
                     existing.refreshed = Date.now
                     existing.line = line
                     existing.task = task
+                    existing.project = self.taskProjectName(directory: directory)
                     
                 }
                 else {
@@ -61,7 +62,7 @@ class TaskManager {
                     context.insert(task)
                     
                     AppSoundEffects.added.play()
-         
+                    WindowManager.shared.windowOpen(.main, present: .present)
                     print("Storing New Task: \(task)")
                     
                 }
@@ -111,6 +112,36 @@ class TaskManager {
                 
     }
     
+    public func taskProjectName(directory: String) -> String? {
+        var path = URL(fileURLWithPath: directory)
+
+        guard FileManager.default.fileExists(atPath: path.path) else {
+            print("Provided path is not a directory")
+            return nil
+            
+        }
+
+        while path.pathComponents.count > 1 {
+            if let entries = try? FileManager.default.contentsOfDirectory(atPath: path.path) {
+                for entry in entries {
+                    if entry.hasSuffix(".code-workspace") || entry.hasSuffix(".xcodeproj") || entry.hasSuffix(".git") || entry.hasPrefix("index") {
+                        return path.lastPathComponent
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            path.deleteLastPathComponent()
+            
+        }
+
+        return nil
+        
+    }
+
+    
     private func taskExpire() {
         let fetch = FetchDescriptor<TaskObject>()
 
@@ -143,6 +174,7 @@ class TaskManager {
                             print("DONE" ,element.task)
 
                             AppSoundEffects.complete.play()
+                            WindowManager.shared.windowOpen(.main, present: .present)
 
                         }
                         

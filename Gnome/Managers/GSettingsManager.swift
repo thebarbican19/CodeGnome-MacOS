@@ -204,41 +204,33 @@ class SettingsManager {
 
     public var windowTheme:SettingsTheme {
         get {
-            #if os(macOS)
-                if let value = UserDefaults.object(.windowTheme) as? Int {
-                    if let theme = SettingsTheme(rawValue: value) {
-                        if theme == .light {
-                            NSApp.appearance = NSAppearance(named: .aqua)
+            if let value = UserDefaults.object(.windowTheme) as? Int {
+                if let theme = SettingsTheme(rawValue: value) {
+                    if theme == .light {
+                        NSApp.appearance = NSAppearance(named: .aqua)
 
-                            return .light
-                            
-                        }
-                        else if theme == .dark {
-                            NSApp.appearance = NSAppearance(named: .darkAqua)
+                        return .light
+                        
+                    }
+                    else if theme == .dark {
+                        NSApp.appearance = NSAppearance(named: .darkAqua)
 
-                            return .dark
-                            
-                        }
+                        return .dark
                         
                     }
                     
                 }
                 
-                if (UserDefaults.standard.string(forKey: "AppleInterfaceStyle") ?? "Light") == "Light" {
-                    return .light
-                    
-                }
-                else {
-                    return .dark
-                    
-                }
+            }
             
-                return .system
-            
-            #else
+            if (UserDefaults.standard.string(forKey: "AppleInterfaceStyle") ?? "Light") == "Light" {
+                return .light
+                
+            }
+            else {
                 return .dark
-
-            #endif
+                
+            }
             
         }
         
