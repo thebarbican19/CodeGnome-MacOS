@@ -7,13 +7,10 @@
 
 import SwiftUI
 
-struct GOnboardingController: View {
+struct OnboardingController: View {
     var body: some View {
         // ##TODO: Finish this View
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
     }
-}
-
-#Preview {
-    GOnboardingController()
 }

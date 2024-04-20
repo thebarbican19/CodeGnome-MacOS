@@ -55,7 +55,7 @@ final class HelperManager: NSObject, HelperProtocol {
     }
 
     @objc private func helperSearchFiles() {
-        self.helperProcessTaskWithArguments("/usr/bin/mdfind", arguments:  ["(kMDItemTextContent == '## TODO:'c) || (kMDItemTextContent == '## DONE:'c) || (kMDItemTextContent == '##TODO:'c) || (kMDItemTextContent == '##DONE:'c)"], whitespace: true) { output in
+        self.helperProcessTaskWithArguments("/usr/bin/mdfind", arguments:  ["(kMDItemTextContent == '## TODO:'c) || (kMDItemTextContent == '## DONE:'c) || (kMDItemTextContent == '##TODO:'c) || (kMDItemTextContent == '##DONE:'c) || (kMDItemTextContent == '##FIX:'c) || (kMDItemTextContent == '##FIX:'c)"], whitespace: true) { output in
             if let output = output?.components(separatedBy: "\n") {
                 for directory in output {
                     self.helperRetriveContent(directory)
@@ -81,7 +81,7 @@ final class HelperManager: NSObject, HelperProtocol {
                     var number:Int = 1
                     
                     for line in lines {
-                        let pattern = "^\\s*//\\s*##\\s?(TODO:|DONE:)(.*)"
+                        let pattern = "^\\s*//\\s*##\\s?(TODO:|DONE:|FIX:)(.*)"
                         let regex = try! NSRegularExpression(pattern: pattern, options: [.anchorsMatchLines])
                         let results = regex.matches(in: line, options: [], range: NSRange(line.startIndex..., in: line))
                                                 
@@ -199,7 +199,8 @@ final class HelperManager: NSObject, HelperProtocol {
         do {
            try process.run()
             
-        } catch {
+        } 
+        catch {
            completion("Error running process: \(error)")
             
         }

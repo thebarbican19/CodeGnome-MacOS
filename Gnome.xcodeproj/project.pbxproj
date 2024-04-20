@@ -29,6 +29,16 @@
 		D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0052BD2C4740068C6D5 /* GExtensions.swift */; };
 		D895F0082BD2C4D30068C6D5 /* GTaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0072BD2C4D30068C6D5 /* GTaskModel.swift */; };
 		D895F00A2BD327220068C6D5 /* GSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0092BD327220068C6D5 /* GSettingsManager.swift */; };
+		D895F00C2BD36E010068C6D5 /* GAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F00B2BD36E010068C6D5 /* GAppModel.swift */; };
+		D895F00F2BD372AD0068C6D5 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = D895F00E2BD372AD0068C6D5 /* LaunchAtLogin */; };
+		D895F0142BD373EC0068C6D5 /* complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = D895F0112BD373EB0068C6D5 /* complete.wav */; };
+		D895F0152BD373EC0068C6D5 /* error.wav in Resources */ = {isa = PBXBuildFile; fileRef = D895F0122BD373EB0068C6D5 /* error.wav */; };
+		D895F0162BD373EC0068C6D5 /* reveal.wav in Resources */ = {isa = PBXBuildFile; fileRef = D895F0132BD373EC0068C6D5 /* reveal.wav */; };
+		D895F0192BD376210068C6D5 /* GWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0182BD376210068C6D5 /* GWindowModel.swift */; };
+		D895F01B2BD379C80068C6D5 /* GOnboardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F01A2BD379C80068C6D5 /* GOnboardingManager.swift */; };
+		D895F01D2BD37C310068C6D5 /* GSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F01C2BD37C310068C6D5 /* GSettingsModel.swift */; };
+		D895F01F2BD37E010068C6D5 /* GNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F01E2BD37E010068C6D5 /* GNavigationController.swift */; };
+		D895F0212BD37EBC0068C6D5 /* GPreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0202BD37EBC0068C6D5 /* GPreferencesController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -77,6 +87,15 @@
 		D895F0052BD2C4740068C6D5 /* GExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GExtensions.swift; sourceTree = "<group>"; };
 		D895F0072BD2C4D30068C6D5 /* GTaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskModel.swift; sourceTree = "<group>"; };
 		D895F0092BD327220068C6D5 /* GSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GSettingsManager.swift; sourceTree = "<group>"; };
+		D895F00B2BD36E010068C6D5 /* GAppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAppModel.swift; sourceTree = "<group>"; };
+		D895F0112BD373EB0068C6D5 /* complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = complete.wav; sourceTree = "<group>"; };
+		D895F0122BD373EB0068C6D5 /* error.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = error.wav; sourceTree = "<group>"; };
+		D895F0132BD373EC0068C6D5 /* reveal.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = reveal.wav; sourceTree = "<group>"; };
+		D895F0182BD376210068C6D5 /* GWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GWindowModel.swift; sourceTree = "<group>"; };
+		D895F01A2BD379C80068C6D5 /* GOnboardingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GOnboardingManager.swift; sourceTree = "<group>"; };
+		D895F01C2BD37C310068C6D5 /* GSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GSettingsModel.swift; sourceTree = "<group>"; };
+		D895F01E2BD37E010068C6D5 /* GNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNavigationController.swift; sourceTree = "<group>"; };
+		D895F0202BD37EBC0068C6D5 /* GPreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPreferencesController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D895F00F2BD372AD0068C6D5 /* LaunchAtLogin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				D8521FEF2BCEE21400C1D8FB /* Info.plist */,
+				D895F0102BD373B40068C6D5 /* Resources */,
 				D8521FCB2BCEDDDB00C1D8FB /* GnomeApp.swift */,
 				D8521FCD2BCEDDDB00C1D8FB /* ContentView.swift */,
 				D895F0052BD2C4740068C6D5 /* GExtensions.swift */,
@@ -126,6 +147,8 @@
 				D895F0012BD22B680068C6D5 /* Managers */,
 				D8521FDE2BCEDE9800C1D8FB /* GMainController.swift */,
 				D8521FE02BCEDEA400C1D8FB /* GOnboardingController.swift */,
+				D895F01E2BD37E010068C6D5 /* GNavigationController.swift */,
+				D895F0202BD37EBC0068C6D5 /* GPreferencesController.swift */,
 				D8521FCF2BCEDDE300C1D8FB /* Assets.xcassets */,
 				D8521FD42BCEDDE300C1D8FB /* Gnome.entitlements */,
 				D8521FD12BCEDDE300C1D8FB /* Preview Content */,
@@ -158,6 +181,9 @@
 			children = (
 				D8521FF52BCEE4D700C1D8FB /* GProcessModel.swift */,
 				D895F0072BD2C4D30068C6D5 /* GTaskModel.swift */,
+				D895F00B2BD36E010068C6D5 /* GAppModel.swift */,
+				D895F0182BD376210068C6D5 /* GWindowModel.swift */,
+				D895F01C2BD37C310068C6D5 /* GSettingsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -170,8 +196,27 @@
 				D8521FF22BCEE32800C1D8FB /* GProcessManager.swift */,
 				D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */,
 				D895F0092BD327220068C6D5 /* GSettingsManager.swift */,
+				D895F01A2BD379C80068C6D5 /* GOnboardingManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		D895F0102BD373B40068C6D5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D895F0172BD373FB0068C6D5 /* SFX */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D895F0172BD373FB0068C6D5 /* SFX */ = {
+			isa = PBXGroup;
+			children = (
+				D895F0112BD373EB0068C6D5 /* complete.wav */,
+				D895F0122BD373EB0068C6D5 /* error.wav */,
+				D895F0132BD373EC0068C6D5 /* reveal.wav */,
+			);
+			path = SFX;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,6 +237,7 @@
 			);
 			name = Gnome;
 			packageProductDependencies = (
+				D895F00E2BD372AD0068C6D5 /* LaunchAtLogin */,
 			);
 			productName = Gnome;
 			productReference = D8521FC82BCEDDDA00C1D8FB /* Gnome.app */;
@@ -242,6 +288,7 @@
 			);
 			mainGroup = D8521FBF2BCEDDDA00C1D8FB;
 			packageReferences = (
+				D895F00D2BD372AD0068C6D5 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 			);
 			productRefGroup = D8521FC92BCEDDDA00C1D8FB /* Products */;
 			projectDirPath = "";
@@ -259,6 +306,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8521FD32BCEDDE300C1D8FB /* Preview Assets.xcassets in Resources */,
+				D895F0142BD373EC0068C6D5 /* complete.wav in Resources */,
+				D895F0152BD373EC0068C6D5 /* error.wav in Resources */,
+				D895F0162BD373EC0068C6D5 /* reveal.wav in Resources */,
 				D8521FD02BCEDDE300C1D8FB /* Assets.xcassets in Resources */,
 				D8521FFB2BCF06DC00C1D8FB /* Info.plist in Resources */,
 			);
@@ -271,18 +321,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D895F0212BD37EBC0068C6D5 /* GPreferencesController.swift in Sources */,
+				D895F01D2BD37C310068C6D5 /* GSettingsModel.swift in Sources */,
 				D8521FDB2BCEDE7900C1D8FB /* GPersistanceManager.swift in Sources */,
 				D8521FDD2BCEDE8500C1D8FB /* GWindowManager.swift in Sources */,
 				D852200D2BCF6CE000C1D8FB /* GHelperManager.swift in Sources */,
+				D895F00C2BD36E010068C6D5 /* GAppModel.swift in Sources */,
 				D8521FE12BCEDEA400C1D8FB /* GOnboardingController.swift in Sources */,
 				D895F00A2BD327220068C6D5 /* GSettingsManager.swift in Sources */,
+				D895F01F2BD37E010068C6D5 /* GNavigationController.swift in Sources */,
 				D8521FDF2BCEDE9800C1D8FB /* GMainController.swift in Sources */,
 				D85220142BD0296700C1D8FB /* GHelperModel.swift in Sources */,
 				D895EFFF2BD1BA0E0068C6D5 /* GTaskManager.swift in Sources */,
 				D8521FCE2BCEDDDB00C1D8FB /* ContentView.swift in Sources */,
 				D8521FF62BCEE4D700C1D8FB /* GProcessModel.swift in Sources */,
 				D8521FCC2BCEDDDB00C1D8FB /* GnomeApp.swift in Sources */,
+				D895F01B2BD379C80068C6D5 /* GOnboardingManager.swift in Sources */,
 				D8521FF32BCEE32800C1D8FB /* GProcessManager.swift in Sources */,
+				D895F0192BD376210068C6D5 /* GWindowModel.swift in Sources */,
 				D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */,
 				D895F0082BD2C4D30068C6D5 /* GTaskModel.swift in Sources */,
 			);
@@ -553,6 +609,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D895F00D2BD372AD0068C6D5 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Modern";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D895F00E2BD372AD0068C6D5 /* LaunchAtLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D895F00D2BD372AD0068C6D5 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
+			productName = LaunchAtLogin;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D8521FC02BCEDDDA00C1D8FB /* Project object */;
 }

@@ -31,17 +31,23 @@ class TaskManager {
         if task.replacingOccurrences(of: "\\s+", with: "", options: .regularExpression).isEmpty == false {
             do {
                 if let existing = self.taskMatch(task, directory: directory) {
-                   
-                                     
-                    if existing.state != TaskState(from: type) {
+                    let state = TaskState(from: type)
+                    let importance = TaskImportance.init(string: task)
+
+                    if existing.state != state {
                         existing.changes = Date.now
                         existing.state = TaskState(from: type)
 
+                        if state == .done {
+                            AppSoundEffects.complete.play()
+                            
+                        }
+                        
                     }
                     
-                    if existing.importance != TaskImportance.init(string: task) {
+                    if existing.importance != importance {
                         existing.changes = Date.now
-                        existing.importance = TaskImportance.init(string: task)
+                        existing.importance = importance
 
                     }
                     
@@ -54,6 +60,8 @@ class TaskManager {
                     let task = TaskObject.init(type, task: task, line: line, directory:directory)
                     context.insert(task)
                     
+                    AppSoundEffects.added.play()
+         
                     print("Storing New Task: \(task)")
                     
                 }
@@ -109,17 +117,34 @@ class TaskManager {
         do {
             let context = PersistenceManager.context
             let tasks = try context.fetch(fetch)
-            let sorted = tasks.sorted(by: { $0.refreshed > $1.refreshed && $0.state != .archived })
+            let sorted = tasks.sorted(by: { $0.refreshed > $1.refreshed && $0.state.complete != true })
 
             if let newest = sorted.first {
                 for element in sorted.dropFirst() {
                     let difference = newest.refreshed.timeIntervalSince(element.refreshed)
                     
-                    print("DELETE" ,element.task)
-                    
-                    if difference > 5 && element.state != .archived {
-                        element.state = .archived
-                        element.changes = Date.now
+                    if SettingsManager.shared.enabledArchive == true {
+                        if difference > 5 && element.state != .archived {
+                            element.state = .archived
+                            element.changes = Date.now
+                            
+                            print("ARCHIVED" ,element.task)
+
+                            AppSoundEffects.complete.play()
+
+                        }
+                        
+                    }
+                    else {
+                        if difference > 5 && element.state != .done {
+                            element.state = .done
+                            element.changes = Date.now
+                            
+                            print("DONE" ,element.task)
+
+                            AppSoundEffects.complete.play()
+
+                        }
                         
                     }
                     

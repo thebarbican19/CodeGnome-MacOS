@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 extension String {
     private class Array2D {
@@ -82,6 +83,102 @@ extension String {
         
         return scores[a.count, b.count]
         
+    }
+    
+}
+
+extension UserDefaults {
+    static let changed = PassthroughSubject<AppDefaultsKeys, Never>()
+
+    static func setup() {
+        guard let _ = FileManager.default.ubiquityIdentityToken else {
+            print("iCloud is not available or iCloud Drive is not enabled.")
+            return
+            
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            for key in cloud.dictionaryRepresentation.keys {
+                if let key = AppDefaultsKeys(rawValue: key) {
+                    changed.send(key)
+                    
+                }
+                
+            }
+            
+            NotificationCenter.default.addObserver(forName: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+                       object: NSUbiquitousKeyValueStore.default, queue: nil) { notification in
+                if let changes = notification.userInfo?[NSUbiquitousKeyValueStoreChangedKeysKey] as? [String] {
+                    for key in changes {
+                        if let key = AppDefaultsKeys(rawValue: key) {
+                            changed.send(key)
+
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+
+    static var cloud:NSUbiquitousKeyValueStore {
+        return NSUbiquitousKeyValueStore.default
+        
+    }
+    
+    static func list() -> Array<AppDefaultsKeys> {
+        return UserDefaults.cloud.dictionaryRepresentation.keys.compactMap({ AppDefaultsKeys(rawValue:$0) })
+        
+    }
+
+    static func save(_ key:AppDefaultsKeys, value:Any?) {
+        if let value = value {
+            cloud.set(Date(), forKey: "\(key.rawValue)_timestamp")
+            cloud.set(value, forKey: key.rawValue)
+            cloud.synchronize()
+            
+            print("\n\n☁️ Saved \(value) to '\(key.rawValue)'\n\n")
+    
+            changed.send(key)
+                            
+        }
+        else {
+            cloud.removeObject(forKey: key.rawValue)
+            cloud.set(Date(), forKey: "\(key.rawValue)_timestamp")
+            cloud.synchronize()
+
+            changed.send(key)
+            
+            print("\n\n💾 Removed to '\(key.rawValue)'\n\n")
+            
+        }
+        
+    }
+        
+    static func timestamp(_ key:AppDefaultsKeys) -> Date? {
+        return UserDefaults.cloud.object(forKey: "\(key.rawValue)_timestamp") as? Date
+
+    }
+    
+    static func object(_ key:AppDefaultsKeys) -> Any? {
+        return UserDefaults.cloud.object(forKey: key.rawValue)
+        
+    }
+    
+    static func purge() {
+        for key in UserDefaults.list() {
+            if key.purgable {
+                print("💀 Purged: \(key.rawValue)")
+                UserDefaults.save(key, value: nil)
+                
+            }
+            
+        }
+                
     }
     
 }

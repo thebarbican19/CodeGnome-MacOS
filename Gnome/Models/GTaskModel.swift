@@ -82,11 +82,13 @@ enum TaskLanguage:String,Codable {
 enum TaskState:String,Codable {
     case todo
     case done
+    case fix
     case archived
     
     init(from helper:HelperTaskState) {
         switch helper {
             case .done:self = .done
+            case .fix:self = .fix
             default:self = .todo
 
         }
@@ -97,8 +99,19 @@ enum TaskState:String,Codable {
         switch self {
             case .todo : return "TODO"
             case .done : return "DONE"
+            case .fix : return "FIX"
             case .archived : return "ARCHIVED"
 
+        }
+        
+    }
+    
+    var complete:Bool {
+        switch self {
+            case .done : return true
+            case .archived : return true
+            default : return false
+            
         }
         
     }
