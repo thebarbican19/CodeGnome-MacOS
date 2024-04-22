@@ -31,10 +31,9 @@ enum WindowTypes:String,CaseIterable {
 
     var size:WindowSize {
         switch self {
-            case .main : return .init(width: 490, height: CGFloat(NSScreen.main?.frame.height ?? 0.0))
+            case .main : return .init(width: 390, height: CGFloat(NSScreen.main?.frame.height ?? 0.0))
             case .preferences : return .init(width: 800, height: 480)
             case .onboarding: return .init(width: 920, height: 580)
-            default : return .init(width: 800, height: 500)
             
         }
         
@@ -52,7 +51,7 @@ enum WindowTypes:String,CaseIterable {
     
     var host:NSView {
         switch self {
-            case .main : return NSHostingController(rootView: NavigationController()).view
+            case .main : return NSHostingController(rootView: MainController()).view
             case .preferences : return NSHostingController(rootView: PreferencesController()).view
             case .onboarding : return NSHostingController(rootView: OnboardingController()).view
 
@@ -115,4 +114,23 @@ struct WindowViewBlur: NSViewRepresentable {
     }
     
 }
+
+struct WindowGradientView: View {
+    var body: some View {
+        LinearGradient(
+            gradient: Gradient(colors: [
+                SettingsManager.shared.windowPosition == .left ? .gray : Color.gray.opacity(0),
+                SettingsManager.shared.windowPosition == .left ? Color.gray.opacity(0) : .gray
+                
+            ]),
+            startPoint: .leading,
+            endPoint: .trailing
+            
+        )
+        .edgesIgnoringSafeArea(.all)
+        
+    }
+    
+}
+
 

@@ -37,22 +37,7 @@ struct ContentView: View {
 
             }
             else {
-                ForEach(tasks) { task in
-                    HStack {
-                        Text(task.state.title)
-                        
-                        Text(task.task)
-
-                        Text("#\(task.line)")
-
-                        Text(task.importance.rawValue)
-
-                        Text(task.project ?? "No Project")
-
-                    }
-                    
-                }
-                .padding(.top, 20)
+            
                 
             }
 

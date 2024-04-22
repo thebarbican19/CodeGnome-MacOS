@@ -21,7 +21,7 @@ enum OnboardingSubview:Int,CaseIterable,Codable {
 class OnboardingManager:ObservableObject {
     static var shared = OnboardingManager()
     
-    @Published public var current:OnboardingSubview = .intro
+    @Published public var current:OnboardingSubview = .complete
 
     private var updates = Set<AnyCancellable>()
 

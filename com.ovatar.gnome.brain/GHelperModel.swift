@@ -10,13 +10,13 @@ import Foundation
 @objc enum HelperTaskState:Int {
     case todo
     case done
-    case fix
+    case note
     
     init?(from tag: String) {
         switch tag.trimmingCharacters(in: .whitespaces).lowercased() {
             case "todo:":self = .todo
             case "done:":self = .done
-            case "fix:":self = .fix
+            case "note:":self = .note
             default:return nil
             
         }

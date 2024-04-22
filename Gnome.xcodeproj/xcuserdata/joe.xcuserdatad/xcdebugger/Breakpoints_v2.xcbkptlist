@@ -20,5 +20,53 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Gnome/GnomeApp.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "applicationStausItemClicked(sender:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F - d459e1827afbc0a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Gnome.AppDelegate.applicationStausItemClicked(sender: Swift.Optional&lt;__C.NSStatusItem&gt;) -&gt; ()"
+                  moduleName = "Gnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/GnomeApp.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
+                  offsetFromSymbolStart = "131">
+               </Location>
+               <Location
+                  uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F - d459e1827afbce9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Gnome.AppDelegate.applicationStausItemClicked(sender: Swift.Optional&lt;__C.NSStatusItem&gt;) -&gt; ()"
+                  moduleName = "Gnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/GnomeApp.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "34">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

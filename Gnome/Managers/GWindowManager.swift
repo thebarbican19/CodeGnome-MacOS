@@ -70,6 +70,7 @@ class WindowManager: ObservableObject {
         
         if force == false {
             if let window = self.windowExists(type) {
+                print("window" ,window)
                 if type == .preferences {
                     window.contentView = NSHostingController(rootView: PreferencesController()).view
                     
@@ -89,7 +90,8 @@ class WindowManager: ObservableObject {
                     if let present = present {
                         var reveal:Bool?
                         if present == .toggle {
-                            if self.windowIsVisible(.main) { reveal = false
+                            if self.windowIsVisible(.main) { 
+                                reveal = false
                                 
                             }
                             else {
@@ -106,6 +108,8 @@ class WindowManager: ObservableObject {
                             reveal = true
                             
                         }
+                        
+                        print("reveal")
                         
                         if let show:Bool = reveal {
                             if show {
@@ -233,15 +237,14 @@ class WindowManager: ObservableObject {
         window.isMovableByWindowBackground = false
         window.hasShadow = false
         window.center()
-        window.backgroundColor = NSColor.clear
+        window.backgroundColor = NSColor.black.withAlphaComponent(0.1)
         window.setFrame(self.windowBounds(false), display: true, animate: false)
         window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-        window.registerForDraggedTypes([.URL])
         window.acceptsMouseMovedEvents = true
         window.level = .statusBar
-        window.contentView = NSHostingController(rootView: NavigationController()).view
+        window.contentView = NSHostingController(rootView: MainController()).view
         window.alphaValue = 0.0
-        
+                
         return window
             
     }
@@ -277,10 +280,12 @@ class WindowManager: ObservableObject {
        
     private func windowExists(_ type: WindowTypes, onboarding:OnboardingSubview? = nil) -> NSWindow? {
         if let window = NSApplication.shared.windows.first(where: { WindowTypes(rawValue: $0.title) == type }) {
+            print("window" ,window)
             return window
             
         }
         else {
+            print("Found" ,type)
             switch type {
                 case .main : return self.windowMain()
 //                case .onboarding : return self.windowDefault(type, onboarding: onboarding)

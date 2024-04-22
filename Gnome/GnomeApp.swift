@@ -15,12 +15,11 @@ struct GnomeApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .modelContainer(persitence)
-                .environmentObject(ProcessManager.shared)
-                .environmentObject(WindowManager.shared)
+            EmptyView()
 
         }
+        .handlesExternalEvents(matching: Set(arrayLiteral: "*"))
+
         
     }
     
@@ -31,6 +30,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     
     final func applicationDidFinishLaunching(_ notification: Notification) {
 
+        if let window = NSApplication.shared.windows.filter({ WindowTypes(rawValue: $0.title) == nil}).first {
+            window.close()
+
+        }
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             WindowManager.shared.windowOpen(.main, present: .present)
             

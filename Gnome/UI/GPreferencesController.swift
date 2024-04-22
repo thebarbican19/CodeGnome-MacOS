@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 
 struct PreferencesController: View {
+    let persitence = PersistenceManager.container
+
     var body: some View {
         ZStack {
             HStack(spacing: 0) {
@@ -18,6 +20,9 @@ struct PreferencesController: View {
             }
             
         }
+        .modelContainer(persitence)
+        .environmentObject(ProcessManager.shared)
+        .environmentObject(WindowManager.shared)
             
     }
     

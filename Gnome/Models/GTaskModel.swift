@@ -12,31 +12,63 @@ import SwiftData
 class TaskObject:Equatable,Hashable {
     @Attribute(.unique) var id:UUID
     
+    @Relationship(deleteRule: .noAction) var project:TaskProject
+
     var created:Date
     var refreshed:Date
     var changes:Date?
+    var snoozed:Date?
     var state:TaskState
+    var order:Int
     var task:String
     var line:Int
     var directory:String
     var language:TaskLanguage
     var importance:TaskImportance
-    var project:String?
 
-    init(_ state:HelperTaskState, task: String, line: Int, directory: String) {
+    init(_ state:HelperTaskState, task: String, line: Int, project:TaskProject) {
         self.id = UUID()
+        self.project = project
         self.created = Date.now
         self.refreshed = Date.now
         self.changes = nil
+        self.snoozed = nil
         self.state = TaskState(from:state)
+        self.order = 1
         self.task = task
         self.line = line
-        self.directory = directory
-        self.language = .init(file: directory)
+        self.directory = project.directory
+        self.language = .init(file: project.directory)
         self.importance = .init(string: task)
-        self.project = TaskManager.shared.taskProjectName(directory: directory)
         
    }
+    
+}
+
+@Model
+class TaskProject:Equatable,Hashable {
+    var directory:String
+    var name:String
+    var added:Date
+    var updated:Date?
+
+    init(_ directory: URL) {
+        self.name = directory.lastPathComponent
+        self.directory = directory.path
+        self.added = Date.now
+        self.updated = nil
+        
+    }
+    
+    static func == (lhs: TaskProject, rhs: TaskProject) -> Bool {
+        return lhs.directory == rhs.directory
+        
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(directory)
+
+    }
     
 }
 
@@ -84,13 +116,13 @@ enum TaskLanguage:String,Codable {
 enum TaskState:String,Codable {
     case todo
     case done
-    case fix
+    case note
     case archived
     
     init(from helper:HelperTaskState) {
         switch helper {
             case .done:self = .done
-            case .fix:self = .fix
+            case .note:self = .note
             default:self = .todo
 
         }
@@ -101,7 +133,7 @@ enum TaskState:String,Codable {
         switch self {
             case .todo : return "TODO"
             case .done : return "DONE"
-            case .fix : return "FIX"
+            case .note : return "NOTE"
             case .archived : return "ARCHIVED"
 
         }
@@ -118,13 +150,27 @@ enum TaskState:String,Codable {
         
     }
     
+    var revealed:Bool {
+        switch self {
+            case .archived : return false
+            default : return true
+            
+        }
+        
+    }
+    
 }
 
-enum TaskImportance:String,Codable {
-    case critical
-    case urgent
-    case high
-    case low
+enum TaskImportance:Int,Comparable,Codable {
+    static func < (lhs: TaskImportance, rhs: TaskImportance) -> Bool {
+        return lhs.rawValue > rhs.rawValue
+        
+    }
+    
+    case critical = 3
+    case urgent = 2
+    case high = 1
+    case low = 0
     
     init(string:String) {
         var count:Int = 0

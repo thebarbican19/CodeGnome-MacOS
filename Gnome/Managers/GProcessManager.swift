@@ -37,7 +37,12 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
         
     func brainTaskFound(_ type: HelperTaskState, task: String, line: Int, directory: String, total:Int) {
         DispatchQueue.main.async {
-            TaskManager.shared.taskCreate(type, task: task, line: line, directory: directory, total:total)
+            guard let project = TaskManager.shared.projectStore(directory: directory) else {
+                return
+                
+            }
+            
+            TaskManager.shared.taskCreate(type, task: task, line: line, project:project, total:total)
 
         }
         
