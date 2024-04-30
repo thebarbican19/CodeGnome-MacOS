@@ -9,13 +9,15 @@ import Foundation
 import SwiftUI
 
 struct ViewModifyerHover: ViewModifier {
+    @State var cursor:NSCursor = NSCursor.pointingHand
+    
     let value: (Bool) -> Void
 
     func body(content: Content) -> some View {
         content.onHover(perform: { hover in
             switch hover {
-                case true : NSCursor.pointingHand.push()
-                default : NSCursor.pop()
+                case true : cursor.push()
+                default : cursor.pop()
                 
             }
                             
@@ -28,8 +30,8 @@ struct ViewModifyerHover: ViewModifier {
 }
 
 extension View {
-    func hover(value: @escaping (Bool) -> Void = { _ in }) -> some View {
-        self.modifier(ViewModifyerHover(value: value))
+    func hover(cursor:NSCursor = NSCursor.pointingHand, value: @escaping (Bool) -> Void = { _ in }) -> some View {
+        self.modifier(ViewModifyerHover(cursor:cursor, value: value))
         
     }
     

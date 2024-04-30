@@ -12,8 +12,8 @@ import Cocoa
 class SettingsManager {
     static var shared = SettingsManager()
 
-    // ##TODO: Complete Settings Manager
-    // ##DONE: Setup UserDefaults Extension
+    // DONE: Complete Settings Manager
+    // DONE: Setup UserDefaults Extension
     public var enabledArchive:Bool {
         get {
             if let value = UserDefaults.object(.enabledArchive) as? Bool {
@@ -199,59 +199,6 @@ class SettingsManager {
             return .unsupported
 
         #endif
-
-    }
-
-    public var windowTheme:SettingsTheme {
-        get {
-            if let value = UserDefaults.object(.windowTheme) as? Int {
-                if let theme = SettingsTheme(rawValue: value) {
-                    if theme == .light {
-                        NSApp.appearance = NSAppearance(named: .aqua)
-
-                        return .light
-                        
-                    }
-                    else if theme == .dark {
-                        NSApp.appearance = NSAppearance(named: .darkAqua)
-
-                        return .dark
-                        
-                    }
-                    
-                }
-                
-            }
-            
-            if (UserDefaults.standard.string(forKey: "AppleInterfaceStyle") ?? "Light") == "Light" {
-                return .light
-                
-            }
-            else {
-                return .dark
-                
-            }
-            
-        }
-        
-        set {
-            if newValue == .dark { NSApp.appearance = NSAppearance(named: .darkAqua) }
-            else if newValue == .light { NSApp.appearance = NSAppearance(named: .aqua) }
-            else {
-                if (UserDefaults.standard.string(forKey: "AppleInterfaceStyle") ?? "Light") == "Light" {
-                    NSApp.appearance = NSAppearance(named: .aqua)
-                    
-                }
-                else {
-                    NSApp.appearance = NSAppearance(named: .darkAqua)
-                    
-                }
-                
-            }
-            
-            UserDefaults.save(.windowTheme, value: newValue.rawValue)
-                        
-        }
 
     }
 

@@ -23,12 +23,15 @@ class TaskManager:ObservableObject {
             
         }.store(in: &updates)
         
+        _ = self.taskList()
+        
     }
     
     public func taskCreate(_ type:HelperTaskState, task:String, line:Int, directory:String, project:TaskProject, total:Int) {
         let context = PersistenceManager.context
         let modifyed = self.taskModification(directory)
-
+        let application = ProcessManager.shared.application
+        
         guard self.taskOwner(directory) == true else {
             print("Task is not owned by user: \(directory)")
             return
@@ -64,10 +67,11 @@ class TaskManager:ObservableObject {
                     existing.task = task.replacingOccurrences(of: "!+$", with: "", options: .regularExpression)
                     existing.project = project
                     existing.modifyed = modifyed
-                                        
+                    existing.application = .init(name: application)
+                    
                 }
                 else {
-                    let task = TaskObject.init(type, task: task, directory: directory, line: line, project: project, modifyed: modifyed)
+                    let task = TaskObject.init(type, task: task, directory: directory, line: line, project: project, application: application, modifyed: modifyed)
                     context.insert(task)
                     
                     AppSoundEffects.added.play()
@@ -170,15 +174,20 @@ class TaskManager:ObservableObject {
         
         print("Opening: " ,directory)
         if directory == task.directory {
-            if task.language.application == .vscode {
+            if task.application == .vscode {
                 path = "/usr/local/bin/code"
                 arguments = ["-g", "\(task.directory):\(task.line)"]
    
             }
-            else if task.language.application == .xcode {
+            else if task.application == .xcode {
                 path = "/usr/bin/xed"
                 arguments = ["--line", String(task.line), task.directory]
         
+            }
+            else if task.application == .sublime {
+                path = "/usr/local/bin/subl"
+                arguments = ["\(task.directory):\(task.line)"]
+                             
             }
             
         }
@@ -202,7 +211,7 @@ class TaskManager:ObservableObject {
             
         }
         catch {
-            print("Failed to open \(task.language.application): \(error)")
+            print("Failed to open \(task.application): \(error)")
             
         }
         

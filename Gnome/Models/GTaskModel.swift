@@ -26,9 +26,10 @@ class TaskObject:Equatable,Hashable {
     var directory:String
     var language:TaskLanguage
     var importance:TaskImportance
+    var application:TaskApplication?
     var ignore:Bool = false
 
-    init(_ state:HelperTaskState, task: String, directory:String, line: Int, project:TaskProject, modifyed:Date?) {
+    init(_ state:HelperTaskState, task: String, directory:String, line: Int, project:TaskProject, application:HelperSupportedApplications?, modifyed:Date?) {
         self.id = UUID()
         self.project = project
         self.created = Date.now
@@ -43,6 +44,7 @@ class TaskObject:Equatable,Hashable {
         self.directory = directory
         self.language = .init(file: directory)
         self.importance = .init(string: task)
+        self.application = .init(name: application)
         self.ignore = false
         
    }
@@ -137,16 +139,6 @@ enum TaskLanguage:String,Codable {
             case .shell: return "#89E051"  // Shell green
             case .typescript: return "#3178C6"  // TypeScript blue
             case .unknown: return "#FFFFFF"  // Default white
-            
-        }
-        
-    }
-    
-    var application:TaskApplication {
-        switch self {
-            case .objc : return .xcode
-            case .swift : return .xcode
-            default : return .vscode
             
         }
         
@@ -256,9 +248,26 @@ enum TaskImportance:Int,Comparable,Codable {
     
 }
 
-enum TaskApplication:String {
+enum TaskApplication:String,Codable {
     case vscode
     case xcode
+    case bbedit
+    case sublime
+    case textmate
+    case brackets
+    
+    init?(name:HelperSupportedApplications?) {
+        switch name {
+            case .xcode : self = .xcode
+            case .bbedit : self = .bbedit
+            case .sublime : self = .sublime
+            case .textmate : self = .textmate
+            case .brackets : self = .brackets
+            default : self = .vscode
+            
+        }
+        
+    }
     
 }
 

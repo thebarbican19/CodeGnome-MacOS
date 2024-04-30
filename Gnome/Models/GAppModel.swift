@@ -33,15 +33,15 @@ enum AppDefaultsKeys: String {
     case enabledArchive = "g_settings_archive"
     case enabledPinned = "g_settings_pinned"
     
-    case windowPosition = "sd_settings_position"
-    case windowTheme = "sd_settings_theme"
-    case windowLastInteraction = "sd_settings_interaction"
+    case windowPosition = "g_settings_position"
+    case windowTheme = "g_settings_theme"
+    case windowLastInteraction = "g_settings_interaction"
 
-    case onboardingStep = "bb_onboarding_step"
-    case onboardingComplete = "bb_onboarding_updated"
+    case onboardingStep = "g_onboarding_step"
+    case onboardingComplete = "g_onboarding_updated"
 
-    case licenseTrialDays = "bb_license_trial_days"
-    case licenseKey = "bb_license_key"
+    case licenseTrial = "g_license_trial"
+    case licenseKey = "g_license_key"
 
     var purgable:Bool {
         switch self {

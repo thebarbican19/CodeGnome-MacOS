@@ -7,11 +7,13 @@
 
 import Foundation
 import OSLog
+import AppKit
 
 final class HelperManager: NSObject, HelperProtocol {
     static let shared = HelperManager()
     
     private var timer: Timer?
+    private var foreground: HelperSupportedApplications?
 
     override init() {
         super.init()
@@ -24,14 +26,13 @@ final class HelperManager: NSObject, HelperProtocol {
     
     func brainSetup(_ completion: @escaping (HelperState) -> Void) {
         DispatchQueue.main.async {
-            self.timer = Timer.scheduledTimer(withTimeInterval: 1.2, repeats: true) { [weak self] _ in
+            self.timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
                 self?.helperSearchFiles()
                 self?.helperCheckin()
+                self?.helperForgroundApplication()
                 
             }
-            
-            self.helperInstallTools(.vscode)
-            
+                        
             if self.timer != nil {
                 RunLoop.main.add(self.timer!, forMode: .common)
 
@@ -53,14 +54,62 @@ final class HelperManager: NSObject, HelperProtocol {
     }
     
     func brainCheckin() {
-        
+        os_log("Received Checkin from Helper")
+
+    }
+    
+    func brainSwitchApplication(_ application: HelperSupportedApplications) {
+        os_log("Received Application Switch Notification: %@", application.rawValue)
+
     }
     
     @objc func brainProcess(_ path: String, arguments: [String], whitespace: Bool, completion: @escaping (String?) -> Void) {
         self.helperProcessTaskWithArguments(path, arguments: arguments) { output in
-            print("outputString" ,output)
-
             completion(output)
+            
+        }
+        
+    }
+    
+    @objc private func helperForgroundApplication() {
+        if let active = NSWorkspace.shared.runningApplications.filter({ $0.isActive }).first {
+            guard let application = active.localizedName else {
+                return
+                
+            }
+            
+            guard let match = HelperSupportedApplications(name: application) else {
+                return
+                
+            }
+            
+            if match != self.foreground {
+                self.helperInstallTools(match)
+                self.foreground = match
+                
+                let connection = NSXPCConnection(machServiceName: "com.ovatar.gnome.brain.mach", options: [])
+                connection.remoteObjectInterface = NSXPCInterface(with: HelperProtocol.self)
+                connection.interruptionHandler = {
+                    os_log("Connection to main app was interrupted")
+                }
+                connection.invalidationHandler = {
+                    os_log("Connection to main app invalidated")
+                }
+                connection.resume()
+
+                if let proxy = connection.remoteObjectProxyWithErrorHandler({ error in
+                    os_log("Error communicating with main app: %@", error.localizedDescription)
+                })
+                as? HelperProtocol {
+                    proxy.brainSwitchApplication(match)
+
+                }
+                else {
+                    os_log("Failed to create proxy to main app.")
+                    
+                }
+                
+            }
             
         }
         
@@ -180,8 +229,6 @@ final class HelperManager: NSObject, HelperProtocol {
               
     }
     
-    // ## TODO: THIS IS MY FIRST GNOME TODO TASK
-
     func helperProcessTaskWithArguments(_ path: String, arguments: [String], whitespace: Bool = false, completion: @escaping (String?) -> Void) {
         let process = Process()
         process.launchPath = path
@@ -224,10 +271,17 @@ final class HelperManager: NSObject, HelperProtocol {
         
     }
     
-    func helperInstallTools(_ install:HelperInstallTools) {
+    func helperInstallTools(_ install:HelperSupportedApplications) {
         if install == .vscode {
             self.helperProcessTaskWithArguments("/bin/ln", arguments: ["-s", "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code", "/usr/local/bin/code"]) { response in
                 os_log("VSCode Helper %@" ,response ?? "Unknown Response")
+                
+            }
+            
+        }
+        else if install == .sublime {
+            self.helperProcessTaskWithArguments("/bin/ln", arguments: ["-s", "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "/usr/local/bin/subl"]) { response in
+                os_log("Sublime Helper %@" ,response ?? "Unknown Response")
                 
             }
             

@@ -33,14 +33,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
 
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            WindowManager.shared.windowOpen(.main, present: .present)
-            
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {            
             NSApp.activate(ignoringOtherApps: true)
 
             UserDefaults.setup()
 
         }
+        
+        NSApp.appearance = NSAppearance(named: .darkAqua)
+        
+        _ = OnboardingManager.shared
+        _ = LicenseManager.shared
         
     }
     

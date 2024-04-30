@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TaskCell: View {
     @State var item:TaskObject
+    @State var hover:Bool = false
     
     init(_ item: TaskObject) {
         self._item = State(initialValue: item)
@@ -49,6 +50,23 @@ struct TaskCell: View {
             }
             
         )
+        .hover(cursor: NSCursor.pointingHand, value: { state in
+            if hover == true {
+                withAnimation(Animation.easeOut(duration: 0.2)) {
+                    self.hover = state
+
+                }
+                
+            }
+            else {
+                withAnimation(Animation.easeIn(duration: 0.6).delay(0.2)) {
+                    self.hover = state
+                    
+                }
+                
+            }
+            
+        })
         .padding(0)
         
     }
@@ -121,7 +139,6 @@ struct TaskHirachyItem: View {
             
         }
         .onTapGesture {
-            print("action" ,action)
             switch action {
                 case .root:TaskManager.shared.taskOpen(item, directory: item.project.directory)
                 case .host:TaskManager.shared.taskOpen(item, directory: item.directory)

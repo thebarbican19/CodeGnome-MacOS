@@ -65,6 +65,14 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
         
     }
     
+    func brainSwitchApplication(_ application: HelperSupportedApplications) {
+        DispatchQueue.main.async {
+            ProcessManager.shared.application = application
+            
+        }
+        
+    }
+    
 }
 
 class ProcessManager:ObservableObject {
@@ -73,10 +81,11 @@ class ProcessManager:ObservableObject {
     @Published var helper:ProcessPermissionState = .unknown
     @Published var checkin:Date? = nil
     @Published var message:String = "Nothing Recived"
+    @Published var application:HelperSupportedApplications? = nil
 
     init() {
         self.processSetup()
-            
+        
     }
     
     var connection: NSXPCConnection? = {

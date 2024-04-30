@@ -63,7 +63,6 @@ class LicenseManager:ObservableObject {
     init() {
         TaskManager.shared.$tasks.debounce(for: .seconds(10), scheduler: DispatchQueue.global()).removeDuplicates().sink() { _ in
             self.licenseValidate()
-            //print("Trail Exired: \(self.licenseTrialExpired())")
 
         }.store(in: &updates)
         
@@ -84,7 +83,7 @@ class LicenseManager:ObservableObject {
     }
     
     public func licenseValidate() {
-        if let key = LicenseManager.licenseKey {
+        if let _ = LicenseManager.licenseKey {
             self.state = .init(.valid)
             
         }
@@ -120,6 +119,10 @@ class LicenseManager:ObservableObject {
         
     }
     
+    private func licenseTrialStart() {
+        
+    }
+        
     private func fetchData(from endpoint: LicenseEndpoint) async throws -> [String: Any] {
         var request = URLRequest(url: endpoint.url)
         request.httpMethod = "GET"

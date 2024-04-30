@@ -30,13 +30,13 @@
             filePath = "Gnome/GnomeApp.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
             landmarkName = "applicationStausItemClicked(sender:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F - d459e1827afbcc8"
+                  uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F - d459e1827afbc0a"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -46,12 +46,12 @@
                   urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/GnomeApp.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "56"
-                  endingLineNumber = "56"
-                  offsetFromSymbolStart = "34">
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
+                  offsetFromSymbolStart = "131">
                </Location>
                <Location
-                  uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F - d459e1827afbc97"
+                  uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F - d459e1827afbc0a"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -61,8 +61,8 @@
                   urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/GnomeApp.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "55"
-                  endingLineNumber = "55"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
                   offsetFromSymbolStart = "34">
                </Location>
             </Locations>
@@ -78,8 +78,8 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
+            startingLineNumber = "238"
+            endingLineNumber = "238"
             landmarkName = "processRun(_:arguments:whitespace:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -94,8 +94,8 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
             landmarkName = "processInstallHelper()"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +110,8 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
             landmarkName = "processInstallHelper()"
             landmarkType = "7">
          </BreakpointContent>
@@ -126,8 +126,8 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "160"
-            endingLineNumber = "160"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
             landmarkName = "processInstallHelper()"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,13 +142,13 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
             landmarkName = "processInstallHelper()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "F0B24789-E174-4D98-A8B7-6A35998D74A9 - 264f5828b6abbc3"
+                  uuid = "F0B24789-E174-4D98-A8B7-6A35998D74A9 - 264f5828b6ab89a"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -158,12 +158,12 @@
                   urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "153"
-                  endingLineNumber = "153"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
                   offsetFromSymbolStart = "2311">
                </Location>
                <Location
-                  uuid = "F0B24789-E174-4D98-A8B7-6A35998D74A9 - 618ccbffae142fda"
+                  uuid = "F0B24789-E174-4D98-A8B7-6A35998D74A9 - 618ccbffae142c01"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -173,8 +173,8 @@
                   urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "154"
-                  endingLineNumber = "154"
+                  startingLineNumber = "163"
+                  endingLineNumber = "163"
                   offsetFromSymbolStart = "113">
                </Location>
             </Locations>
@@ -190,8 +190,8 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "processInstallHelper()"
             landmarkType = "7">
          </BreakpointContent>
@@ -206,42 +206,10 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
             landmarkName = "processSetupConntection()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "D4327321-B752-4C98-A9B5-86FF87DDE632 - 421745204059386d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Gnome.ProcessManager.processSetupConntection() -&gt; ()"
-                  moduleName = "Gnome"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "184"
-                  endingLineNumber = "184"
-                  offsetFromSymbolStart = "64">
-               </Location>
-               <Location
-                  uuid = "D4327321-B752-4C98-A9B5-86FF87DDE632 - 421745204059386d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Gnome.ProcessManager.processSetupConntection() -&gt; ()"
-                  moduleName = "Gnome"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "184"
-                  endingLineNumber = "184"
-                  offsetFromSymbolStart = "181">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

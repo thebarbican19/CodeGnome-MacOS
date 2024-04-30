@@ -7,8 +7,27 @@
 
 import Foundation
 
-@objc enum HelperInstallTools:Int {
+@objc enum HelperSupportedApplications:Int {
     case vscode
+    case xcode
+    case bbedit
+    case sublime
+    case textmate
+    case brackets
+    
+    init?(name:String) {
+        switch name {
+            case "Code" : self = .vscode
+            case "Xcode" : self = .xcode
+            case "BBEdit" : self = .bbedit
+            case "Sublime Text" : self = .sublime
+            case "TextMate" : self = .textmate
+            case "Brackets" : self = .brackets
+            default : return nil
+            
+        }
+        
+    }
     
 }
 
@@ -47,6 +66,7 @@ import Foundation
     func brainTaskFound(_ type:HelperTaskState, task:String, line:Int, directory:String, total:Int)
     func brainSetup(_ completion: @escaping (HelperState) -> Void)
     func brainProcess(_ path: String, arguments: [String], whitespace: Bool, completion: @escaping (String?) -> Void)
-
+    func brainSwitchApplication(_ application:HelperSupportedApplications)
+    
 }
 

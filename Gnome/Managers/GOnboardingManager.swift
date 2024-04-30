@@ -7,16 +7,36 @@
 
 import Foundation
 import Combine
+import AppKit
 
 class OnboardingManager:ObservableObject {
     static var shared = OnboardingManager()
     
-    @Published public var current:OnboardingSubview = .intro
+    @Published public var current:OnboardingSubview = .complete
     @Published public var tutorial:OnboardingTutorialStep = .passed
 
     private var updates = Set<AnyCancellable>()
 
     init() {
+        $tutorial.removeDuplicates().delay(for: 0.2, scheduler: RunLoop.main).sink { state in
+            NSApp.requestUserAttention(.criticalRequest)
+            
+        }.store(in: &updates)
+
+        $current.removeDuplicates().delay(for: 0.2, scheduler: RunLoop.main).sink { state in
+            if state == .complete {
+                WindowManager.shared.windowClose(.onboarding)
+                WindowManager.shared.windowOpen(.main, present: .present)
+                
+            }
+            else {
+                WindowManager.shared.windowOpen(.main, present: .hide)
+                WindowManager.shared.windowOpen(.onboarding, present: .present)
+                
+            }
+            
+        }.store(in: &updates)
+        
         ProcessManager.shared.$helper.delay(for: 0.1, scheduler: RunLoop.main).removeDuplicates().sink { _ in
             self.onboardingNextState()
 
@@ -35,7 +55,7 @@ class OnboardingManager:ObservableObject {
             self.onboardingNextState()
 
         }.store(in: &updates)
-
+        
         self.onboardingNextState()
         
     }
@@ -45,20 +65,20 @@ class OnboardingManager:ObservableObject {
             self.current = .intro
             
         }
-        else if ProcessManager.shared.helper != .allowed {
+        else if ProcessManager.shared.helper.flag == false {
             self.current = .helper
 
         }
-        else if self.tutorial != .done {
+        else if self.tutorial != .passed {
             self.current = .tutorial
-
+            
         }
-        else if LicenseManager.shared.state.state.valid == false {
+        else if LicenseManager.shared.state.state.valid == false || self.onboardingStep(.license) == .unseen {
             self.current = .license
 
         }
-        else if self.onboardingStep(.thankyou) == .unseen {
-            self.current = .license
+        else if LicenseManager.shared.state.state == .valid && self.onboardingStep(.thankyou) == .unseen {
+            self.current = .thankyou
 
         }
         else {
@@ -85,6 +105,14 @@ class OnboardingManager:ObservableObject {
             }
                         
         }
+        else if current == .license {
+            switch button {
+                case .primary : _ = self.onboardingStep(.license, insert: true)
+                case .secondary : break // TODO: Stripe Purchase URL to connect
+                
+            }
+            
+        }
         else if current == .thankyou {
             switch button {
                 case .primary : _ = self.onboardingStep(.intro, insert: true)
@@ -99,10 +127,10 @@ class OnboardingManager:ObservableObject {
         else if current == .complete {
             switch button {
                 case .primary : _ = self.onboardingStep(.complete, insert: true)
-                case .secondary : break
+                case .secondary : break // TODO: Open Website
                 
             }
-            
+    
         }
         
     }
@@ -132,9 +160,7 @@ class OnboardingManager:ObservableObject {
             self.tutorial =  .passed
 
         }
-        
-        // TODO: This is my CodeGnome task!!
-        
+                
     }
     
     private func onboardingStep(_ step:OnboardingSubview, insert:Bool = false) -> OnboardingStepViewed {

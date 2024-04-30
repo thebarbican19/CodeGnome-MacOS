@@ -42,6 +42,8 @@ struct OnboardingTutorial: View {
 struct OnboardingContainer: View {
     @EnvironmentObject var manager:OnboardingManager
 
+    @State var geo:GeometryProxy
+
     var body: some View {
         if manager.current == .tutorial {
             OnboardingTutorial()
@@ -54,7 +56,7 @@ struct OnboardingContainer: View {
         else {
             VStack {
                 Text("Current: \(manager.current.rawValue)").padding(30)
-                // ##TODO: Finish this View
+                // TODO: Finish this View
                 Button("Next") {
                     manager.onboardingAction(button: .primary)
                     
@@ -72,16 +74,24 @@ struct OnboardingController: View {
     let persitence = PersistenceManager.container
 
     var body: some View {
-        ZStack {
-            OnboardingContainer()
-
+        GeometryReader { geo in
+            ZStack {
+                OnboardingContainer(geo: geo)
+                
+            }
+            .ignoresSafeArea(.all, edges: .all)
+            .frame(maxWidth: geo.size.width, maxHeight: geo.size.height + 60)
+            .background(WindowViewBlur())
+            .edgesIgnoringSafeArea(.all)
+            .modelContainer(persitence)
+            .environmentObject(WindowManager.shared)
+            .environmentObject(TaskManager.shared)
+            .environmentObject(ProcessManager.shared)
+            .environmentObject(OnboardingManager.shared)
+            .environmentObject(LicenseManager.shared)
+            
         }
-        .modelContainer(persitence)
-        .environmentObject(WindowManager.shared)
-        .environmentObject(TaskManager.shared)
-        .environmentObject(ProcessManager.shared)
-        .environmentObject(OnboardingManager.shared)
-        .environmentObject(LicenseManager.shared)
+       
         
     }
     

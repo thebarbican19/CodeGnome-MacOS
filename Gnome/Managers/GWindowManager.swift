@@ -264,7 +264,7 @@ class WindowManager: ObservableObject {
         window?.title = type.rawValue
         window?.collectionBehavior = [.ignoresCycle]
         window?.isMovableByWindowBackground = true
-        window?.backgroundColor = .red
+        window?.backgroundColor = .clear
         window?.setFrame(NSRect(x: (bounds.width / 2) - (type.size.width / 2), y: (bounds.height / 2) - (type.size.height / 2), width: type.size.width, height: type.size.height), display: false)
         window?.titlebarAppearsTransparent = true
         window?.titleVisibility = .hidden
