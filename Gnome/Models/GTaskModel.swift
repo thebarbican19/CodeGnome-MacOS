@@ -17,6 +17,7 @@ class TaskObject:Equatable,Hashable {
     var created:Date
     var refreshed:Date
     var changes:Date?
+    var modifyed:Date?
     var snoozed:Date?
     var state:TaskState
     var order:Int
@@ -25,21 +26,24 @@ class TaskObject:Equatable,Hashable {
     var directory:String
     var language:TaskLanguage
     var importance:TaskImportance
+    var ignore:Bool = false
 
-    init(_ state:HelperTaskState, task: String, line: Int, project:TaskProject) {
+    init(_ state:HelperTaskState, task: String, directory:String, line: Int, project:TaskProject, modifyed:Date?) {
         self.id = UUID()
         self.project = project
         self.created = Date.now
         self.refreshed = Date.now
+        self.modifyed = modifyed
         self.changes = nil
         self.snoozed = nil
         self.state = TaskState(from:state)
         self.order = 1
-        self.task = task
+        self.task = task.replacingOccurrences(of: "!+$", with: "", options: .regularExpression)
         self.line = line
-        self.directory = project.directory
-        self.language = .init(file: project.directory)
+        self.directory = directory
+        self.language = .init(file: directory)
         self.importance = .init(string: task)
+        self.ignore = false
         
    }
     
@@ -111,6 +115,43 @@ enum TaskLanguage:String,Codable {
         
     }
     
+    var colour: String {
+        switch self {
+            case .python: return "#3776AB"  // Python blue
+            case .swift: return "#FA7343"  // Swift orange
+            case .objc: return "#438EFF"  // Obj-C blue
+            case .javascript: return "#F0DB4F"  // JavaScript yellow
+            case .css: return "#264DE4"  // CSS blue
+            case .html: return "#E34F26"  // HTML orange
+            case .php: return "#4F5D95"  // PHP purple
+            case .java: return "#5382A1"  // Java blue-grey
+            case .csharp: return "#178600"  // C# green
+            case .c: return "#A8B9CC"  // C blue
+            case .cpp: return "#004482"  // C++ blue
+            case .ruby: return "#D91404"  // Ruby red
+            case .kotlin: return "#7F52FF"  // Kotlin purple
+            case .go: return "#29BEB0"  // Go cyan
+            case .rust: return "#DEA584"  // Rust orange-brown
+            case .scala: return "#DC322F"  // Scala red
+            case .perl: return "#0298C3"  // Perl blue
+            case .shell: return "#89E051"  // Shell green
+            case .typescript: return "#3178C6"  // TypeScript blue
+            case .unknown: return "#FFFFFF"  // Default white
+            
+        }
+        
+    }
+    
+    var application:TaskApplication {
+        switch self {
+            case .objc : return .xcode
+            case .swift : return .xcode
+            default : return .vscode
+            
+        }
+        
+    }
+    
 }
 
 enum TaskState:String,Codable {
@@ -159,6 +200,15 @@ enum TaskState:String,Codable {
         
     }
     
+    var limit:Int {
+        switch self {
+            case .todo : return 5
+            default : return 3
+            
+        }
+        
+    }
+    
 }
 
 enum TaskImportance:Int,Comparable,Codable {
@@ -167,7 +217,7 @@ enum TaskImportance:Int,Comparable,Codable {
         
     }
     
-    case critical = 3
+    case critical = 3 // TODO: Idea, pulsating icon with 'Oh Shit'
     case urgent = 2
     case high = 1
     case low = 0
@@ -193,4 +243,29 @@ enum TaskImportance:Int,Comparable,Codable {
         
     }
     
+    var title:String {
+        switch self {
+            case .low : return "Not Important"
+            case .high : return "Important"
+            case .critical : return "Critical"
+            case .urgent : return "Urgent"
+            
+        }
+        
+    }
+    
 }
+
+enum TaskApplication:String {
+    case vscode
+    case xcode
+    
+}
+
+enum TaskHirachyAction {
+    case root
+    case host
+    
+}
+
+

@@ -28,13 +28,15 @@ enum WindowTypes:String,CaseIterable {
     case main = "Main_Window"
     case preferences = "Preferences_Window"
     case onboarding = "Onboarding_Window"
+    case reporter = "Reporter_Window"
 
     var size:WindowSize {
         switch self {
             case .main : return .init(width: 390, height: CGFloat(NSScreen.main?.frame.height ?? 0.0))
             case .preferences : return .init(width: 800, height: 480)
             case .onboarding: return .init(width: 920, height: 580)
-            
+            case .reporter: return .init(width: 920, height: 580)
+
         }
         
     }
@@ -44,6 +46,7 @@ enum WindowTypes:String,CaseIterable {
             case .main:return true
             case .preferences:return false
             case .onboarding:return false
+            case .reporter:return false
 
         }
         
@@ -54,6 +57,7 @@ enum WindowTypes:String,CaseIterable {
             case .main : return NSHostingController(rootView: MainController()).view
             case .preferences : return NSHostingController(rootView: PreferencesController()).view
             case .onboarding : return NSHostingController(rootView: OnboardingController()).view
+            case .reporter : return NSHostingController(rootView: ReporterController()).view
 
         }
         
@@ -64,6 +68,7 @@ enum WindowTypes:String,CaseIterable {
             case .main:return "Mission Control"
             case .preferences:return "Preferences"
             case .onboarding:return "Onboarding"
+            case .reporter:return "Reporter"
 
         }
         

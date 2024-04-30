@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 import Combine
 
-class TaskManager {
+class TaskManager:ObservableObject {
     static var shared = TaskManager()
 
     @Published var tasks:[TaskObject]?
@@ -18,20 +18,26 @@ class TaskManager {
     private var updates = Set<AnyCancellable>()
 
     init() {
-        $tasks.removeDuplicates().sink() { _ in
+        $tasks.delay(for: 0.1, scheduler: RunLoop.main).removeDuplicates().sink { _ in
             self.taskExpire()
             
         }.store(in: &updates)
         
     }
     
-    public func taskCreate(_ type:HelperTaskState, task:String, line:Int, project:TaskProject, total:Int) {
+    public func taskCreate(_ type:HelperTaskState, task:String, line:Int, directory:String, project:TaskProject, total:Int) {
         let context = PersistenceManager.context
+        let modifyed = self.taskModification(directory)
+
+        guard self.taskOwner(directory) == true else {
+            print("Task is not owned by user: \(directory)")
+            return
+            
+        }
         
         if task.replacingOccurrences(of: "\\s+", with: "", options: .regularExpression).isEmpty == false {
-            
             do {
-                if let existing = self.taskMatch(task, directory: project.directory) {
+                if let existing = self.taskMatch(task, directory: directory) {
                     let state = TaskState(from: type)
                     let importance = TaskImportance.init(string: task)
 
@@ -55,12 +61,13 @@ class TaskManager {
                     
                     existing.refreshed = Date.now
                     existing.line = line
-                    existing.task = task
+                    existing.task = task.replacingOccurrences(of: "!+$", with: "", options: .regularExpression)
                     existing.project = project
-                    
+                    existing.modifyed = modifyed
+                                        
                 }
                 else {
-                    let task = TaskObject.init(type, task: task, line: line, project: project)
+                    let task = TaskObject.init(type, task: task, directory: directory, line: line, project: project, modifyed: modifyed)
                     context.insert(task)
                     
                     AppSoundEffects.added.play()
@@ -110,8 +117,111 @@ class TaskManager {
             
         }
         
-        return tasks.first(where: { $0.task.levenshteinDistance(with: task) <= 20 })
+        return tasks.first(where: { $0.task.levenshteinDistance(with: task) <= 20 || task.hasPrefix($0.task) })
                 
+    }
+    
+    public func taskOwner(_ directory: String) -> Bool {
+        do {
+            let attributes = try FileManager.default.attributesOfItem(atPath: directory)
+            if let owner = attributes[.ownerAccountID] as? NSNumber {
+                if owner.uint32Value == getuid() {
+                    return true
+                    
+                }
+                else {
+                    print("File \(directory) is not owned by the current user.")
+                    return false
+                    
+                }
+                
+            }
+            
+        }
+        catch {
+            print("Error retrieving file attributes: \(error)")
+            
+        }
+        
+        return false
+        
+    }
+    
+    public func taskModification(_ directory: String) -> Date? {
+        do {
+            let attributes = try FileManager.default.attributesOfItem(atPath: directory)
+            if let _ = attributes[.ownerAccountID] as? NSNumber {
+                return attributes[.modificationDate] as? Date
+                
+            }
+            
+        }
+        catch {
+            
+        }
+        
+        return nil
+        
+    }
+    
+    public func taskOpen(_ task:TaskObject, directory:String) {
+        var path:String? = nil
+        var arguments:[String]? = nil
+        
+        print("Opening: " ,directory)
+        if directory == task.directory {
+            if task.language.application == .vscode {
+                path = "/usr/local/bin/code"
+                arguments = ["-g", "\(task.directory):\(task.line)"]
+   
+            }
+            else if task.language.application == .xcode {
+                path = "/usr/bin/xed"
+                arguments = ["--line", String(task.line), task.directory]
+        
+            }
+            
+        }
+        else {
+            path = "/usr/bin/open"
+            arguments = ["-R", directory]
+            
+        }
+        
+        guard let path = path, let arguments = arguments else {
+            return
+            
+        }
+        
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: path)
+        process.arguments = arguments
+
+        do {
+           try process.run()
+            
+        }
+        catch {
+            print("Failed to open \(task.language.application): \(error)")
+            
+        }
+        
+    }
+    
+    public func taskIgnore(_ task:TaskObject, toggle:Bool) {
+        do {
+            let context = PersistenceManager.context
+
+            task.ignore = toggle
+            task.changes = Date.now
+
+            try PersistenceManager.save(context: context)
+            
+        }
+        catch {
+            
+        }
+        
     }
     
     private func taskExpire() {

@@ -85,6 +85,11 @@ extension String {
         
     }
     
+    func filename() -> String {
+        return self.components(separatedBy: "/").last?.components(separatedBy: ".").first ?? ""
+        
+    }
+        
 }
 
 extension UserDefaults {
@@ -182,3 +187,5 @@ extension UserDefaults {
     }
     
 }
+
+// ## TODO: ADD LANGUAGE FILE AND LOCALIZED FUNCTION!

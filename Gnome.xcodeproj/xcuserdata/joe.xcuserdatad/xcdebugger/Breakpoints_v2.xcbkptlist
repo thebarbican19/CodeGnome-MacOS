@@ -30,13 +30,13 @@
             filePath = "Gnome/GnomeApp.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "applicationStausItemClicked(sender:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F - d459e1827afbc0a"
+                  uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F - d459e1827afbcc8"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -46,12 +46,12 @@
                   urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/GnomeApp.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "58"
-                  endingLineNumber = "58"
-                  offsetFromSymbolStart = "131">
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "34">
                </Location>
                <Location
-                  uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F - d459e1827afbce9"
+                  uuid = "007B59D3-8340-41B0-BB7C-BA4C1BE31D4F - d459e1827afbc97"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -61,9 +61,185 @@
                   urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/GnomeApp.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "57"
-                  endingLineNumber = "57"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
                   offsetFromSymbolStart = "34">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C1382054-4276-406D-8BAD-0BE419A01E10"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Gnome/Managers/GProcessManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
+            landmarkName = "processRun(_:arguments:whitespace:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9BFA7AA9-C2FF-4575-90C1-FB630D4A5058"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Gnome/Managers/GProcessManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
+            landmarkName = "processInstallHelper()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CD42C9C0-0104-4565-BCFF-F70C97284302"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Gnome/Managers/GProcessManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
+            landmarkName = "processInstallHelper()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0136665D-1FA3-46D7-82CA-F987494BBCE6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Gnome/Managers/GProcessManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
+            landmarkName = "processInstallHelper()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F0B24789-E174-4D98-A8B7-6A35998D74A9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Gnome/Managers/GProcessManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
+            landmarkName = "processInstallHelper()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F0B24789-E174-4D98-A8B7-6A35998D74A9 - 264f5828b6abbc3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Gnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "Gnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "153"
+                  endingLineNumber = "153"
+                  offsetFromSymbolStart = "2311">
+               </Location>
+               <Location
+                  uuid = "F0B24789-E174-4D98-A8B7-6A35998D74A9 - 618ccbffae142fda"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 @Swift.MainActor () -&gt; () in Gnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "Gnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "154"
+                  endingLineNumber = "154"
+                  offsetFromSymbolStart = "113">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "329AA5D4-F29C-4607-9A7E-142773D26231"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Gnome/Managers/GProcessManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "processInstallHelper()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D4327321-B752-4C98-A9B5-86FF87DDE632"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Gnome/Managers/GProcessManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
+            landmarkName = "processSetupConntection()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D4327321-B752-4C98-A9B5-86FF87DDE632 - 421745204059386d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Gnome.ProcessManager.processSetupConntection() -&gt; ()"
+                  moduleName = "Gnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "184"
+                  endingLineNumber = "184"
+                  offsetFromSymbolStart = "64">
+               </Location>
+               <Location
+                  uuid = "D4327321-B752-4C98-A9B5-86FF87DDE632 - 421745204059386d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Gnome.ProcessManager.processSetupConntection() -&gt; ()"
+                  moduleName = "Gnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "184"
+                  endingLineNumber = "184"
+                  offsetFromSymbolStart = "181">
                </Location>
             </Locations>
          </BreakpointContent>

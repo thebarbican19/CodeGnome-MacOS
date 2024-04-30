@@ -10,4 +10,5 @@ import Cocoa
 import os.log
 
 _ = HelperManager.shared
+
 RunLoop.current.run()

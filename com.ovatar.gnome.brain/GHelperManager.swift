@@ -30,6 +30,8 @@ final class HelperManager: NSObject, HelperProtocol {
                 
             }
             
+            self.helperInstallTools(.vscode)
+            
             if self.timer != nil {
                 RunLoop.main.add(self.timer!, forMode: .common)
 
@@ -53,9 +55,19 @@ final class HelperManager: NSObject, HelperProtocol {
     func brainCheckin() {
         
     }
+    
+    @objc func brainProcess(_ path: String, arguments: [String], whitespace: Bool, completion: @escaping (String?) -> Void) {
+        self.helperProcessTaskWithArguments(path, arguments: arguments) { output in
+            print("outputString" ,output)
+
+            completion(output)
+            
+        }
+        
+    }
 
     @objc private func helperSearchFiles() {
-        self.helperProcessTaskWithArguments("/usr/bin/mdfind", arguments:  ["(kMDItemTextContent == '## TODO:'c) || (kMDItemTextContent == '## DONE:'c) || (kMDItemTextContent == '##TODO:'c) || (kMDItemTextContent == '##DONE:'c) || (kMDItemTextContent == '##NOTE:'c) || (kMDItemTextContent == '## NOTE:'c)"], whitespace: true) { output in
+        self.helperProcessTaskWithArguments("/usr/bin/mdfind", arguments:  ["(kMDItemTextContent == '//DONE:'c) || (kMDItemTextContent == '//TODO:'c) || (kMDItemTextContent == '//NOTE:'c) || (kMDItemTextContent == '//GENDOC:'c) || (kMDItemTextContent == '//FIX:'c) || (kMDItemTextContent == '// DONE:'c) || (kMDItemTextContent == '// TODO:'c) || (kMDItemTextContent == '// NOTE:'c) || (kMDItemTextContent == '// GENDOC:'c) || (kMDItemTextContent == '// FIX:'c)"], whitespace: true) { output in
             if let output = output?.components(separatedBy: "\n") {
                 for directory in output {
                     self.helperRetriveContent(directory)
@@ -71,7 +83,7 @@ final class HelperManager: NSObject, HelperProtocol {
         }
         
     }
-    
+        
     @objc private func helperRetriveContent(_ directory:String) {
         if FileManager.default.fileExists(atPath: directory) {
             if directory.contains("Application Support") == false {
@@ -81,7 +93,7 @@ final class HelperManager: NSObject, HelperProtocol {
                     var number:Int = 1
                     
                     for line in lines {
-                        let pattern = "^\\s*//\\s*##\\s?(TODO:|DONE:|NOTE:)(.*)"
+                        let pattern = "[ \t]*\\/\\/\\s*(TODO|FIX|DONE|NOTE|GENDOC|GEN|DOCGEN|ARCHIVE|DEPRICATE):(\\s*(.*))"
                         let regex = try! NSRegularExpression(pattern: pattern, options: [.anchorsMatchLines])
                         let results = regex.matches(in: line, options: [], range: NSRange(line.startIndex..., in: line))
                                                 
@@ -89,7 +101,7 @@ final class HelperManager: NSObject, HelperProtocol {
                             if let tagRange = Range(match.range(at: 1), in: line), let taskRange = Range(match.range(at: 2), in: line) {
                                 let tag = HelperTaskState(from: String(line[tagRange]))
                                 let task = line[taskRange].trimmingCharacters(in: .whitespacesAndNewlines)
-                                  
+                                
                                 if let tag = tag {
                                     self.helperSendCallback(tag, task: task, line: number, directory: directory, total: lines.count)
 
@@ -191,20 +203,36 @@ final class HelperManager: NSObject, HelperProtocol {
                    
                }
                
-           } else {
-               completion("Error: Failed to decode output.")
-           }
+            }
+            else {
+                completion("Error: Failed to decode output.")
+                
+            }
+            
         }
 
         do {
-           try process.run()
+            try process.run()
             
-        } 
+            process.waitUntilExit()
+
+        }
         catch {
            completion("Error running process: \(error)")
             
         }
         
+    }
+    
+    func helperInstallTools(_ install:HelperInstallTools) {
+        if install == .vscode {
+            self.helperProcessTaskWithArguments("/bin/ln", arguments: ["-s", "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code", "/usr/local/bin/code"]) { response in
+                os_log("VSCode Helper %@" ,response ?? "Unknown Response")
+                
+            }
+            
+        }
+
     }
     
 }

@@ -42,7 +42,7 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
                 
             }
             
-            TaskManager.shared.taskCreate(type, task: task, line: line, project:project, total:total)
+            TaskManager.shared.taskCreate(type, task: task, line: line, directory: directory, project:project, total:total)
 
         }
         
@@ -58,6 +58,10 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
     }
 
     func brainSetup(_ completion: @escaping (HelperState) -> Void) {
+
+    }
+    
+    func brainProcess(_ path: String, arguments: [String], whitespace: Bool, completion: @escaping (String?) -> Void) {
         
     }
     
@@ -101,7 +105,7 @@ class ProcessManager:ObservableObject {
         ProcessListener.shared.startListener()
 
         if let helper = self.connection?.remoteObjectProxy as? HelperProtocol {
-            helper.brainSetup { state in
+            helper.brainSetup() { state in
                 if state == .installed {
                     self.processUpdateState(.allowed)
 
@@ -178,7 +182,7 @@ class ProcessManager:ObservableObject {
     
     private func processSetupConntection() {
         if let helper = self.connection?.remoteObjectProxy as? HelperProtocol {
-            helper.brainSetup { state in
+            helper.brainSetup() { state in
                 DispatchQueue.main.async {
                     self.processUpdateState(.allowed)
                     
@@ -206,6 +210,23 @@ class ProcessManager:ObservableObject {
                 ProcessListener.shared.startListener()
 
             }
+            
+        }
+        
+    }
+    
+    public func processRun(_ path:String, arguments:[String], whitespace:Bool = false, completion: @escaping (String?) -> Void) {
+        print("Process Run", path)
+        if let helper = self.connection?.remoteObjectProxy as? HelperProtocol {
+            print("helper" ,helper)
+            helper.brainProcess(path, arguments: arguments, whitespace: whitespace) { response in
+                completion(response)
+
+            }
+            
+        }
+        else {
+            completion(nil)
             
         }
         

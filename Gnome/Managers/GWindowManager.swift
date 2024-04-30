@@ -70,8 +70,11 @@ class WindowManager: ObservableObject {
         
         if force == false {
             if let window = self.windowExists(type) {
-                print("window" ,window)
-                if type == .preferences {
+                if type == .onboarding {
+                    window.contentView = NSHostingController(rootView: OnboardingController()).view
+                    
+                }
+                else if type == .preferences {
                     window.contentView = NSHostingController(rootView: PreferencesController()).view
                     
                 }
@@ -249,6 +252,38 @@ class WindowManager: ObservableObject {
             
     }
     
+    private func windowDefault(_ type:WindowTypes, onboarding:OnboardingSubview? = nil) -> NSWindow? {
+        let bounds = WindowScreenSize()
+        var window:NSWindow?
+        
+        window = NSWindow()
+        window?.styleMask = [.titled, .closable, .miniaturizable, .fullSizeContentView, .resizable]
+        window?.level = .normal
+        window?.contentView?.translatesAutoresizingMaskIntoConstraints = false
+        window?.center()
+        window?.title = type.rawValue
+        window?.collectionBehavior = [.ignoresCycle]
+        window?.isMovableByWindowBackground = true
+        window?.backgroundColor = .red
+        window?.setFrame(NSRect(x: (bounds.width / 2) - (type.size.width / 2), y: (bounds.height / 2) - (type.size.height / 2), width: type.size.width, height: type.size.height), display: false)
+        window?.titlebarAppearsTransparent = true
+        window?.titleVisibility = .hidden
+        window?.toolbarStyle = .unifiedCompact
+        window?.isReleasedWhenClosed = false
+        window?.alphaValue = 0.0
+                     
+        NSAnimationContext.runAnimationGroup({ (context) -> Void in
+            context.duration = 0.2
+            
+            window?.animator().alphaValue = 1.0
+            
+        }, completionHandler: nil)
+        
+        return window
+        
+    }
+
+    
     private func windowEvent() {
         DispatchQueue.main.async {
             if let main = self.windowMain() {
@@ -280,21 +315,15 @@ class WindowManager: ObservableObject {
        
     private func windowExists(_ type: WindowTypes, onboarding:OnboardingSubview? = nil) -> NSWindow? {
         if let window = NSApplication.shared.windows.first(where: { WindowTypes(rawValue: $0.title) == type }) {
-            print("window" ,window)
             return window
             
         }
         else {
-            print("Found" ,type)
             switch type {
                 case .main : return self.windowMain()
-//                case .onboarding : return self.windowDefault(type, onboarding: onboarding)
-//                case .preferences : return self.windowDefault(type, preferences: preferences)
-//                case .reporter : return self.windowDefault(type)
-//                case .update : return self.windowDefault(type)
-//                case .intro : return self.windowIntro()
-//                case .queue : return self.windowDefault(type)
-                default : return nil
+                case .onboarding : return self.windowDefault(type, onboarding: onboarding)
+                case .preferences : return self.windowDefault(type)
+                case .reporter : return self.windowDefault(type)
                 
             }
                         

@@ -19,7 +19,6 @@ struct GnomeApp: App {
 
         }
         .handlesExternalEvents(matching: Set(arrayLiteral: "*"))
-
         
     }
     
@@ -29,7 +28,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     static var shared = AppDelegate()
     
     final func applicationDidFinishLaunching(_ notification: Notification) {
-
         if let window = NSApplication.shared.windows.filter({ WindowTypes(rawValue: $0.title) == nil}).first {
             window.close()
 
@@ -47,7 +45,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     }
     
     @objc func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        WindowManager.shared.windowOpen(.main, present: .present)
+        WindowManager.shared.windowOpen(.main, present: .toggle)
             
         return false
         

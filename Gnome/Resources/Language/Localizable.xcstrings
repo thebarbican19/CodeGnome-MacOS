@@ -1,0 +1,48 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "// TODO: Reporter View" : {
+
+    },
+    "## TODO: To Add Preferecens Contents" : {
+
+    },
+    "#%lld" : {
+
+    },
+    "Current: %lld" : {
+
+    },
+    "Grant" : {
+
+    },
+    "Hide" : {
+
+    },
+    "Import %@" : {
+
+    },
+    "Key" : {
+      "extractionState" : "manual"
+    },
+    "License %@" : {
+
+    },
+    "Next" : {
+
+    },
+    "NO TASKS SAVED" : {
+
+    },
+    "PLACEHOLDER" : {
+
+    },
+    "Reveal" : {
+
+    },
+    "Show All" : {
+
+    }
+  },
+  "version" : "1.0"
+}

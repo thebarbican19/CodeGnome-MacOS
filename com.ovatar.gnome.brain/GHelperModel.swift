@@ -7,16 +7,26 @@
 
 import Foundation
 
+@objc enum HelperInstallTools:Int {
+    case vscode
+    
+}
+
 @objc enum HelperTaskState:Int {
     case todo
     case done
     case note
+    case generate
     
     init?(from tag: String) {
         switch tag.trimmingCharacters(in: .whitespaces).lowercased() {
-            case "todo:":self = .todo
-            case "done:":self = .done
-            case "note:":self = .note
+            case "todo":self = .todo
+            case "fix":self = .todo
+            case "done":self = .done
+            case "archive":self = .done
+            case "note":self = .note
+            case "gendoc":self = .generate
+            case "gen":self = .generate
             default:return nil
             
         }
@@ -36,6 +46,7 @@ import Foundation
     func brainCheckin()
     func brainTaskFound(_ type:HelperTaskState, task:String, line:Int, directory:String, total:Int)
     func brainSetup(_ completion: @escaping (HelperState) -> Void)
+    func brainProcess(_ path: String, arguments: [String], whitespace: Bool, completion: @escaping (String?) -> Void)
 
 }
 

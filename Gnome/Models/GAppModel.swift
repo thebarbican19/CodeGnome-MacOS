@@ -37,6 +37,12 @@ enum AppDefaultsKeys: String {
     case windowTheme = "sd_settings_theme"
     case windowLastInteraction = "sd_settings_interaction"
 
+    case onboardingStep = "bb_onboarding_step"
+    case onboardingComplete = "bb_onboarding_updated"
+
+    case licenseTrialDays = "bb_license_trial_days"
+    case licenseKey = "bb_license_key"
+
     var purgable:Bool {
         switch self {
             case .userInstalled : return false
