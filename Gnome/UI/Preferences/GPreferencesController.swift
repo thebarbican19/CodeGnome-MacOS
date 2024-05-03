@@ -12,20 +12,27 @@ struct PreferencesController: View {
     let persitence = PersistenceManager.container
 
     var body: some View {
-        ZStack {
-            HStack(spacing: 0) {
-                //if settings.customisationPosition == .right
-                Text("## TODO: To Add Preferecens Contents")
+        GeometryReader { geo in
+            ZStack {
+                HStack(spacing: 0) {
+                    //if settings.customisationPosition == .right
+                    Text("// TODO: To Add Preferecens Contents")
+                    
+                }
                 
             }
+            .ignoresSafeArea(.all, edges: .all)
+            .frame(maxWidth: geo.size.width, maxHeight: geo.size.height + 60)
+            .background(WindowViewBlur())
+            .edgesIgnoringSafeArea(.all)
+            .modelContainer(persitence)
+            .environmentObject(WindowManager.shared)
+            .environmentObject(TaskManager.shared)
+            .environmentObject(ProcessManager.shared)
+            .environmentObject(OnboardingManager.shared)
+            .environmentObject(LicenseManager.shared)
             
         }
-        .modelContainer(persitence)
-        .environmentObject(WindowManager.shared)
-        .environmentObject(TaskManager.shared)
-        .environmentObject(ProcessManager.shared)
-        .environmentObject(OnboardingManager.shared)
-        .environmentObject(LicenseManager.shared)
             
     }
     

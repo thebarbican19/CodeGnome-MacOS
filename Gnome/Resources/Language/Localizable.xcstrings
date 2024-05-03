@@ -4,16 +4,67 @@
     "// TODO: Reporter View" : {
 
     },
-    "## TODO: To Add Preferecens Contents" : {
+    "// TODO: To Add Preferecens Contents" : {
 
     },
     "#%lld" : {
 
     },
+    "Check for Updates" : {
+
+    },
+    "Checking for Updates..." : {
+
+    },
     "Current: %lld" : {
 
     },
+    "Deep Search" : {
+
+    },
+    "Disable Archive on Removal" : {
+
+    },
+    "Disable Hidden Section" : {
+
+    },
+    "Disable Snoozed Section" : {
+
+    },
+    "Enable Archive on Removal" : {
+
+    },
+    "Enable Hidden Section" : {
+
+    },
+    "Enable Snoozed Section" : {
+
+    },
+    "GeneralActionDebugLabel" : {
+
+    },
+    "GeneralActionInteraceInstallLabel" : {
+
+    },
+    "GeneralActionPinLabel" : {
+
+    },
+    "GeneralActionUnpinLabel" : {
+
+    },
+    "GeneralActionWindowLeftLabel" : {
+
+    },
+    "GeneralActionWindowRightLabel" : {
+
+    },
+    "GeneralSummaryBuildLabel %@" : {
+
+    },
     "Grant" : {
+
+    },
+    "Hello, World!" : {
 
     },
     "Hide" : {
@@ -25,7 +76,13 @@
     "Key" : {
       "extractionState" : "manual"
     },
+    "LICENSE" : {
+
+    },
     "License %@" : {
+
+    },
+    "LicenseActionPurchaseLabel" : {
 
     },
     "Next" : {
@@ -34,16 +91,34 @@
     "NO TASKS SAVED" : {
 
     },
-    "PLACEHOLDER" : {
+    "Option:" : {
+
+    },
+    "Placeholder" : {
+
+    },
+    "Purge" : {
 
     },
     "Reveal" : {
 
     },
+    "SettingsMenuLicenseLabel" : {
+
+    },
+    "SettingsMenuTitle" : {
+
+    },
     "Show All" : {
 
     },
+    "Snoozed Until: %@" : {
+
+    },
     "Start" : {
+
+    },
+    "Version %@" : {
 
     }
   },

@@ -7,6 +7,31 @@
 
 import Foundation
 import Combine
+import KeyboardShortcuts
+
+extension KeyboardShortcuts.Name {
+    static let shortcutLeft = Self("RevealLeft", default: .init(.leftBracket, modifiers: [.option]))
+    static let shortcutRight = Self("RevealRight", default: .init(.rightBracket, modifiers: [.option]))
+    static let shortcutPin = Self("ModePin", default: .init(.p, modifiers: [.option, .command]))
+    
+}
+
+extension Bundle {
+    static func env(_ key:String) -> String? {
+        let value = Bundle.main.infoDictionary?[key] as? String
+        
+        #if DEBUG
+            if value == nil {
+                fatalError("\n🚨 Enviroment Key MISSING: '\(key)'")
+            }
+        
+        #endif
+        
+        return value
+        
+    }
+    
+}
 
 extension String {
     private class Array2D {
@@ -40,7 +65,6 @@ extension String {
             
         }
         
-        // Create arrays from strings
         var firstString = self
         var secondString = anotherString
         if !caseSensitive {
@@ -184,6 +208,64 @@ extension UserDefaults {
             
         }
                 
+    }
+    
+}
+
+extension Date {
+    var snooze:AppSnoozeObject {
+        if let weekday = Calendar.current.dateComponents([.weekday], from: self).weekday {
+            switch weekday {
+                case 6 : return .init(3, weekday: 2)
+                case 7 : return .init(2, weekday: 2)
+                default : return .init(1, weekday: weekday + 1)
+            
+            }
+            
+        }
+        
+        return .init(1, weekday: 2)
+    
+    }
+
+    var days:Int {
+        let oldest = self.compare(Date(), order: .past)
+        let newest = self.compare(Date(), order: .future)
+        
+        guard let days = Calendar.current.dateComponents([.day], from: oldest, to:newest).day else {
+            return 0
+            
+        }
+        
+        return days
+        
+    }
+    
+    func display(_ style: Date.RelativeFormatStyle.UnitsStyle = .wide) -> String {
+        return self.formatted(.relative(presentation: .named, unitsStyle: style))
+
+    }
+    
+    func compare(_ date:Date, order:AppTimestampCompare) -> Date {
+        if order == .past {
+            if self < date  {
+                return self
+                
+            }
+            
+            return date
+            
+        }
+        else {
+            if self < date  {
+                return date
+                
+            }
+            
+            return self
+            
+        }
+
     }
     
 }

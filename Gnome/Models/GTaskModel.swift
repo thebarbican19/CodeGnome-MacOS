@@ -22,6 +22,7 @@ class TaskObject:Equatable,Hashable {
     var state:TaskState
     var order:Int
     var task:String
+    var comments:String?
     var line:Int
     var directory:String
     var language:TaskLanguage
@@ -29,7 +30,7 @@ class TaskObject:Equatable,Hashable {
     var application:TaskApplication?
     var ignore:Bool = false
 
-    init(_ state:HelperTaskState, task: String, directory:String, line: Int, project:TaskProject, application:HelperSupportedApplications?, modifyed:Date?) {
+    init(_ state:HelperTaskState, task: String, directory:String, line: Int, project:TaskProject, application:HelperSupportedApplications?, total:Int?, comments:String?, modifyed:Date?) {
         self.id = UUID()
         self.project = project
         self.created = Date.now
@@ -38,8 +39,9 @@ class TaskObject:Equatable,Hashable {
         self.changes = nil
         self.snoozed = nil
         self.state = TaskState(from:state)
-        self.order = 1
+        self.order = (total ?? 0) + 1
         self.task = task.replacingOccurrences(of: "!+$", with: "", options: .regularExpression)
+        self.comments = comments?.replacingOccurrences(of: "!+$", with: "", options: .regularExpression)
         self.line = line
         self.directory = directory
         self.language = .init(file: directory)
@@ -149,8 +151,10 @@ enum TaskLanguage:String,Codable {
 enum TaskState:String,Codable {
     case todo
     case done
+    case hidden
     case note
     case archived
+    case snoozed
     
     init(from helper:HelperTaskState) {
         switch helper {
@@ -168,6 +172,8 @@ enum TaskState:String,Codable {
             case .done : return "DONE"
             case .note : return "NOTE"
             case .archived : return "ARCHIVED"
+            case .snoozed : return "SNOOZED"
+            case .hidden : return "HIDDEN"
 
         }
         
@@ -200,6 +206,31 @@ enum TaskState:String,Codable {
         }
         
     }
+    
+    var dropdown:[AppDropdownType] {
+        switch self {
+            case .todo : [.taskHide, .divider, .openRoot, .openInline, .divider, .snoozeTomorrow, .snoozeWeek]
+            case .done : [.taskHide, .divider, .openRoot, .openInline]
+            case .hidden : [.taskShow, .divider, .openRoot, .openInline]
+            case .archived : [.taskHide, .divider, .openRoot, .openInline]
+            case .snoozed : [.snoozeRemove, .divider, .openRoot, .openInline]
+            default : [.openRoot, .openInline]
+            
+        }
+        
+    }
+    
+    func filter(_ tasks:[TaskObject]) -> [TaskObject] {
+        switch self {
+            case .snoozed : tasks.filter({ Date.now < $0.snoozed ?? Date.distantPast }).sorted(by: { $0.order > $1.order })
+            case .hidden : tasks.filter({ $0.ignore == true }).sorted(by: { $0.changes ?? Date.now < $1.changes ?? Date.now })
+            default : tasks.filter({ Date.now > $0.snoozed ?? Date.distantPast && $0.state == self && $0.ignore == false }).sorted(by: { $0.snoozed ?? Date.now < $1.snoozed ?? Date.now })
+            
+        }
+        
+    }
+    
+    
     
 }
 

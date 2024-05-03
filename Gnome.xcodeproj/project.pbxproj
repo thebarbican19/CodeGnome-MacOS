@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		D8022E1A2BE0931D00906C74 /* GOnboardingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8022E192BE0931D00906C74 /* GOnboardingModel.swift */; };
-		D8022E1D2BE0981D00906C74 /* OReporterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8022E1C2BE0981D00906C74 /* OReporterController.swift */; };
+		D8022E1D2BE0981D00906C74 /* GReporterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8022E1C2BE0981D00906C74 /* GReporterController.swift */; };
+		D8022E202BE1726200906C74 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = D8022E1F2BE1726200906C74 /* KeyboardShortcuts */; };
+		D813682A2BE4078C008D471A /* GUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81368292BE4078C008D471A /* GUpdateManager.swift */; };
+		D813682C2BE407D1008D471A /* GUpdateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D813682B2BE407D1008D471A /* GUpdateModel.swift */; };
 		D828E9962BE0277C00D06830 /* GLicenseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D828E9952BE0277C00D06830 /* GLicenseManager.swift */; };
 		D8521FCC2BCEDDDB00C1D8FB /* GnomeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8521FCB2BCEDDDB00C1D8FB /* GnomeApp.swift */; };
 		D8521FCE2BCEDDDB00C1D8FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8521FCD2BCEDDDB00C1D8FB /* ContentView.swift */; };
@@ -28,6 +31,7 @@
 		D85220112BD0227F00C1D8FB /* GProcessModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8521FF52BCEE4D700C1D8FB /* GProcessModel.swift */; };
 		D85220132BD0295700C1D8FB /* GHelperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85220122BD0295700C1D8FB /* GHelperModel.swift */; };
 		D85220142BD0296700C1D8FB /* GHelperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85220122BD0295700C1D8FB /* GHelperModel.swift */; };
+		D8625B402BE1E42B00747612 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D8625B3F2BE1E42B00747612 /* Config.xcconfig */; };
 		D895EFFF2BD1BA0E0068C6D5 /* GTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */; };
 		D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0052BD2C4740068C6D5 /* GExtensions.swift */; };
 		D895F0082BD2C4D30068C6D5 /* GTaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0072BD2C4D30068C6D5 /* GTaskModel.swift */; };
@@ -49,6 +53,7 @@
 		D895F0312BD71DCC0068C6D5 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D895F0302BD71DCC0068C6D5 /* CryptoSwift */; };
 		D895F0352BD71DF30068C6D5 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = D895F0342BD71DF30068C6D5 /* Sparkle */; };
 		D895F0382BD71E080068C6D5 /* DynamicColor in Frameworks */ = {isa = PBXBuildFile; productRef = D895F0372BD71E080068C6D5 /* DynamicColor */; };
+		D8BD27E42BE2DDB8002655A1 /* GBackgroundContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BD27E32BE2DDB8002655A1 /* GBackgroundContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -75,9 +80,11 @@
 
 /* Begin PBXFileReference section */
 		D8022E192BE0931D00906C74 /* GOnboardingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GOnboardingModel.swift; sourceTree = "<group>"; };
-		D8022E1C2BE0981D00906C74 /* OReporterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OReporterController.swift; sourceTree = "<group>"; };
+		D8022E1C2BE0981D00906C74 /* GReporterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GReporterController.swift; sourceTree = "<group>"; };
+		D81368292BE4078C008D471A /* GUpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GUpdateManager.swift; sourceTree = "<group>"; };
+		D813682B2BE407D1008D471A /* GUpdateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GUpdateModel.swift; sourceTree = "<group>"; };
 		D828E9952BE0277C00D06830 /* GLicenseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLicenseManager.swift; sourceTree = "<group>"; };
-		D8521FC82BCEDDDA00C1D8FB /* Gnome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gnome.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8521FC82BCEDDDA00C1D8FB /* CodeGnome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeGnome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8521FCB2BCEDDDB00C1D8FB /* GnomeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnomeApp.swift; sourceTree = "<group>"; };
 		D8521FCD2BCEDDDB00C1D8FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D8521FCF2BCEDDE300C1D8FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -96,6 +103,7 @@
 		D85220052BCF6B9B00C1D8FB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D852200B2BCF6BE000C1D8FB /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
 		D85220122BD0295700C1D8FB /* GHelperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHelperModel.swift; sourceTree = "<group>"; };
+		D8625B3F2BE1E42B00747612 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskManager.swift; sourceTree = "<group>"; };
 		D895F0052BD2C4740068C6D5 /* GExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GExtensions.swift; sourceTree = "<group>"; };
 		D895F0072BD2C4D30068C6D5 /* GTaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskModel.swift; sourceTree = "<group>"; };
@@ -113,6 +121,7 @@
 		D895F0292BD6E60D0068C6D5 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		D895F02B2BD7059A0068C6D5 /* GModifyers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GModifyers.swift; sourceTree = "<group>"; };
 		D895F02D2BD706BB0068C6D5 /* GTaskSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskSubviews.swift; sourceTree = "<group>"; };
+		D8BD27E32BE2DDB8002655A1 /* GBackgroundContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBackgroundContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +131,7 @@
 			files = (
 				D895F0382BD71E080068C6D5 /* DynamicColor in Frameworks */,
 				D895F0352BD71DF30068C6D5 /* Sparkle in Frameworks */,
+				D8022E202BE1726200906C74 /* KeyboardShortcuts in Frameworks */,
 				D895F00F2BD372AD0068C6D5 /* LaunchAtLogin in Frameworks */,
 				D895F0312BD71DCC0068C6D5 /* CryptoSwift in Frameworks */,
 			);
@@ -140,9 +150,16 @@
 		D8022E1B2BE0980200906C74 /* Reporter */ = {
 			isa = PBXGroup;
 			children = (
-				D8022E1C2BE0981D00906C74 /* OReporterController.swift */,
+				D8022E1C2BE0981D00906C74 /* GReporterController.swift */,
 			);
 			path = Reporter;
+			sourceTree = "<group>";
+		};
+		D8022E1E2BE1726200906C74 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D828E9972BE0617700D06830 /* Onboarding */ = {
@@ -159,13 +176,14 @@
 				D8521FCA2BCEDDDA00C1D8FB /* Gnome */,
 				D85220042BCF6B9B00C1D8FB /* com.ovatar.gnome.brain */,
 				D8521FC92BCEDDDA00C1D8FB /* Products */,
+				D8022E1E2BE1726200906C74 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		D8521FC92BCEDDDA00C1D8FB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D8521FC82BCEDDDA00C1D8FB /* Gnome.app */,
+				D8521FC82BCEDDDA00C1D8FB /* CodeGnome.app */,
 				D85220032BCF6B9A00C1D8FB /* com.ovatar.gnome.brain */,
 			);
 			name = Products;
@@ -180,6 +198,7 @@
 				D8521FCD2BCEDDDB00C1D8FB /* ContentView.swift */,
 				D895F02B2BD7059A0068C6D5 /* GModifyers.swift */,
 				D895F0052BD2C4740068C6D5 /* GExtensions.swift */,
+				D8625B3F2BE1E42B00747612 /* Config.xcconfig */,
 				D895F0002BD22B5C0068C6D5 /* Models */,
 				D895F0012BD22B680068C6D5 /* Managers */,
 				D895F0222BD4A5870068C6D5 /* UI */,
@@ -218,6 +237,7 @@
 				D895F0182BD376210068C6D5 /* GWindowModel.swift */,
 				D895F01C2BD37C310068C6D5 /* GSettingsModel.swift */,
 				D8022E192BE0931D00906C74 /* GOnboardingModel.swift */,
+				D813682B2BE407D1008D471A /* GUpdateModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -231,6 +251,7 @@
 				D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */,
 				D895F0092BD327220068C6D5 /* GSettingsManager.swift */,
 				D895F01A2BD379C80068C6D5 /* GOnboardingManager.swift */,
+				D81368292BE4078C008D471A /* GUpdateManager.swift */,
 				D828E9952BE0277C00D06830 /* GLicenseManager.swift */,
 			);
 			path = Managers;
@@ -260,6 +281,7 @@
 		D895F0222BD4A5870068C6D5 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				D8BD27E52BE2DDC8002655A1 /* Components */,
 				D8022E1B2BE0980200906C74 /* Reporter */,
 				D828E9972BE0617700D06830 /* Onboarding */,
 				D895F0242BD4A5A90068C6D5 /* Preferences */,
@@ -302,6 +324,14 @@
 			path = Language;
 			sourceTree = "<group>";
 		};
+		D8BD27E52BE2DDC8002655A1 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D8BD27E32BE2DDB8002655A1 /* GBackgroundContainer.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -324,9 +354,10 @@
 				D895F0302BD71DCC0068C6D5 /* CryptoSwift */,
 				D895F0342BD71DF30068C6D5 /* Sparkle */,
 				D895F0372BD71E080068C6D5 /* DynamicColor */,
+				D8022E1F2BE1726200906C74 /* KeyboardShortcuts */,
 			);
 			productName = Gnome;
-			productReference = D8521FC82BCEDDDA00C1D8FB /* Gnome.app */;
+			productReference = D8521FC82BCEDDDA00C1D8FB /* CodeGnome.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D85220022BCF6B9A00C1D8FB /* com.ovatar.gnome.brain */ = {
@@ -399,6 +430,7 @@
 				D895F0142BD373EC0068C6D5 /* complete.wav in Resources */,
 				D895F02A2BD6E60D0068C6D5 /* Localizable.xcstrings in Resources */,
 				D895F0152BD373EC0068C6D5 /* error.wav in Resources */,
+				D8625B402BE1E42B00747612 /* Config.xcconfig in Resources */,
 				D895F0272BD6D7140068C6D5 /* names.json in Resources */,
 				D895F0162BD373EC0068C6D5 /* reveal.wav in Resources */,
 				D8521FD02BCEDDE300C1D8FB /* Assets.xcassets in Resources */,
@@ -425,17 +457,20 @@
 				D895F01F2BD37E010068C6D5 /* GMainController.swift in Sources */,
 				D8521FDF2BCEDE9800C1D8FB /* GMainSubviews.swift in Sources */,
 				D85220142BD0296700C1D8FB /* GHelperModel.swift in Sources */,
+				D813682A2BE4078C008D471A /* GUpdateManager.swift in Sources */,
 				D895EFFF2BD1BA0E0068C6D5 /* GTaskManager.swift in Sources */,
+				D813682C2BE407D1008D471A /* GUpdateModel.swift in Sources */,
 				D8521FCE2BCEDDDB00C1D8FB /* ContentView.swift in Sources */,
 				D8521FF62BCEE4D700C1D8FB /* GProcessModel.swift in Sources */,
 				D8521FCC2BCEDDDB00C1D8FB /* GnomeApp.swift in Sources */,
 				D895F01B2BD379C80068C6D5 /* GOnboardingManager.swift in Sources */,
 				D895F02E2BD706BB0068C6D5 /* GTaskSubviews.swift in Sources */,
-				D8022E1D2BE0981D00906C74 /* OReporterController.swift in Sources */,
+				D8022E1D2BE0981D00906C74 /* GReporterController.swift in Sources */,
 				D8521FF32BCEE32800C1D8FB /* GProcessManager.swift in Sources */,
 				D895F0192BD376210068C6D5 /* GWindowModel.swift in Sources */,
 				D8022E1A2BE0931D00906C74 /* GOnboardingModel.swift in Sources */,
 				D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */,
+				D8BD27E42BE2DDB8002655A1 /* GBackgroundContainer.swift in Sources */,
 				D895F0082BD2C4D30068C6D5 /* GTaskModel.swift in Sources */,
 				D895F02C2BD7059A0068C6D5 /* GModifyers.swift in Sources */,
 			);
@@ -457,6 +492,7 @@
 /* Begin XCBuildConfiguration section */
 		D8521FD52BCEDDE300C1D8FB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8625B3F2BE1E42B00747612 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -520,6 +556,7 @@
 		};
 		D8521FD62BCEDDE300C1D8FB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8625B3F2BE1E42B00747612 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -575,6 +612,7 @@
 		};
 		D8521FD82BCEDDE300C1D8FB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8625B3F2BE1E42B00747612 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -595,10 +633,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ovatar.gnome;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CodeGnome;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -606,6 +644,7 @@
 		};
 		D8521FD92BCEDDE300C1D8FB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8625B3F2BE1E42B00747612 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -626,10 +665,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ovatar.gnome;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CodeGnome;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -751,6 +790,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D8022E1F2BE1726200906C74 /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D895F0322BD71DDB0068C6D5 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
 		D895F00E2BD372AD0068C6D5 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D895F00D2BD372AD0068C6D5 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;

@@ -32,10 +32,13 @@ enum AppDefaultsKeys: String {
     case enabledSoundEffects = "g_settings_sfx"
     case enabledArchive = "g_settings_archive"
     case enabledPinned = "g_settings_pinned"
+    case enabledDockIcon = "g_settings_dock"
     
+    case sectionSnoozed = "g_section_snoozed"
+    case sectionHidden = "g_section_hidden"
+
     case windowPosition = "g_settings_position"
     case windowTheme = "g_settings_theme"
-    case windowLastInteraction = "g_settings_interaction"
 
     case onboardingStep = "g_onboarding_step"
     case onboardingComplete = "g_onboarding_updated"
@@ -51,6 +54,75 @@ enum AppDefaultsKeys: String {
 
         }
         
+    }
+    
+}
+
+enum AppDropdownType:Int {
+    case taskHide
+    case taskShow
+    case openRoot
+    case openInline
+    case snoozeTomorrow
+    case snoozeWeek
+    case snoozeRemove
+    case divider
+    
+    func label(_ task:TaskObject?) -> String {
+        switch self {
+            case .taskHide : return "Hide"
+            case .taskShow : return "Undo Hide"
+            case .openRoot : return "Open \(task?.project.name ?? "") Folder"
+            case .openInline : return "Open at Line #\(task?.line ?? 0)"
+            case .snoozeTomorrow : return "Snooze Until \(Date.now.snooze.formatted)"
+            case .snoozeWeek : return "Snooze For 1 Week"
+            case .snoozeRemove : return "Add to Todo"
+            case .divider : return ""
+
+        }
+        
+    }
+    
+}
+
+enum AppDropdownActionType {
+    case left
+    case right
+    case optional
+    
+}
+
+enum AppTimestampCompare {
+    case past
+    case future
+    
+}
+
+struct AppSnoozeObject {
+    var countdown:Int
+    var weekday:Int
+    var formatted:String
+    
+    init(_ countdown: Int, weekday: Int) {
+        self.countdown = countdown
+        self.weekday = weekday
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE"
+        
+        guard let date = Calendar.current.date(byAdding: .day, value: countdown, to: Date.now) else {
+            self.formatted = ""
+            return
+            
+        }
+
+        switch countdown {
+            case 0 : self.formatted = "Today"
+            case 1 : self.formatted = "Tomorrow"
+            default : self.formatted =  formatter.string(from: date)
+            
+        }
+      
     }
     
 }

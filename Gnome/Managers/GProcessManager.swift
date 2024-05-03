@@ -16,25 +16,36 @@ import OSLog
 
 class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
     static var shared = ProcessListener()
+    
+    private var listener: NSXPCListener?
 
-    var listener: NSXPCListener?
-
-    func startListener() {
-        listener = NSXPCListener(machServiceName: "com.ovatar.gnome.brain.mach")
-        listener?.delegate = self
-        listener?.resume()
+    func start(_ force:Bool = false) {
+        if self.listener == nil || force == true {
+            guard let mach = Bundle.env("G_HELPER_MACH") else {
+                return
+                
+            }
+            
+            self.listener = NSXPCListener(machServiceName: mach)
+            self.listener?.delegate = self
+            self.listener?.resume()
+         
+            os_log("Listener Initlised")
+            // TODO: Fuck the Gnome
+            
+        }
         
     }
 
-    func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
-        newConnection.exportedInterface = NSXPCInterface(with: HelperProtocol.self)
-        newConnection.exportedObject = self
-        newConnection.resume()
+    func listener(_ listener: NSXPCListener, shouldAcceptNewConnection connection: NSXPCConnection) -> Bool {
+        connection.exportedInterface = NSXPCInterface(with: HelperProtocol.self)
+        connection.exportedObject = self
+        connection.resume()
         
         return true
         
     }
-        
+    
     func brainTaskFound(_ type: HelperTaskState, task: String, line: Int, directory: String, total:Int) {
         DispatchQueue.main.async {
             guard let project = TaskManager.shared.projectStore(directory: directory) else {
@@ -43,7 +54,8 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
             }
             
             TaskManager.shared.taskCreate(type, task: task, line: line, directory: directory, project:project, total:total)
-
+            os_log("Importing Task")
+            
         }
         
     }
@@ -55,6 +67,8 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
 
         }
         
+        print("CHECKIN")
+        
     }
 
     func brainSetup(_ completion: @escaping (HelperState) -> Void) {
@@ -65,11 +79,19 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
         
     }
     
+    func brainVersion(_ version: (String?) -> Void) {
+        
+    }
+    
     func brainSwitchApplication(_ application: HelperSupportedApplications) {
         DispatchQueue.main.async {
             ProcessManager.shared.application = application
             
         }
+        
+    }
+    
+    func brainDeepSearch(_ completion: @escaping (String?) -> Void) {
         
     }
     
@@ -83,72 +105,176 @@ class ProcessManager:ObservableObject {
     @Published var message:String = "Nothing Recived"
     @Published var application:HelperSupportedApplications? = nil
 
+    private var updates = Set<AnyCancellable>()
+
     init() {
-        self.processSetup()
+        $checkin.receive(on: DispatchQueue.main).sink { checkin in
+            print("checkin" ,checkin)
+            
+        }.store(in: &updates)
+        
+        self.processStatus()
         
     }
-    
-    var connection: NSXPCConnection? = {
-       let connection = NSXPCConnection(machServiceName: "com.ovatar.gnome.brain.mach", options: .privileged)
-       connection.remoteObjectInterface = NSXPCInterface(with: HelperProtocol.self)
-       connection.exportedInterface = NSXPCInterface(with: HelperProtocol.self)
-       connection.exportedObject = HelperProtocol.self
-       connection.interruptionHandler = {
-           print("Connection to helper was interrupted.")
-           
-       }
-       connection.invalidationHandler = {
-           DispatchQueue.main.async {
-               ProcessManager.shared.processUpdateState(.undetermined)
-               
-           }
-       }
 
-       connection.resume()
+    private func processConnection() -> NSXPCConnection? {
+        guard let mach = Bundle.env("G_HELPER_MACH") else {
+            return nil
+            
+        }
         
-       return connection
-        
-   }()
+        let connection = NSXPCConnection(machServiceName: mach, options: .privileged)
+        connection.exportedInterface = NSXPCInterface(with: HelperProtocol.self)
+        connection.exportedObject = HelperProtocol.self
+        connection.remoteObjectInterface = NSXPCInterface(with: HelperProtocol.self)
+        connection.invalidationHandler = {
+        connection.invalidationHandler = nil
+            OperationQueue.main.addOperation {
+                os_log("XPC Connection Invalidated")
+                DispatchQueue.main.async {
+                   ProcessManager.shared.processUpdateState(.undetermined)
     
-    public func processSetup() {
-        ProcessListener.shared.startListener()
-
-        if let helper = self.connection?.remoteObjectProxy as? HelperProtocol {
-            helper.brainSetup() { state in
-                if state == .installed {
-                    self.processUpdateState(.allowed)
-
                 }
-
+                    
             }
             
         }
-        else {
-            if self.helper == .allowed {
-                self.processInstallHelper()
+        
+        connection.resume()
+        os_log("XPC Connection established")
                 
-            }
-                        
+        return connection
+        
+    }
+    
+    public func processHelper() -> HelperProtocol? {
+        guard let connection = self.processConnection() else {
+            return nil
+
+        }
+        
+        if let helper = connection.remoteObjectProxy as? HelperProtocol {
+            return helper
+
+        }
+        else {
+            return nil
+            
         }
         
     }
     
+    public func processStatus() {
+        guard let mach = Bundle.env("G_HELPER_ID") else {
+            return
+            
+        }
+        
+        guard let info = CFBundleCopyInfoDictionaryForURL(Bundle.main.bundleURL.appendingPathComponent("Contents/Library/LaunchServices/" + mach) as CFURL) as? [String: Any] else {
+            print("Could Not Get Mach Information")
+            self.processUpdateState(.error)
+            return
+            
+        }
+        
+        guard let version = info["CFBundleVersion"] as? String else {
+            print("Could Not Get Mach Version")
+            self.processUpdateState(.error)
+            return
+            
+        }
+        
+        guard let helper = self.processHelper() else {
+            print("Could Not Get Helper")
+            self.processUpdateState(.error)
+            
+            return
+            
+        }
+        
+        NSLog("Helper: Bundle Version => \(String(describing: version))")
+                
+        ProcessListener.shared.start()
+        
+        helper.brainVersion { installed in
+            guard let installed = installed else {
+                print("Setup No Version")
+                self.processUpdateState(.error)
+                return
+                
+            }
+            
+            print("Setup Version: \(version)")
+
+            if installed == version {
+                self.processSetupConntection()
+            
+            }
+            else {
+                self.processUpdateState(.outdated)
+                
+            }
+            
+        }
+        
+    }
+    
+    public func processDeepSearch() {
+        guard let helper = self.processHelper() else {
+            return
+            
+        }
+        
+        helper.brainDeepSearch { response in
+            guard let response = response else {
+                return
+                
+            }
+            
+            do {
+                let tasks = try Array<HelperTaskObject>.decode(response)
+                
+                for task in tasks {
+                    guard let project = TaskManager.shared.projectStore(directory: task.directory) else {
+                        return
+                        
+                    }
+                    
+                    TaskManager.shared.taskCreate(task.tag, task: task.task, line: task.line, directory: task.directory, project: project, total: task.total)
+                    
+                    // TODO: This is a test of how shit this app is
+                    
+                }
+                
+            }
+            catch {
+                
+            }
+            
+        }
+
+    }
+    
     public func processInstallHelper() {
+        guard let mach = Bundle.env("G_HELPER_ID") else {
+            return
+            
+        }
+        
         var reference: AuthorizationRef?
         var error: Unmanaged<CFError>?
-    
-        let helper = "com.ovatar.gnome.brain" as CFString
-        let flags: AuthorizationFlags = [.interactionAllowed, .preAuthorize, .extendRights]
-        
+            
         var item = kSMRightBlessPrivilegedHelper.withCString {
             AuthorizationItem(name: $0, valueLength: 0, value: nil, flags: 0)
+            
         }
         
         var rights = withUnsafeMutablePointer(to: &item) {
             AuthorizationRights(count: 1, items: $0)
+            
         }
         
-        let status = AuthorizationCreate(&rights, nil, flags, &reference)
+        let status = AuthorizationCreate(&rights, nil, [.interactionAllowed, .preAuthorize, .extendRights], &reference)
         if status != errAuthorizationSuccess {
             let error = SecCopyErrorMessageString(status, nil) as String? ?? "Unknown error"
             print("AuthorizationCreate failed with \(status): \(error)")
@@ -157,7 +283,12 @@ class ProcessManager:ObservableObject {
             
         }
         else {
-            if SMJobBless(kSMDomainSystemLaunchd, helper, reference, &error) != true {
+            if SMJobRemove(kSMDomainSystemLaunchd, mach as CFString, reference, true, &error) {
+                print("Successfully removed old helper job.")
+                    
+            }
+            
+            if SMJobBless(kSMDomainSystemLaunchd, mach as CFString, reference, &error) {
                 if let error = error?.takeRetainedValue() {
                     DispatchQueue.main.async {
                         let errorCode = CFErrorGetCode(error)
@@ -167,34 +298,53 @@ class ProcessManager:ObservableObject {
                         switch errorCode {
                             case -60005, -60006, -60008:self.processUpdateState(.denied)
                             default:self.processUpdateState(.error)
+                            // TODO: Test shit shit
                             
                         }
                         
                     }
                     
                 }
+                else {
+                    self.processStatus()
+
+                }
                 
             }
             else {
-                self.processSetupConntection()
-                
+                self.processStatus()
+
             }
             
-        }
-        
-        if reference != nil {
-            AuthorizationFree(reference!, [])
+            if reference != nil {
+                AuthorizationFree(reference!, [.destroyRights])
+                
+            }
             
         }
 
     }
     
     private func processSetupConntection() {
-        if let helper = self.connection?.remoteObjectProxy as? HelperProtocol {
+        guard let connection = self.processConnection() else {
+            return
+            
+        }
+        
+        if let helper = connection.remoteObjectProxy as? HelperProtocol {
+            print("Setting Up Connection")
             helper.brainSetup() { state in
                 DispatchQueue.main.async {
                     self.processUpdateState(.allowed)
                     
+                }
+                
+            }
+            
+            Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] _ in
+                if self?.helper != .allowed {
+                    self?.processUpdateState(.error)
+
                 }
                 
             }
@@ -211,13 +361,12 @@ class ProcessManager:ObservableObject {
         DispatchQueue.main.async {
             if self.helper != state {
                 self.helper = state
-                print("STATE: " ,state)
                 
-            }
-            
-            if state == .allowed {
-                ProcessListener.shared.startListener()
+                if self.helper == .allowed && self.processConnection() != nil {
+                    ProcessListener.shared.start(true)
 
+                }
+                
             }
             
         }
@@ -225,9 +374,12 @@ class ProcessManager:ObservableObject {
     }
     
     public func processRun(_ path:String, arguments:[String], whitespace:Bool = false, completion: @escaping (String?) -> Void) {
-        print("Process Run", path)
-        if let helper = self.connection?.remoteObjectProxy as? HelperProtocol {
-            print("helper" ,helper)
+        guard let connection = self.processConnection() else {
+            return
+            
+        }
+        
+        if let helper = connection.remoteObjectProxy as? HelperProtocol {
             helper.brainProcess(path, arguments: arguments, whitespace: whitespace) { response in
                 completion(response)
 

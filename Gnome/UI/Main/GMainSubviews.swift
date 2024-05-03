@@ -24,8 +24,8 @@ struct MainSection: View {
     }
     
     var body: some View {
-        VStack(alignment:.leading, spacing: 12) {
-            if tasks.filter({ $0.state == type && $0.ignore == false }).isEmpty == false {
+        if type.filter(tasks).isEmpty == false {
+            VStack(alignment:.leading, spacing: 12) {
                 MainHeader(type, expand: $expand, limit: $limit)
                 
                 if expand == true {
@@ -34,6 +34,17 @@ struct MainSection: View {
                 }
                 
             }
+            
+        }
+        else if type == .todo {
+            GeometryReader { geo in
+                Text("Placeholder")
+                
+            }
+            
+        }
+        else {
+            EmptyView()
             
         }
         
@@ -78,7 +89,7 @@ struct MainHeader: View {
             
             Spacer()
             
-            if tasks.filter({ $0.state == type }).count > limit {
+            if type.filter(tasks).count > limit {
                 HStack {
                     Text("Show All")
                     
@@ -118,18 +129,15 @@ struct MainList: View {
     }
     
     var body: some View {
-        if tasks.filter({ $0.state == type }).isEmpty == true {
-            Text("PLACEHOLDER")
-            
-        }
-        else {
-            ForEach(tasks.filter({ $0.state == type }).sorted(by: { $0.importance < $1.importance }).prefix(limit)) { task in
-                TaskCell(task)
+        if type.filter(tasks).isEmpty == false {
+            ForEach(type.filter(tasks).prefix(limit)) { task in
+                TaskCell(task, section:type)
+                // TODO: Add Drag & Drop Repositioning
                 
             }
             
         }
-        
+       
     }
     
 }

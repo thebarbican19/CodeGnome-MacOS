@@ -12,6 +12,7 @@ enum ProcessPermissionState:String {
     case allowed
     case undetermined
     case denied
+    case outdated
     case unknown
     
     var title:String {

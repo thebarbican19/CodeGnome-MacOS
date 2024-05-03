@@ -22,6 +22,7 @@ struct ReporterController: View {
         .environmentObject(ProcessManager.shared)
         .environmentObject(OnboardingManager.shared)
         .environmentObject(LicenseManager.shared)
+        // TODO: Build Reporter View
         
     }
     

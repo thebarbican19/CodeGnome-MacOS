@@ -14,37 +14,45 @@ final class HelperManager: NSObject, HelperProtocol {
     
     private var timer: Timer?
     private var foreground: HelperSupportedApplications?
-
-    override init() {
-        super.init()
-        self.brainSetup { _ in
-            self.helperCheckin()
-
-        }
-                
-    }
+    private var counter:Int = 0
+    private var processing:Date? = nil
     
-    func brainSetup(_ completion: @escaping (HelperState) -> Void) {
+    func brainSetup(_ callback: @escaping (HelperState) -> Void) {
+        if self.timer != nil {
+            self.timer!.invalidate()
+            
+        }
+                    
         DispatchQueue.main.async {
-            self.timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
-                self?.helperSearchFiles()
-                self?.helperCheckin()
+            self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+                guard let counter = self?.counter else {
+                    return
+                    
+                }
+                
+                self?.helperSearchFiles(deep:(counter % 30 == 0) ? true : false)
                 self?.helperForgroundApplication()
+                self?.helperCheckin()
+                
+                self?.counter += 1
                 
             }
-                        
+            
             if self.timer != nil {
                 RunLoop.main.add(self.timer!, forMode: .common)
+
+                os_log("Helper Timer Started")
+                callback(.installed)
 
             }
             else {
                 os_log("Failed to create timer")
-                
+                callback(.error)
+
             }
-            
-            completion(.installed)
-            
+                        
         }
+        
         
     }
     
@@ -60,7 +68,28 @@ final class HelperManager: NSObject, HelperProtocol {
     
     func brainSwitchApplication(_ application: HelperSupportedApplications) {
         os_log("Received Application Switch Notification: %@", application.rawValue)
+        //TODO: I love GnomeApp!
+        
+    }
+    
+    func brainVersion(_ completion: @escaping (String?) -> Void) {
+        if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString" as String) as? String {
+            os_log("Version Sent: %@" ,version)
+            completion(version)
 
+        }
+        else {
+            os_log("Version Failed")
+
+        }
+
+        completion(nil)
+        
+    }
+    
+    func brainDeepSearch(_ completion: @escaping (String?) -> Void) {
+        self.helperSearchFiles(deep: true)
+        
     }
     
     @objc func brainProcess(_ path: String, arguments: [String], whitespace: Bool, completion: @escaping (String?) -> Void) {
@@ -70,7 +99,7 @@ final class HelperManager: NSObject, HelperProtocol {
         }
         
     }
-    
+        
     @objc private func helperForgroundApplication() {
         if let active = NSWorkspace.shared.runningApplications.filter({ $0.isActive }).first {
             guard let application = active.localizedName else {
@@ -83,64 +112,107 @@ final class HelperManager: NSObject, HelperProtocol {
                 
             }
             
+            guard let proxy = self.helperProxy() else {
+                return
+
+            }
+                        
             if match != self.foreground {
                 self.helperInstallTools(match)
                 self.foreground = match
+            
+                proxy.brainSwitchApplication(match)
+        
+            }
+            
+        }
+        
+    }
+
+    @objc private func helperSearchFiles(deep:Bool = false) {
+        let tags = ["DONE", "TODO", "NOTE", "FIX"]
+        
+        var params:[String]? = nil
+        var query = tags.map { "(kMDItemTextContent == '//\($0):'c) || (kMDItemTextContent == '// \($0):'c)" }.joined(separator: " || ")
+
+        query = "(\(query))"
+        
+        switch deep {
+            case true : params = [query]
+            case false : params = [query, "kMDItemContentModificationDate > $time.now(-30)"]
+            
+        }
+        
+        guard let arguments = params?.joined(separator: " && ") else {
+            return
+            
+        }
+        
+        if self.processing == nil {
+            os_log("Running %@ Search" ,deep ? "Deep" : "Shallow")
+            
+            self.processing = Date.now
+            self.helperProcessTaskWithArguments("/usr/bin/mdfind", arguments: [arguments], whitespace: true) { output in
+                DispatchQueue.main.async {
+                    self.processing = nil
+                    
+                }
                 
-                let connection = NSXPCConnection(machServiceName: "com.ovatar.gnome.brain.mach", options: [])
-                connection.remoteObjectInterface = NSXPCInterface(with: HelperProtocol.self)
-                connection.interruptionHandler = {
-                    os_log("Connection to main app was interrupted")
-                }
-                connection.invalidationHandler = {
-                    os_log("Connection to main app invalidated")
-                }
-                connection.resume()
-
-                if let proxy = connection.remoteObjectProxyWithErrorHandler({ error in
-                    os_log("Error communicating with main app: %@", error.localizedDescription)
-                })
-                as? HelperProtocol {
-                    proxy.brainSwitchApplication(match)
-
+                if let output = output?.components(separatedBy: "\n") {
+                    guard output.first?.isEmpty == false else {
+                        return
+                        
+                    }
+                    
+                    var stored:[HelperTaskObject] = []
+                    for directory in output {
+                        guard let tasks = self.helperRetriveContent(directory) else {
+                            return
+                            
+                        }
+                        
+                        for task in tasks {
+                            print("TASK" ,task)
+                            stored.append(task)
+                            
+                        }
+                        
+                    }
+                    
+                    for task in stored {
+                        self.helperSendCallback(task)
+                        
+                    }
+                    
+                    os_log("Returned %d Files" ,output.count)
+                    os_log("Found %d Tasks" ,stored.count)
+                    
                 }
                 else {
-                    os_log("Failed to create proxy to main app.")
+                    print("No output or error occurred")
                     
                 }
                 
             }
             
         }
-        
-    }
-
-    @objc private func helperSearchFiles() {
-        self.helperProcessTaskWithArguments("/usr/bin/mdfind", arguments:  ["(kMDItemTextContent == '//DONE:'c) || (kMDItemTextContent == '//TODO:'c) || (kMDItemTextContent == '//NOTE:'c) || (kMDItemTextContent == '//GENDOC:'c) || (kMDItemTextContent == '//FIX:'c) || (kMDItemTextContent == '// DONE:'c) || (kMDItemTextContent == '// TODO:'c) || (kMDItemTextContent == '// NOTE:'c) || (kMDItemTextContent == '// GENDOC:'c) || (kMDItemTextContent == '// FIX:'c)"], whitespace: true) { output in
-            if let output = output?.components(separatedBy: "\n") {
-                for directory in output {
-                    self.helperRetriveContent(directory)
-                    
-                }
-                
-            }
-            else {
-                print("No output or error occurred")
-                
-            }
+        else {
+            os_log("Processing: %@" ,self.processing!.description)
             
         }
         
     }
         
-    @objc private func helperRetriveContent(_ directory:String) {
+    @objc private func helperRetriveContent(_ directory:String) -> [HelperTaskObject]? {
         if FileManager.default.fileExists(atPath: directory) {
             if directory.contains("Application Support") == false {
                 do {
                     let content = try String(contentsOfFile: directory, encoding: String.Encoding.utf8)
                     let lines = content.components(separatedBy: .newlines)
-                    var number:Int = 1
                     
+                    var output:[HelperTaskObject] = []
+                    var number:Int = 1
+                               
                     for line in lines {
                         let pattern = "[ \t]*\\/\\/\\s*(TODO|FIX|DONE|NOTE|GENDOC|GEN|DOCGEN|ARCHIVE|DEPRICATE):(\\s*(.*))"
                         let regex = try! NSRegularExpression(pattern: pattern, options: [.anchorsMatchLines])
@@ -150,10 +222,10 @@ final class HelperManager: NSObject, HelperProtocol {
                             if let tagRange = Range(match.range(at: 1), in: line), let taskRange = Range(match.range(at: 2), in: line) {
                                 let tag = HelperTaskState(from: String(line[tagRange]))
                                 let task = line[taskRange].trimmingCharacters(in: .whitespacesAndNewlines)
-                                
-                                if let tag = tag {
-                                    self.helperSendCallback(tag, task: task, line: number, directory: directory, total: lines.count)
 
+                                if let tag = tag {
+                                    output.append(.init(tag, task: task, line: number, directory: directory, total: lines.count))
+                                    
                                 }
                                 
                             }
@@ -163,6 +235,10 @@ final class HelperManager: NSObject, HelperProtocol {
                         number += 1
                         
                     }
+                    
+                    print("!output" ,output)
+                    
+                    return output
                     
                 }
                 catch {
@@ -177,59 +253,62 @@ final class HelperManager: NSObject, HelperProtocol {
             print("File Does Not Exist")
             
         }
+        
+        return nil
+        
     }
 
-    @objc private func helperSendCallback(_ type: HelperTaskState, task: String, line: Int, directory: String, total:Int) {
-        let connection = NSXPCConnection(machServiceName: "com.ovatar.gnome.brain.mach", options: [])
-        connection.remoteObjectInterface = NSXPCInterface(with: HelperProtocol.self)
-        connection.interruptionHandler = {
-            os_log("Connection to main app was interrupted")
-        }
-        connection.invalidationHandler = {
-            os_log("Connection to main app invalidated")
-        }
-        connection.resume()
+    @objc private func helperSendCallback(_ task:HelperTaskObject) {
+        guard let proxy = self.helperProxy() else {
+            return
 
-        if let proxy = connection.remoteObjectProxyWithErrorHandler({ error in
-            os_log("Error communicating with main app: %@", error.localizedDescription)
-        }) 
-        as? HelperProtocol {
-            proxy.brainTaskFound(type, task: task, line: line, directory: directory, total:total)
-            
         }
-        else {
-            os_log("Failed to create proxy to main app.")
-            
-        }
+        
+        proxy.brainTaskFound(task.tag, task: task.task, line: task.line, directory: task.directory, total:task.total)
+        os_log("Task Found sent to main app from Proxy.")
               
     }
     
     @objc private func helperCheckin() {
-        let connection = NSXPCConnection(machServiceName: "com.ovatar.gnome.brain.mach", options: [])
+        guard let proxy = self.helperProxy() else {
+            return
+
+        }
+        
+        proxy.brainCheckin()
+              
+    }
+    
+    @objc private func helperProxy() -> HelperProtocol? {
+        let connection = NSXPCConnection(machServiceName: HelperConstants.mach, options: [])
         connection.remoteObjectInterface = NSXPCInterface(with: HelperProtocol.self)
         connection.interruptionHandler = {
             os_log("Connection to main app was interrupted")
         }
+        
         connection.invalidationHandler = {
             os_log("Connection to main app invalidated")
+            
         }
+        
         connection.resume()
-
+        
         if let proxy = connection.remoteObjectProxyWithErrorHandler({ error in
             os_log("Error communicating with main app: %@", error.localizedDescription)
-        })
-        as? HelperProtocol {
-            proxy.brainCheckin()
+            
+        }) as? HelperProtocol {
+            return proxy
             
         }
         else {
             os_log("Failed to create proxy to main app.")
+            return nil
             
         }
-              
+       
     }
     
-    func helperProcessTaskWithArguments(_ path: String, arguments: [String], whitespace: Bool = false, completion: @escaping (String?) -> Void) {
+    @objc private func helperProcessTaskWithArguments(_ path: String, arguments: [String], whitespace: Bool = false, completion: @escaping (String?) -> Void) {
         let process = Process()
         process.launchPath = path
         process.arguments = arguments
@@ -253,7 +332,7 @@ final class HelperManager: NSObject, HelperProtocol {
             }
             else {
                 completion("Error: Failed to decode output.")
-                
+
             }
             
         }

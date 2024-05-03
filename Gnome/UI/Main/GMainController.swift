@@ -8,27 +8,53 @@
 import Foundation
 import SwiftUI
 
+struct MainContainer: View {
+    @EnvironmentObject var settings:SettingsManager
+
+    let layout = [GridItem(.flexible(minimum: 30, maximum: 355))]
+
+    var body: some View {
+        LazyVGrid(columns: layout, spacing:30) {
+            Spacer().frame(height: 30)
+            
+            MainSection(.todo)
+            
+            MainSection(.done)
+            
+            if settings.settingsArchive == true {
+                MainSection(.archived)
+                
+            }
+            
+            if settings.sectionSnoozed == true {
+                MainSection(.snoozed)
+
+            }
+            
+            if settings.sectionHidden == true {
+                MainSection(.hidden)
+                
+            }
+
+            Spacer().frame(height: 15)
+
+        }
+        
+    }
+    
+}
+
 struct MainController: View {
     let persitence = PersistenceManager.container
     let screen = NSScreen.main!.visibleFrame
-    let layout = [GridItem(.flexible(minimum: 30, maximum: 340))]
     
     var body: some View {
         ZStack {
             ScrollView() {
-                LazyVGrid(columns: layout, spacing:30) {
-                    Spacer().frame(height: 30)
-                    
-                    MainSection(.todo)
-                    
-                    MainSection(.done)
-                    
-                    MainSection(.archived)
-                    
-                }
+                MainContainer()
 
             }
-            .frame(width: 340, alignment: .center)
+            .frame(width: 380, alignment: .center)
             .frame(maxWidth: .infinity, maxHeight: screen.height)
             .background(
                 ZStack {
@@ -45,6 +71,7 @@ struct MainController: View {
         .environmentObject(ProcessManager.shared)
         .environmentObject(OnboardingManager.shared)
         .environmentObject(LicenseManager.shared)
+        .environmentObject(SettingsManager.shared)
 
     }
     

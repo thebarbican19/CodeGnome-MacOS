@@ -15,14 +15,11 @@ class WindowManager: ObservableObject {
     
     @Published var active:WindowTypes? = .main
     @Published var disableArea:Bool = true
+    @Published var animating:Bool = false
 
     private var updates = Set<AnyCancellable>()
 
     init() {
-        UserDefaults.changed.receive(on: DispatchQueue.main).sink { key in
-            
-        }.store(in: &updates)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(windowWillUpdate(notification:)), name: NSWindow.willCloseNotification, object:nil)
         NotificationCenter.default.addObserver(self, selector: #selector(windowWillUpdate(notification:)), name: NSWindow.didUpdateNotification, object:nil)
 
@@ -50,7 +47,7 @@ class WindowManager: ObservableObject {
             
     }
     
-    public func windowOpen(_ type:WindowTypes, present:WindowPresentMode?, force:Bool = false) {
+    public func windowOpen(_ type:WindowTypes, present:WindowPresentMode?, force:Bool = false, animate:Bool = true) {
         var type:WindowTypes = type
         
         if force == false {
@@ -111,28 +108,47 @@ class WindowManager: ObservableObject {
                             reveal = true
                             
                         }
-                        
-                        print("reveal")
-                        
+                                                
                         if let show:Bool = reveal {
-                            if show {
-                                NSAnimationContext.runAnimationGroup({ (context) -> Void in
-                                    DispatchQueue.main.async {
-                                        if WindowTypes(rawValue: window.title) == .main {
-                                            window.animator().alphaValue = 1.0;
-                                            window.animator().setFrame(self.windowBounds(false), display: true, animate: true)
-                                                                
-                                        }
-                                        else {
-                                            window.animator().alphaValue = 1.0;
-                                            
+                            if show == true {
+                                if animate == true {
+                                    self.animating = true
+
+                                    NSAnimationContext.runAnimationGroup({ (context) -> Void in
+                                        DispatchQueue.main.async {
+                                            if WindowTypes(rawValue: window.title) == .main {
+                                                window.animator().alphaValue = 1.0;
+                                                window.animator().setFrame(self.windowBounds(false), display: true, animate: true)
+                                                
+                                            }
+                                            else {
+                                                window.animator().alphaValue = 1.0;
+                                                
+                                            }
+                                                                                        
                                         }
                                         
+                                    }) {
+                                        self.animating = false
                                         self.active = .main
+
+                                    }
+                                    
+                                }
+                                else {
+                                    if WindowTypes(rawValue: window.title) == .main {
+                                        window.alphaValue = 1.0;
+                                        window.setFrame(self.windowBounds(false), display: true, animate: false)
+                                        
+                                    }
+                                    else {
+                                        window.alphaValue = 1.0;
                                         
                                     }
                                     
-                                })
+                                    self.active = .main
+
+                                }
                                 
                                 window.orderFrontRegardless()
                                 
@@ -140,19 +156,32 @@ class WindowManager: ObservableObject {
                                 
                             }
                             else {
-                                NSAnimationContext.runAnimationGroup({ (context) -> Void in
-                                    context.duration = 0.6
-                                    
-                                    if WindowTypes(rawValue: window.title) == .main {
-                                        window.animator().alphaValue = 0.0;
-                                        window.animator().setFrame(self.windowBounds(true), display: true, animate: true)
+                                if animate == true {
+                                    self.animating = true
+
+                                    NSAnimationContext.runAnimationGroup({ (context) -> Void in
+                                        context.duration = 0.6
                                         
+                                        if WindowTypes(rawValue: window.title) == .main {
+                                            window.animator().alphaValue = 0.0;
+                                            window.animator().setFrame(self.windowBounds(true), display: true, animate: true)
+                                            
+                                        }
+                                        
+                                        
+                                    }) {
+                                        self.animating = false
+                                        self.active = nil
+
                                     }
                                     
+                                }
+                                else {
+                                    window.alphaValue = 0.0;
+                                    window.setFrame(self.windowBounds(true), display: true, animate: false)
                                     
-                                }, completionHandler: nil)
+                                }
                                 
-                                self.active = nil
                                 
                                 NSApp.activate(ignoringOtherApps: false)
                                 
@@ -173,10 +202,9 @@ class WindowManager: ObservableObject {
     public func windowBounds(_ hidden:Bool) -> NSRect {
         let screen = WindowScreenSize()
         let status = NSStatusBar.system.thickness
-        let dock = self.windowDockHeight
         let properties = WindowTypes.main.size
         
-        var window = NSMakeRect(properties.width, status + dock, properties.width, properties.height - (status + dock))
+        var window = NSMakeRect(properties.width, 0.0 - status, properties.width, properties.height)
 
         if SettingsManager.shared.windowPosition == .right {
             switch hidden {
@@ -194,7 +222,7 @@ class WindowManager: ObservableObject {
             }
 
         }
-
+        
         return window
         
     }
@@ -283,7 +311,6 @@ class WindowManager: ObservableObject {
         
     }
 
-    
     private func windowEvent() {
         DispatchQueue.main.async {
             if let main = self.windowMain() {
@@ -331,17 +358,25 @@ class WindowManager: ObservableObject {
                         
     }
     
-    public func windowClose(_ type:WindowTypes) {
+    public func windowClose(_ type:WindowTypes, animate:Bool) {
         if let window = NSApplication.shared.windows.filter({$0.title == type.rawValue}).first {
-            NSAnimationContext.runAnimationGroup({ (context) -> Void in
-                context.duration = 1.0
+            if animate == true {
+                NSAnimationContext.runAnimationGroup({ (context) -> Void in
+                    context.duration = 1.0
+                    
+                    window.animator().alphaValue = 0.0;
+                    
+                    
+                }) {
+                    window.close()
+                    
+                }
                 
-                window.animator().alphaValue = 0.0;
-
-                
-            }) {
+            }
+            else {
+                window.alphaValue = 0.0;
                 window.close()
- 
+
             }
             
         }

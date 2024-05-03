@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 import Combine
+import OSLog
 
 class TaskManager:ObservableObject {
     static var shared = TaskManager()
@@ -31,7 +32,8 @@ class TaskManager:ObservableObject {
         let context = PersistenceManager.context
         let modifyed = self.taskModification(directory)
         let application = ProcessManager.shared.application
-        
+        let total = tasks?.filter({ $0.state == TaskState(from: type) }).count
+
         guard self.taskOwner(directory) == true else {
             print("Task is not owned by user: \(directory)")
             return
@@ -69,14 +71,18 @@ class TaskManager:ObservableObject {
                     existing.modifyed = modifyed
                     existing.application = .init(name: application)
                     
+                    os_log("Updated Task %@" ,existing.task)
+
                 }
                 else {
-                    let task = TaskObject.init(type, task: task, directory: directory, line: line, project: project, application: application, modifyed: modifyed)
+                    let task = TaskObject.init(type, task: task, directory: directory, line: line, project: project, application: application, total: total, comments: nil, modifyed: modifyed)
                     context.insert(task)
                     
                     AppSoundEffects.added.play()
                     WindowManager.shared.windowOpen(.main, present: .present)
+                    
                     print("Storing New Task: \(task.task)")
+                    os_log("Storing New Task %@" ,task.task)
 
                 }
                 
@@ -211,19 +217,51 @@ class TaskManager:ObservableObject {
             
         }
         catch {
-            print("Failed to open \(task.application): \(error)")
+            print("Failed to open \(task.application?.rawValue ?? ""): \(error)")
+            
+        }
+    
+    }
+    
+    public func taskIgnore(_ task:TaskObject, hide:Bool) {
+        do {
+            let context = PersistenceManager.context
+
+            task.ignore = hide
+            task.changes = Date.now
+
+            try PersistenceManager.save(context: context)
+            
+        }
+        catch {
             
         }
         
     }
     
-    public func taskIgnore(_ task:TaskObject, toggle:Bool) {
+    public func taskSnooze(_ task:TaskObject, action:AppDropdownType) {
+        var next:Date? = nil
+        var components = DateComponents()
+        components.hour = 7
+
+        switch action {
+            case .snoozeWeek : components.day = +7
+            case .snoozeTomorrow : components.weekday = Date().snooze.weekday
+            default : break
+            
+        }
+        
+        if action != .snoozeRemove {
+            next = Calendar.current.nextDate(after: Date(), matching: components, matchingPolicy: .nextTime)
+
+        }
+       
         do {
             let context = PersistenceManager.context
 
-            task.ignore = toggle
+            task.snoozed = next
             task.changes = Date.now
-
+            
             try PersistenceManager.save(context: context)
             
         }
@@ -345,8 +383,6 @@ class TaskManager:ObservableObject {
             
         }
         
-       
-      
         return nil
         
     }

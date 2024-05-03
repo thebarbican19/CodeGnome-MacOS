@@ -19,13 +19,17 @@ class OnboardingManager:ObservableObject {
 
     init() {
         $tutorial.removeDuplicates().delay(for: 0.2, scheduler: RunLoop.main).sink { state in
+            if state == .passed {
+                
+            }
+            
             NSApp.requestUserAttention(.criticalRequest)
             
         }.store(in: &updates)
 
         $current.removeDuplicates().delay(for: 0.2, scheduler: RunLoop.main).sink { state in
             if state == .complete {
-                WindowManager.shared.windowClose(.onboarding)
+                WindowManager.shared.windowClose(.onboarding, animate: true)
                 WindowManager.shared.windowOpen(.main, present: .present)
                 
             }
@@ -99,8 +103,8 @@ class OnboardingManager:ObservableObject {
         }
         else if current == .helper {
             switch button {
-                case .primary : ProcessManager.shared.processSetup()
-                case .secondary : break // TODO: Video to Show How
+                case .primary : ProcessManager.shared.processInstallHelper()
+                case .secondary : break // TODO: Video to Show How!
                 
             }
                         
@@ -108,7 +112,7 @@ class OnboardingManager:ObservableObject {
         else if current == .license {
             switch button {
                 case .primary : _ = self.onboardingStep(.license, insert: true)
-                case .secondary : break // TODO: Stripe Purchase URL to connect
+                case .secondary : break // TODO: Stripe Purchase URL to connect!
                 
             }
             
@@ -142,7 +146,7 @@ class OnboardingManager:ObservableObject {
             
         }
         
-        guard let match = task.sorted(by: { $0.created > $1.created }).first(where: { $0.task.lowercased().contains("codegnome") }) else {
+        guard let match = task.sorted(by: { $0.created > $1.created }).first(where: { $0.task.lowercased().contains("gnome") }) else {
             self.tutorial = .todo
             return
             

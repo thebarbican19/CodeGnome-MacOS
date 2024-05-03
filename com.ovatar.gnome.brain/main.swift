@@ -9,6 +9,11 @@ import Foundation
 import Cocoa
 import os.log
 
-_ = HelperManager.shared
+os_log("Main Helper Setup Began")
 
-RunLoop.current.run()
+HelperManager.shared.brainSetup { state in
+    os_log("Main Helper Setup Complete")
+    
+}
+
+CFRunLoopRun()

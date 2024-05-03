@@ -10,16 +10,33 @@ import SwiftUI
 struct TaskCell: View {
     @State var item:TaskObject
     @State var hover:Bool = false
-    
-    init(_ item: TaskObject) {
+    @State var section:TaskState
+
+    init(_ item: TaskObject, section:TaskState) {
         self._item = State(initialValue: item)
-        
+        self._section = State(initialValue: section)
+
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             // TODO: Import Fonts & Import Colours
-                        
+            // TODO: Options Button to Add with Hide and Open Functionality
+            Text("Option:").dropdown(section.dropdown, triggers: [.left], task: item, callback: { dropdown in
+                switch dropdown {
+                    case .taskShow : TaskManager.shared.taskIgnore(item, hide: false)
+                    case .taskHide : TaskManager.shared.taskIgnore(item, hide: true)
+                    case .openRoot : TaskManager.shared.taskOpen(item, directory: item.project.directory)
+                    case .openInline : TaskManager.shared.taskOpen(item, directory: item.directory)
+                    case .snoozeTomorrow : TaskManager.shared.taskSnooze(item, action: .snoozeTomorrow)
+                    case .snoozeWeek : TaskManager.shared.taskSnooze(item, action: .snoozeWeek)
+                    case .snoozeRemove : TaskManager.shared.taskSnooze(item, action: .snoozeRemove)
+                    case .divider : break
+                    
+                }
+                
+            })
+            
             TaskHirachy(item)
             
             Text(item.task)
@@ -29,6 +46,8 @@ struct TaskCell: View {
             Spacer().frame(height: 10)
             
             TaskTags(item)
+            
+            TaskSnoozed(item)
             
         }
         .padding(18)
@@ -177,6 +196,30 @@ struct TaskTags: View {
             
             // TODO: Tags View Layout
             
+        }
+        .padding(5)
+        .background(Color.gray)
+        
+    }
+    
+}
+
+struct TaskSnoozed: View {
+    @State var item:TaskObject
+    
+    init(_ item: TaskObject) {
+        self._item = State(initialValue: item)
+        
+    }
+    
+    var body: some View {
+        if let snoozed = item.snoozed {
+            if snoozed > Date() {
+                Text("Snoozed Until: \(snoozed.formatted())")
+                    .foregroundColor(Color.red)
+                
+            }
+
         }
         
     }

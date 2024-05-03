@@ -72,6 +72,7 @@ class LicenseManager:ObservableObject {
     
     static var licenseKey:String? {
         get {
+            // TODO: License Backend Logic
             return nil
             
         }
@@ -116,10 +117,7 @@ class LicenseManager:ObservableObject {
         }
         
         return .init(.trial, expires: days)
-        
-    }
-    
-    private func licenseTrialStart() {
+        // TODO: This is a test
         
     }
         
