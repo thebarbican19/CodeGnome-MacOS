@@ -15,11 +15,14 @@ enum OnboardingSubview:Int,CaseIterable,Codable {
     case thankyou = 5
     case complete = 6
     
+    // TODO: Add Empty State for Onboarding
+    
 }
 
 enum OnboardingButtonType {
     case primary
     case secondary
+    case tertiary
     
 }
 

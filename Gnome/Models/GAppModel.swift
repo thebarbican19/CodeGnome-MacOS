@@ -126,3 +126,26 @@ struct AppSnoozeObject {
     }
     
 }
+
+enum AppLinks {
+    case stripe
+    case github
+    
+    func launch() {
+        var url:URL?
+        switch self {
+            case .stripe : url = URL(string: "https://stripe.com/")
+            case .github : url = URL(string: "https://github.com/thebarbican19/CodeGnoma-MacOS")
+            
+        }
+        
+        guard let url = url else {
+            return
+            
+        }
+        
+        NSWorkspace.shared.open(url)
+        
+    }
+    
+}

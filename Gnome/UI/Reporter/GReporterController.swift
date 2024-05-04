@@ -16,6 +16,7 @@ struct ReporterController: View {
             Text("// TODO: Reporter View")
 
         }
+        .background(BackgroundContainer())
         .modelContainer(persitence)
         .environmentObject(WindowManager.shared)
         .environmentObject(TaskManager.shared)

@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "// TODO: Reporter View" : {
 
     },
@@ -10,13 +13,31 @@
     "#%lld" : {
 
     },
+    "All Done" : {
+
+    },
+    "All your Inline Todos & Notes in one Place." : {
+
+    },
+    "Allow the Gnome Access" : {
+
+    },
     "Check for Updates" : {
 
     },
     "Checking for Updates..." : {
 
     },
-    "Current: %lld" : {
+    "CodeGnome" : {
+
+    },
+    "Community" : {
+
+    },
+    "Continue Trial" : {
+
+    },
+    "Create your First Task" : {
 
     },
     "Deep Search" : {
@@ -40,6 +61,9 @@
     "Enable Snoozed Section" : {
 
     },
+    "Enter License Key" : {
+
+    },
     "GeneralActionDebugLabel" : {
 
     },
@@ -61,10 +85,22 @@
     "GeneralSummaryBuildLabel %@" : {
 
     },
+    "Get Started" : {
+
+    },
     "Grant" : {
 
     },
+    "Grant Access" : {
+
+    },
+    "Great, now lets mark a todo as Important. This adding exclamation points to the end. The more you add the High level of Importance" : {
+
+    },
     "Hello, World!" : {
+
+    },
+    "Help" : {
 
     },
     "Hide" : {
@@ -91,13 +127,31 @@
     "NO TASKS SAVED" : {
 
     },
+    "Now, mark it as Complete by simply deleting it. Or, change the type to 'DONE:'" : {
+
+    },
+    "Open CodeGnome" : {
+
+    },
+    "Open your IDE of choice and create your first inline Todo." : {
+
+    },
     "Option:" : {
 
     },
     "Placeholder" : {
 
     },
+    "Please enter your License Key or try the 14 day trial" : {
+
+    },
+    "Purchase License" : {
+
+    },
     "Purge" : {
+
+    },
+    "Restart" : {
 
     },
     "Reveal" : {
@@ -118,7 +172,43 @@
     "Start" : {
 
     },
+    "Start Trial" : {
+
+    },
+    "Thank You" : {
+
+    },
+    "Thank you for supporting Indie Developers. We hope you enjoy CodeGnome." : {
+
+    },
+    "Thats it, open CodeGnome from the Dock, the Menu Bar or with the Keyboard Shorcuts to see all your tasks." : {
+
+    },
+    "The Gnome Helper received an error and needs to be restarted. " : {
+
+    },
+    "The Gnome Helper requires an Update." : {
+
+    },
+    "The Gnome Helper requires special permissions to continuously scan for and import your inline tasks and notes in the background." : {
+
+    },
+    "To Be Added" : {
+
+    },
+    "Update" : {
+
+    },
+    "Validate" : {
+
+    },
     "Version %@" : {
+
+    },
+    "You did it! There is a few more tricks for pros which you can learn about on our GitHub page" : {
+
+    },
+    "Your %@ has expired. Please enter your License Key." : {
 
     }
   },

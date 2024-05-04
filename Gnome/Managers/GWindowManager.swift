@@ -280,6 +280,23 @@ class WindowManager: ObservableObject {
             
     }
     
+    private func windowNotification() {
+        let window = NSWindow()
+        window.styleMask = [.borderless]
+        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .hidden
+        window.isOpaque = false
+        window.isMovableByWindowBackground = false
+        window.hasShadow = false
+        window.center()
+        window.setFrame(self.windowBounds(false), display: true, animate: false)
+        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        window.acceptsMouseMovedEvents = true
+        window.level = .statusBar
+        window.contentView = NSHostingController(rootView: MainController()).view
+        
+    }
+    
     private func windowDefault(_ type:WindowTypes, onboarding:OnboardingSubview? = nil) -> NSWindow? {
         let bounds = WindowScreenSize()
         var window:NSWindow?
@@ -382,6 +399,5 @@ class WindowManager: ObservableObject {
         }
 
     }
-    
-    
+
 }

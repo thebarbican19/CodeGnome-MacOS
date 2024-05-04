@@ -40,7 +40,7 @@ struct TaskCell: View {
             TaskHirachy(item)
             
             Text(item.task)
-                .foregroundColor(Color("TaskTitleColour"))
+                .foregroundColor(Color("TileTitle"))
                 .lineLimit(3)
 
             Spacer().frame(height: 10)
@@ -51,24 +51,7 @@ struct TaskCell: View {
             
         }
         .padding(18)
-        .background(
-            ZStack() {
-                WindowViewBlur()
-                    .opacity(0.08)
-                    .clipShape(
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    )
-                
-                RoundedRectangle(cornerRadius: 7.8, style: .continuous)
-                    .fill(Color("TaskBackgroundColour"))
-                    .padding(4)
-                    .shadow(color: .black.opacity(0.2), radius: 3, y: 2)
-                    
-                // TODO: add Gradient Background
-                
-            }
-            
-        )
+        .background(TileBackground())
         .hover(cursor: NSCursor.pointingHand, value: { state in
             if hover == true {
                 withAnimation(Animation.easeOut(duration: 0.2)) {
@@ -139,7 +122,7 @@ struct TaskHirachyItem: View {
             }
             
         }
-        .foregroundColor(self.hover ? Color("TaskHoverColour") : Color("TaskSubtitleColour"))
+        .foregroundColor(self.hover ? Color("TileBorderShine") : Color("TileSubtitle"))
         .hover() { hover in
             if hover == true {
                 withAnimation(Animation.easeOut(duration: 0.2)) {

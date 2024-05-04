@@ -13,5 +13,12 @@
 	<string>$(G_HELPER_ID)</string>
 	<key>SUPublicEDKey</key>
 	<string>t1V9elylrpBkN0l4EkNxs7eEGVLF3Yd0P0sKDXqxfoA=</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Inter.ttf</string>
+		<string>Gilroy-Black.otf</string>
+		<string>Gilroy-Medium.otf</string>
+		<string>Gilroy-Regular.otf</string>
+	</array>
 </dict>
 </plist>

@@ -23,7 +23,7 @@ struct PreferencesController: View {
             }
             .ignoresSafeArea(.all, edges: .all)
             .frame(maxWidth: geo.size.width, maxHeight: geo.size.height + 60)
-            .background(WindowViewBlur())
+            .background(BackgroundContainer())
             .edgesIgnoringSafeArea(.all)
             .modelContainer(persitence)
             .environmentObject(WindowManager.shared)

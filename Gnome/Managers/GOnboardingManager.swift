@@ -8,12 +8,19 @@
 import Foundation
 import Combine
 import AppKit
+import SwiftUI
 
 class OnboardingManager:ObservableObject {
     static var shared = OnboardingManager()
     
     @Published public var current:OnboardingSubview = .complete
     @Published public var tutorial:OnboardingTutorialStep = .passed
+
+    @Published public var title:LocalizedStringKey = ""
+    @Published public var subtitle:LocalizedStringKey = ""
+    @Published public var primary:LocalizedStringKey? = nil
+    @Published public var secondary:LocalizedStringKey? = nil
+    @Published public var tertiary:LocalizedStringKey? = nil
 
     private var updates = Set<AnyCancellable>()
 
@@ -28,12 +35,7 @@ class OnboardingManager:ObservableObject {
         }.store(in: &updates)
 
         $current.removeDuplicates().delay(for: 0.2, scheduler: RunLoop.main).sink { state in
-            if state == .complete {
-                WindowManager.shared.windowClose(.onboarding, animate: true)
-                WindowManager.shared.windowOpen(.main, present: .present)
-                
-            }
-            else {
+            if state != .complete {
                 WindowManager.shared.windowOpen(.main, present: .hide)
                 WindowManager.shared.windowOpen(.onboarding, present: .present)
                 
@@ -90,13 +92,148 @@ class OnboardingManager:ObservableObject {
             
         }
         
+        self.title = self.onboardingTitle()
+        self.subtitle = self.onboardingSubtitle()
+        self.primary = self.onboardingPrimary()
+        self.secondary = self.onboardingSecondary()
+        self.tertiary = self.onboardingTertiary()
+        
+        // TODO: Onboarding Transition Animation
+
+    }
+    
+    private func onboardingTitle() -> LocalizedStringKey {
+        switch self.current {
+            case .intro : return "CodeGnome"
+            case .helper : return "Allow the Gnome Access"
+            case .license : return "Enter License Key"
+            case .thankyou : return "Thank You"
+            case .tutorial : return "Create your First Task"
+            case .complete : return "All Done"
+
+        }
+    
+    }
+    
+    private func onboardingSubtitle() -> LocalizedStringKey {
+        if self.current == .intro {
+            return "All your Inline Todos & Notes in one Place."
+            
+        }
+        else if self.current == .helper {
+            switch ProcessManager.shared.helper {
+                case .outdated : return "The Gnome Helper requires an Update."
+                case .error : return "The Gnome Helper received an error and needs to be restarted. "
+                default : return "The Gnome Helper requires special permissions to continuously scan for and import your inline tasks and notes in the background."
+                
+            }
+            
+        }
+        else if self.current == .license {
+            let type:String = LicenseManager.licenseKey == nil ? "trial" : "subscription"
+            switch LicenseManager.shared.state.state {
+                case .expired : return "Your \(type) has expired. Please enter your License Key."
+                default : return "Please enter your License Key or try the 14 day trial"
+
+            }
+            
+        }
+        else if self.current == .thankyou {
+            return "Thank you for supporting Indie Developers. We hope you enjoy CodeGnome."
+            
+        }
+        else if self.current == .tutorial {
+            switch self.tutorial {
+                case .todo : return "Open your IDE of choice and create your first inline Todo."
+                case .important : return "Great, now lets mark a todo as Important. This adding exclamation points to the end. The more you add the High level of Importance"
+                case .done : return "Now, mark it as Complete by simply deleting it. Or, change the type to 'DONE:'"
+                case .passed : return "You did it! There is a few more tricks for pros which you can learn about on our GitHub page"
+                
+            }
+            
+        }
+        else if self.current == .complete {
+            return "Thats it, open CodeGnome from the Dock, the Menu Bar or with the Keyboard Shorcuts to see all your tasks."
+            
+        }
+        
+        return ""
+    
+    }
+    
+    private func onboardingPrimary() -> LocalizedStringKey? {
+        if self.current == .intro {
+            return "Get Started"
+            
+        }
+        else if self.current == .helper {
+            switch ProcessManager.shared.helper {
+                case .outdated : return "Update"
+                case .error : return "Restart"
+                default : return "Grant Access"
+                
+            }
+
+        }
+        else if self.current == .license {
+            return "Validate"
+            
+        }
+        else if self.current == .thankyou {
+            return "Next"
+            
+        }
+        else if self.current == .tutorial {
+            return nil
+            
+        }
+        else if self.current == .complete {
+            return "Open CodeGnome"
+
+        }
+        
+        return nil
+        
+    }
+    
+    private func onboardingSecondary() -> LocalizedStringKey? {
+        if self.current == .intro {
+            return "Community"
+
+        }
+        else if self.current == .license {
+            switch LicenseManager.shared.state.state {
+                case .undetermined : return "Start Trial"
+                case .trial : return "Continue Trial"
+                default : return nil
+                
+            }
+            
+        }
+        else if self.current == .tutorial {
+            return "Help"
+            
+        }
+        
+        return nil
+        
+    }
+    
+    private func onboardingTertiary() -> LocalizedStringKey? {
+        switch LicenseManager.shared.state.state {
+            case .valid : return nil
+            case .undetermined : return nil
+            default : return "Purchase License"
+            
+        }
     }
     
     public func onboardingAction(button:OnboardingButtonType) {
         if current == .intro {
             switch button {
                 case .primary : _ = self.onboardingStep(.intro, insert: true)
-                case .secondary : break // TODO: Open Website
+                case .secondary : AppLinks.github.launch()
+                case .tertiary : AppLinks.stripe.launch()
                 
             }
             
@@ -104,16 +241,18 @@ class OnboardingManager:ObservableObject {
         else if current == .helper {
             switch button {
                 case .primary : ProcessManager.shared.processInstallHelper()
-                case .secondary : break // TODO: Video to Show How!
-                
+                case .secondary : break
+                case .tertiary : AppLinks.stripe.launch()
+
             }
                         
         }
         else if current == .license {
             switch button {
-                case .primary : _ = self.onboardingStep(.license, insert: true)
-                case .secondary : break // TODO: Stripe Purchase URL to connect!
-                
+                case .primary : break
+                case .secondary : _ = self.onboardingStep(.license, insert: true)
+                case .tertiary : AppLinks.stripe.launch()
+
             }
             
         }
@@ -121,18 +260,26 @@ class OnboardingManager:ObservableObject {
             switch button {
                 case .primary : _ = self.onboardingStep(.intro, insert: true)
                 case .secondary : break
-                
+                case .tertiary : AppLinks.stripe.launch()
+
             }
             
         }
         else if current == .tutorial {
+            switch button {
+                case .primary : break
+                case .secondary : AppLinks.github.launch()
+                case .tertiary : AppLinks.stripe.launch()
+
+            }
             
         }
         else if current == .complete {
             switch button {
                 case .primary : _ = self.onboardingStep(.complete, insert: true)
-                case .secondary : break // TODO: Open Website
-                
+                case .secondary : break
+                case .tertiary : AppLinks.stripe.launch()
+
             }
     
         }

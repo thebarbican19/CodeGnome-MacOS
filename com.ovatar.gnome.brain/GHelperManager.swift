@@ -68,7 +68,6 @@ final class HelperManager: NSObject, HelperProtocol {
     
     func brainSwitchApplication(_ application: HelperSupportedApplications) {
         os_log("Received Application Switch Notification: %@", application.rawValue)
-        //TODO: I love GnomeApp!
         
     }
     

@@ -31,6 +31,9 @@
 		D85220112BD0227F00C1D8FB /* GProcessModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8521FF52BCEE4D700C1D8FB /* GProcessModel.swift */; };
 		D85220132BD0295700C1D8FB /* GHelperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85220122BD0295700C1D8FB /* GHelperModel.swift */; };
 		D85220142BD0296700C1D8FB /* GHelperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85220122BD0295700C1D8FB /* GHelperModel.swift */; };
+		D85CD5CB2BE55E640092189B /* GButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85CD5CA2BE55E640092189B /* GButtonComponent.swift */; };
+		D85CD5CE2BE561430092189B /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D85CD5CD2BE561420092189B /* Inter.ttf */; };
+		D85CD5D62BE567A50092189B /* GTileComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85CD5D52BE567A50092189B /* GTileComponents.swift */; };
 		D8625B402BE1E42B00747612 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D8625B3F2BE1E42B00747612 /* Config.xcconfig */; };
 		D895EFFF2BD1BA0E0068C6D5 /* GTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */; };
 		D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0052BD2C4740068C6D5 /* GExtensions.swift */; };
@@ -103,6 +106,9 @@
 		D85220052BCF6B9B00C1D8FB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D852200B2BCF6BE000C1D8FB /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
 		D85220122BD0295700C1D8FB /* GHelperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHelperModel.swift; sourceTree = "<group>"; };
+		D85CD5CA2BE55E640092189B /* GButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GButtonComponent.swift; sourceTree = "<group>"; };
+		D85CD5CD2BE561420092189B /* Inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.ttf; sourceTree = "<group>"; };
+		D85CD5D52BE567A50092189B /* GTileComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTileComponents.swift; sourceTree = "<group>"; };
 		D8625B3F2BE1E42B00747612 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskManager.swift; sourceTree = "<group>"; };
 		D895F0052BD2C4740068C6D5 /* GExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GExtensions.swift; sourceTree = "<group>"; };
@@ -228,6 +234,14 @@
 			path = com.ovatar.gnome.brain;
 			sourceTree = "<group>";
 		};
+		D85CD5CC2BE560BF0092189B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				D85CD5CD2BE561420092189B /* Inter.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		D895F0002BD22B5C0068C6D5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -260,6 +274,7 @@
 		D895F0102BD373B40068C6D5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D85CD5CC2BE560BF0092189B /* Fonts */,
 				D895F0282BD6E5F70068C6D5 /* Language */,
 				D8521FCF2BCEDDE300C1D8FB /* Assets.xcassets */,
 				D895F0252BD6D6F60068C6D5 /* Dataset */,
@@ -328,6 +343,8 @@
 			isa = PBXGroup;
 			children = (
 				D8BD27E32BE2DDB8002655A1 /* GBackgroundContainer.swift */,
+				D85CD5CA2BE55E640092189B /* GButtonComponent.swift */,
+				D85CD5D52BE567A50092189B /* GTileComponents.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -432,6 +449,7 @@
 				D895F0152BD373EC0068C6D5 /* error.wav in Resources */,
 				D8625B402BE1E42B00747612 /* Config.xcconfig in Resources */,
 				D895F0272BD6D7140068C6D5 /* names.json in Resources */,
+				D85CD5CE2BE561430092189B /* Inter.ttf in Resources */,
 				D895F0162BD373EC0068C6D5 /* reveal.wav in Resources */,
 				D8521FD02BCEDDE300C1D8FB /* Assets.xcassets in Resources */,
 				D8521FFB2BCF06DC00C1D8FB /* Info.plist in Resources */,
@@ -468,11 +486,13 @@
 				D8022E1D2BE0981D00906C74 /* GReporterController.swift in Sources */,
 				D8521FF32BCEE32800C1D8FB /* GProcessManager.swift in Sources */,
 				D895F0192BD376210068C6D5 /* GWindowModel.swift in Sources */,
+				D85CD5D62BE567A50092189B /* GTileComponents.swift in Sources */,
 				D8022E1A2BE0931D00906C74 /* GOnboardingModel.swift in Sources */,
 				D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */,
 				D8BD27E42BE2DDB8002655A1 /* GBackgroundContainer.swift in Sources */,
 				D895F0082BD2C4D30068C6D5 /* GTaskModel.swift in Sources */,
 				D895F02C2BD7059A0068C6D5 /* GModifyers.swift in Sources */,
+				D85CD5CB2BE55E640092189B /* GButtonComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

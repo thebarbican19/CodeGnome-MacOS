@@ -56,14 +56,8 @@ struct MainController: View {
             }
             .frame(width: 380, alignment: .center)
             .frame(maxWidth: .infinity, maxHeight: screen.height)
-            .background(
-                ZStack {
-                    WindowGradientView()
-                    
-                }
-                
-            )
-            
+            .background(BackgroundContainer())
+
         }
         .modelContainer(persitence)
         .environmentObject(WindowManager.shared)
