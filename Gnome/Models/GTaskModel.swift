@@ -80,6 +80,26 @@ class TaskProject:Equatable,Hashable {
     
 }
 
+enum TaskNotificationType {
+    case new
+    case importance
+    case state
+    case app
+    
+}
+
+struct TaskNotification:Equatable {
+    var task:TaskObject?
+    var type:TaskNotificationType
+    
+    init(_ type: TaskNotificationType, task: TaskObject?) {
+        self.task = task
+        self.type = type
+        
+    }
+    
+}
+
 enum TaskLanguage:String,Codable {
     case python = "py"
     case swift = "swift"

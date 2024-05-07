@@ -46,7 +46,7 @@ struct OnboardingDisplay: View {
         ZStack {
             TileShadow()
             
-            TileBackground()
+            TileBackground(animate: true)
             
             Text("To Be Added")
                 .foregroundColor(Color.white)
@@ -106,7 +106,7 @@ struct OnboardingContainer: View {
                     Spacer()
                     
                     if let primary = onboarding.primary {
-                        Button(primary) {
+                        ButtonPrimary(title:primary) {
                             onboarding.onboardingAction(button: .primary)
                             
                         }
@@ -121,7 +121,7 @@ struct OnboardingContainer: View {
 
             HStack {
                 if let tertiary = onboarding.tertiary {
-                    Button(tertiary) {
+                    ButtonSecondary(title:tertiary) {
                         onboarding.onboardingAction(button: .tertiary)
                         
                     }
@@ -131,12 +131,12 @@ struct OnboardingContainer: View {
                 Spacer()
                 
                 if let secondary = onboarding.secondary {
-                    Button(secondary) {
+                    ButtonSecondary(title:secondary) {
                         onboarding.onboardingAction(button: .secondary)
                         
                     }
                     
-                    // DONE: Redesign Primary & Secondary Button Gnome!
+                    // TODO: Redesign Primary & Secondary Button Gnome!
                     
                 }
                 
@@ -144,13 +144,14 @@ struct OnboardingContainer: View {
             .padding(40)
             
         }
-
+        
     }
     
 }
 
 struct OnboardingController: View {
     let persitence = PersistenceManager.container
+    let size:WindowSize = WindowTypes.onboarding.size
 
     var body: some View {
         GeometryReader { geo in
@@ -159,7 +160,7 @@ struct OnboardingController: View {
                 
             }
             .ignoresSafeArea(.all, edges: .all)
-            .frame(width: geo.size.width, height: geo.size.height + 60)
+            .frame(maxWidth: geo.size.width, maxHeight: geo.size.height + 60)
             .background(BackgroundContainer())
             .edgesIgnoringSafeArea(.all)
             .modelContainer(persitence)
@@ -168,11 +169,12 @@ struct OnboardingController: View {
             .environmentObject(ProcessManager.shared)
             .environmentObject(OnboardingManager.shared)
             .environmentObject(LicenseManager.shared)
-            
+
             // FIX: Resize Window Bug
             
         }
-       
+        .frame(width: size.width, height: size.height)
+
         
     }
     

@@ -34,6 +34,8 @@
 		D85CD5CB2BE55E640092189B /* GButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85CD5CA2BE55E640092189B /* GButtonComponent.swift */; };
 		D85CD5CE2BE561430092189B /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D85CD5CD2BE561420092189B /* Inter.ttf */; };
 		D85CD5D62BE567A50092189B /* GTileComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85CD5D52BE567A50092189B /* GTileComponents.swift */; };
+		D85CD5D92BE5FE880092189B /* GNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85CD5D82BE5FE880092189B /* GNotificationController.swift */; };
+		D85CD5DC2BE9A4810092189B /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = D85CD5DB2BE9A4810092189B /* FluidGradient */; };
 		D8625B402BE1E42B00747612 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D8625B3F2BE1E42B00747612 /* Config.xcconfig */; };
 		D895EFFF2BD1BA0E0068C6D5 /* GTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */; };
 		D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895F0052BD2C4740068C6D5 /* GExtensions.swift */; };
@@ -109,6 +111,7 @@
 		D85CD5CA2BE55E640092189B /* GButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GButtonComponent.swift; sourceTree = "<group>"; };
 		D85CD5CD2BE561420092189B /* Inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.ttf; sourceTree = "<group>"; };
 		D85CD5D52BE567A50092189B /* GTileComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTileComponents.swift; sourceTree = "<group>"; };
+		D85CD5D82BE5FE880092189B /* GNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNotificationController.swift; sourceTree = "<group>"; };
 		D8625B3F2BE1E42B00747612 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D895EFFE2BD1BA0E0068C6D5 /* GTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskManager.swift; sourceTree = "<group>"; };
 		D895F0052BD2C4740068C6D5 /* GExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GExtensions.swift; sourceTree = "<group>"; };
@@ -136,6 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D895F0382BD71E080068C6D5 /* DynamicColor in Frameworks */,
+				D85CD5DC2BE9A4810092189B /* FluidGradient in Frameworks */,
 				D895F0352BD71DF30068C6D5 /* Sparkle in Frameworks */,
 				D8022E202BE1726200906C74 /* KeyboardShortcuts in Frameworks */,
 				D895F00F2BD372AD0068C6D5 /* LaunchAtLogin in Frameworks */,
@@ -242,6 +246,14 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		D85CD5D72BE5FE700092189B /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				D85CD5D82BE5FE880092189B /* GNotificationController.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 		D895F0002BD22B5C0068C6D5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -296,6 +308,7 @@
 		D895F0222BD4A5870068C6D5 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				D85CD5D72BE5FE700092189B /* Notification */,
 				D8BD27E52BE2DDC8002655A1 /* Components */,
 				D8022E1B2BE0980200906C74 /* Reporter */,
 				D828E9972BE0617700D06830 /* Onboarding */,
@@ -372,6 +385,7 @@
 				D895F0342BD71DF30068C6D5 /* Sparkle */,
 				D895F0372BD71E080068C6D5 /* DynamicColor */,
 				D8022E1F2BE1726200906C74 /* KeyboardShortcuts */,
+				D85CD5DB2BE9A4810092189B /* FluidGradient */,
 			);
 			productName = Gnome;
 			productReference = D8521FC82BCEDDDA00C1D8FB /* CodeGnome.app */;
@@ -427,6 +441,7 @@
 				D895F0322BD71DDB0068C6D5 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				D895F0332BD71DF30068C6D5 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				D895F0362BD71E080068C6D5 /* XCRemoteSwiftPackageReference "DynamicColor" */,
+				D85CD5DA2BE9A4810092189B /* XCRemoteSwiftPackageReference "FluidGradient" */,
 			);
 			productRefGroup = D8521FC92BCEDDDA00C1D8FB /* Products */;
 			projectDirPath = "";
@@ -466,6 +481,7 @@
 				D895F0212BD37EBC0068C6D5 /* GPreferencesController.swift in Sources */,
 				D895F01D2BD37C310068C6D5 /* GSettingsModel.swift in Sources */,
 				D8521FDB2BCEDE7900C1D8FB /* GPersistanceManager.swift in Sources */,
+				D85CD5D92BE5FE880092189B /* GNotificationController.swift in Sources */,
 				D8521FDD2BCEDE8500C1D8FB /* GWindowManager.swift in Sources */,
 				D852200D2BCF6CE000C1D8FB /* GHelperManager.swift in Sources */,
 				D895F00C2BD36E010068C6D5 /* GAppModel.swift in Sources */,
@@ -639,7 +655,7 @@
 				CODE_SIGN_ENTITLEMENTS = Gnome/Gnome.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Gnome/Preview Content\"";
 				DEVELOPMENT_TEAM = QYKKXLKZD6;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -653,7 +669,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.1.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ovatar.gnome;
 				PRODUCT_NAME = CodeGnome;
@@ -671,7 +687,7 @@
 				CODE_SIGN_ENTITLEMENTS = Gnome/Gnome.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Gnome/Preview Content\"";
 				DEVELOPMENT_TEAM = QYKKXLKZD6;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -685,7 +701,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.1.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ovatar.gnome;
 				PRODUCT_NAME = CodeGnome;
@@ -767,6 +783,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D85CD5DA2BE9A4810092189B /* XCRemoteSwiftPackageReference "FluidGradient" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Cindori/FluidGradient";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		D895F00D2BD372AD0068C6D5 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Modern";
@@ -814,6 +838,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D895F0322BD71DDB0068C6D5 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
+		};
+		D85CD5DB2BE9A4810092189B /* FluidGradient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D85CD5DA2BE9A4810092189B /* XCRemoteSwiftPackageReference "FluidGradient" */;
+			productName = FluidGradient;
 		};
 		D895F00E2BD372AD0068C6D5 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;

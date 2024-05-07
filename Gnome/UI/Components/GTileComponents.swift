@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+struct TileHeader: View {
+    @State var header:LocalizedStringKey
+    
+    var body: some View {
+        EmptyView()
+        
+    }
+    
+}
+
 struct TileShadow: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 16)
@@ -18,21 +28,29 @@ struct TileShadow: View {
 }
 
 struct TileBackground: View {
-    @State private var gradientRotate = 0.0
+    @State private var animate:Bool
+    @State private var rotate = 0.0
+    
+    init(animate: Bool) {
+        self._animate = State(initialValue: animate)
+        self.rotate = rotate
+    }
 
     var body: some View {
         RoundedRectangle(cornerRadius: 16)
             .fill(Color("TileBackground"))
             .strokeBorder(
-                AngularGradient(gradient: Gradient(colors: [Color("TileBorder"), Color("TileBorder"), Color("TileBorderShine"), Color("TileBorder"), Color("TileBorder"), Color("TileBorder"), Color("TileBorder"), Color("TileBorder")]),
+                AngularGradient(gradient: Gradient(colors: [Color("TileBorder"), Color("TileBorderShine"), Color("TileBorder"), Color("TileBorder"), Color("TileBorder"), Color("TileBorder")]),
                                 center: .center,
-                                startAngle: .degrees(gradientRotate),
-                                endAngle: .degrees(gradientRotate + 360)),
-                lineWidth: 1
+                                startAngle: .degrees(rotate),
+                                endAngle: .degrees(rotate + 360)),lineWidth: 1
             )
-            .animation(Animation.linear(duration: 12).repeatForever(autoreverses: false), value: gradientRotate)
+            .animation(Animation.linear(duration: 12).repeatForever(autoreverses: false), value: rotate)
             .onAppear {
-                gradientRotate = 360
+                if animate == true {
+                    rotate = 360
+
+                }
                 
             }
             

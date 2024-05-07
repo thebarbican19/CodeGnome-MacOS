@@ -8,6 +8,49 @@
 import Foundation
 import SwiftUI
 
+struct ViewBorder: ViewModifier {
+    @Binding var animate: Bool
+
+    @State var radius:Double
+    @State var rotate:Double = 0.0
+
+    func body(content: Content) -> some View {
+        content.overlay(
+            GeometryReader { geometry in
+                ZStack {
+                    RoundedRectangle(cornerRadius: radius, style: .continuous)
+                        .fill(.clear)
+                        .stroke(Color("TileBorder"), lineWidth: 0.8)
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                    
+                    RoundedRectangle(cornerRadius: radius, style: .continuous)
+                        .fill(.clear)
+                        .strokeBorder(
+                            AngularGradient(gradient: Gradient(colors: [Color("TileBorder"), Color("TileBorder"), Color("TileBorder"), Color("TileBorderShine"),Color("TileBorder"), Color("TileBorder"), Color("TileBorder")]),
+                                            center: .center,
+                                            startAngle: .degrees(rotate), endAngle: .degrees(rotate + 360)),lineWidth: 0.8
+                            
+                        )
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .opacity(animate ? 1.0 : 0.0)
+                    
+    
+                }
+                
+            }
+
+        )
+        .animation(Animation.linear(duration: 2).repeatForever(autoreverses: false), value: rotate)
+        .animation(Animation.linear(duration: 0.3), value: animate)
+        .onAppear {
+            rotate = 360
+            
+        }
+        
+    }
+
+}
+
 struct ViewModifyerHover: ViewModifier {
     @State var cursor:NSCursor = NSCursor.pointingHand
     
@@ -175,6 +218,11 @@ extension View {
     
     func dropdown(_ buttons: [AppDropdownType], triggers:[AppDropdownActionType] = [.left, .right], task:TaskObject?, callback: @escaping ((AppDropdownType) -> Void)) -> some View {
         self.modifier(ComponentMenuModifier(task: task, buttons: buttons, callback: callback, triggers: triggers))
+        
+    }
+    
+    func border(_ animate: Binding<Bool>, radius:Double) -> some View {
+        self.modifier(ViewBorder(animate: animate, radius: radius))
         
     }
     

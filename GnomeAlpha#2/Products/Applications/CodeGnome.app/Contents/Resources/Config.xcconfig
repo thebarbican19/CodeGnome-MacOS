@@ -1,0 +1,12 @@
+//
+//  Config.xcconfig
+//  Gnome
+//
+//  Created by Joe Barbour on 4/30/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+G_HELPER_MACH = com.ovatar.gnome.brain.mach
+G_HELPER_ID = com.ovatar.gnome.brain

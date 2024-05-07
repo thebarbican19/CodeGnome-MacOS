@@ -78,28 +78,28 @@ struct MainHeader: View {
                 }
                 
             }
-            .foregroundColor(Color("SectionInnerColour"))
+            .foregroundColor(Color.red)
             .padding(.horizontal, 8)
             .padding(.vertical, 6)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(Color("SectionBackgroundColour"))
+                    .fill(Color("TileBackground"))
                 
             )
             
             Spacer()
-            
+                        
             if type.filter(tasks).count > limit {
                 HStack {
                     Text("Show All")
                     
                 }
-                .foregroundColor(Color("SectionInnerColour"))
+                .foregroundColor(Color.red)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 6)
                 .background(
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(Color("SectionBackgroundColour"))
+                        .fill(Color("TileBackground"))
                     
                 )
                 .onTapGesture {
@@ -135,9 +135,16 @@ struct MainList: View {
                 // TODO: Add Drag & Drop Repositioning
                 
             }
+            .onMove(perform: move)
             
         }
        
+    }
+    
+    private func move(from source: IndexSet, to destination: Int) {
+        //tasks.move(fromOffsets: source, toOffset: destination)
+        print("New order: \(tasks)")
+        
     }
     
 }

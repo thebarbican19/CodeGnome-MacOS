@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BuildMachineOSBuild</key>
+	<string>23F5074a</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Gnome</string>
+	<key>CFBundleExecutable</key>
+	<string>CodeGnome</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.ovatar.gnome</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>CodeGnome</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>MacOSX</string>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>DTCompiler</key>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
+	<key>DTPlatformBuild</key>
+	<string></string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
+	<key>DTPlatformVersion</key>
+	<string>14.0</string>
+	<key>DTSDKBuild</key>
+	<string>23A334</string>
+	<key>DTSDKName</key>
+	<string>macosx14.0</string>
+	<key>DTXcode</key>
+	<string>1501</string>
+	<key>DTXcodeBuild</key>
+	<string>15A507</string>
+	<key>G_HELPER_ID</key>
+	<string>com.ovatar.gnome.brain</string>
+	<key>G_HELPER_MACH</key>
+	<string>com.ovatar.gnome.brain.mach</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>com.ovatar.gnome.brain</key>
+		<string>identifier "com.ovatar.gnome.brain" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: Joe Barbour (9292KA78DX)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+	</dict>
+	<key>SUPublicEDKey</key>
+	<string>t1V9elylrpBkN0l4EkNxs7eEGVLF3Yd0P0sKDXqxfoA=</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Inter.ttf</string>
+		<string>Gilroy-Black.otf</string>
+		<string>Gilroy-Medium.otf</string>
+		<string>Gilroy-Regular.otf</string>
+	</array>
+</dict>
+</plist>

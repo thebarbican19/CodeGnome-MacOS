@@ -146,7 +146,7 @@ class OnboardingManager:ObservableObject {
             switch self.tutorial {
                 case .todo : return "Open your IDE of choice and create your first inline Todo."
                 case .important : return "Great, now lets mark a todo as Important. This adding exclamation points to the end. The more you add the High level of Importance"
-                case .done : return "Now, mark it as Complete by simply deleting it. Or, change the type to 'DONE:'"
+                case .done : return "Now, mark it as Complete by simply deleting it."
                 case .passed : return "You did it! There is a few more tricks for pros which you can learn about on our GitHub page"
                 
             }

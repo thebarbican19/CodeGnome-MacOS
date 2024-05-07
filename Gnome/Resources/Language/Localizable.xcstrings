@@ -97,9 +97,6 @@
     "Great, now lets mark a todo as Important. This adding exclamation points to the end. The more you add the High level of Importance" : {
 
     },
-    "Hello, World!" : {
-
-    },
     "Help" : {
 
     },
@@ -127,7 +124,7 @@
     "NO TASKS SAVED" : {
 
     },
-    "Now, mark it as Complete by simply deleting it. Or, change the type to 'DONE:'" : {
+    "Now, mark it as Complete by simply deleting it." : {
 
     },
     "Open CodeGnome" : {

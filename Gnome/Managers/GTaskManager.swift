@@ -15,12 +15,32 @@ class TaskManager:ObservableObject {
 
     @Published var tasks:[TaskObject]?
     @Published var project:[TaskProject]?
+    @Published var notification:TaskNotification? = nil
 
     private var updates = Set<AnyCancellable>()
 
     init() {
         $tasks.delay(for: 0.1, scheduler: RunLoop.main).removeDuplicates().sink { _ in
             self.taskExpire()
+            
+        }.store(in: &updates)
+        
+        $notification.debounce(for: 1.0, scheduler: RunLoop.main).removeDuplicates().sink { item in
+            switch item {
+                case nil : WindowManager.shared.windowClose(.notification, animate: true)
+                default: WindowManager.shared.windowOpen(.notification, present: .present)
+                
+                // TODO: Test Notification Open!!
+
+            }
+            
+        }.store(in: &updates)
+        
+        $notification.delay(for: 6, scheduler: RunLoop.main).removeDuplicates().sink { item in
+            if item != nil {
+                self.notification = nil
+                
+            }
             
         }.store(in: &updates)
         
@@ -46,24 +66,6 @@ class TaskManager:ObservableObject {
                     let state = TaskState(from: type)
                     let importance = TaskImportance.init(string: task)
 
-                    if existing.state != state {
-                        existing.changes = Date.now
-                        existing.state = TaskState(from: type)
-
-                        if state == .done {
-                            AppSoundEffects.complete.play()
-                            WindowManager.shared.windowOpen(.main, present: .present)
-
-                        }
-                        
-                    }
-                    
-                    if existing.importance != importance {
-                        existing.changes = Date.now
-                        existing.importance = importance
-
-                    }
-                    
                     existing.refreshed = Date.now
                     existing.line = line
                     existing.task = task.replacingOccurrences(of: "!+$", with: "", options: .regularExpression)
@@ -71,16 +73,30 @@ class TaskManager:ObservableObject {
                     existing.modifyed = modifyed
                     existing.application = .init(name: application)
                     
-                    os_log("Updated Task %@" ,existing.task)
+                    if existing.state != state {
+                        existing.changes = Date.now
+                        existing.state = TaskState(from: type)
 
+                        self.taskNotification(.state, task: existing)
+                        
+                    }
+                    
+                    if existing.importance != importance {
+                        existing.changes = Date.now
+                        existing.importance = importance
+
+                        self.taskNotification(.state, task: existing)
+
+                    }
+                
+                    os_log("Updated Task %@" ,existing.task)
+                    
                 }
                 else {
                     let task = TaskObject.init(type, task: task, directory: directory, line: line, project: project, application: application, total: total, comments: nil, modifyed: modifyed)
                     context.insert(task)
                     
-                    AppSoundEffects.added.play()
-                    WindowManager.shared.windowOpen(.main, present: .present)
-                    
+                    self.taskNotification(.new, task: task)
                     print("Storing New Task: \(task.task)")
                     os_log("Storing New Task %@" ,task.task)
 
@@ -93,6 +109,14 @@ class TaskManager:ObservableObject {
                 print("Save Error", error)
                 
             }
+            
+        }
+        
+    }
+    
+    private func taskNotification(_ type:TaskNotificationType, task:TaskObject) {
+        if self.notification == nil {
+            self.notification = .init(type, task: task)
             
         }
         

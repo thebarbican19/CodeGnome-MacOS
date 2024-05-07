@@ -31,7 +31,6 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
             self.listener?.resume()
          
             os_log("Listener Initlised")
-            // TODO: Fuck the Gnome
             
         }
         
@@ -111,6 +110,10 @@ class ProcessManager:ObservableObject {
         $checkin.receive(on: DispatchQueue.main).sink { checkin in
             print("checkin" ,checkin)
             
+        }.store(in: &updates)
+        
+        $application.receive(on: DispatchQueue.main).sink { app in
+            // TODO: Tutorial Application Notification!
         }.store(in: &updates)
         
         self.processStatus()
@@ -241,9 +244,7 @@ class ProcessManager:ObservableObject {
                     }
                     
                     TaskManager.shared.taskCreate(task.tag, task: task.task, line: task.line, directory: task.directory, project: project, total: task.total)
-                    
-                    // TODO: This is a test of how shit this app is
-                    
+                                        
                 }
                 
             }

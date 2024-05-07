@@ -78,10 +78,42 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "282"
-            endingLineNumber = "282"
+            startingLineNumber = "285"
+            endingLineNumber = "285"
             landmarkName = "processInstallHelper()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9BFA7AA9-C2FF-4575-90C1-FB630D4A5058 - 8fc766e4b3b1d838"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "286"
+                  endingLineNumber = "286"
+                  offsetFromSymbolStart = "2520">
+               </Location>
+               <Location
+                  uuid = "9BFA7AA9-C2FF-4575-90C1-FB630D4A5058 - 8fc766e4b3b1d859"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "285"
+                  endingLineNumber = "285"
+                  offsetFromSymbolStart = "1722">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -94,10 +126,42 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "299"
-            endingLineNumber = "299"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
             landmarkName = "processInstallHelper()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CD42C9C0-0104-4565-BCFF-F70C97284302 - 5f8d2f2c328caa40"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 @Swift.MainActor () -&gt; () in CodeGnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "302"
+                  endingLineNumber = "302"
+                  offsetFromSymbolStart = "1121">
+               </Location>
+               <Location
+                  uuid = "CD42C9C0-0104-4565-BCFF-F70C97284302 - 5f8d2f2c328caadc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 @Swift.MainActor () -&gt; () in CodeGnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "306"
+                  endingLineNumber = "306"
+                  offsetFromSymbolStart = "1121">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -110,10 +174,42 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "300"
-            endingLineNumber = "300"
+            startingLineNumber = "303"
+            endingLineNumber = "303"
             landmarkName = "processInstallHelper()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "0136665D-1FA3-46D7-82CA-F987494BBCE6 - 8fc766e4b3b1deca"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "304"
+                  endingLineNumber = "304"
+                  offsetFromSymbolStart = "3552">
+               </Location>
+               <Location
+                  uuid = "0136665D-1FA3-46D7-82CA-F987494BBCE6 - 5f8d2f2c328caadc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 @Swift.MainActor () -&gt; () in CodeGnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "306"
+                  endingLineNumber = "306"
+                  offsetFromSymbolStart = "1121">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -126,10 +222,42 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "315"
-            endingLineNumber = "315"
+            startingLineNumber = "318"
+            endingLineNumber = "318"
             landmarkName = "processInstallHelper()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "89BE2546-C905-4F5F-823D-015DF6620390 - 8fc766e4b3b1dcfb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "319"
+                  endingLineNumber = "319"
+                  offsetFromSymbolStart = "3936">
+               </Location>
+               <Location
+                  uuid = "89BE2546-C905-4F5F-823D-015DF6620390 - 8fc766e4b3b1dc18"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "318"
+                  endingLineNumber = "318"
+                  offsetFromSymbolStart = "3669">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -142,10 +270,42 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "346"
-            endingLineNumber = "346"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
             landmarkName = "processSetupConntection()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "25571470-38F7-42FA-B07B-6226272B12A7 - 2fa337cf87a53f86"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processSetupConntection() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "349"
+                  endingLineNumber = "349"
+                  offsetFromSymbolStart = "999">
+               </Location>
+               <Location
+                  uuid = "25571470-38F7-42FA-B07B-6226272B12A7 - 5e81b41c7cd22e69"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 @Sendable (__C.NSTimer) -&gt; () in CodeGnome.ProcessManager.processSetupConntection() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "349"
+                  endingLineNumber = "349"
+                  offsetFromSymbolStart = "555">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -158,10 +318,42 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "253"
-            endingLineNumber = "253"
+            startingLineNumber = "256"
+            endingLineNumber = "256"
             landmarkName = "processDeepSearch()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6FAEBC73-49A2-4C52-A79F-128E8B7E1EB2 - 8fc766e4b3b1d41a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "228">
+               </Location>
+               <Location
+                  uuid = "6FAEBC73-49A2-4C52-A79F-128E8B7E1EB2 - bfb6c519e1df0e63"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processDeepSearch() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "257"
+                  endingLineNumber = "257"
+                  offsetFromSymbolStart = "190">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -174,10 +366,42 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "251"
-            endingLineNumber = "251"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
             landmarkName = "processDeepSearch()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5117B8FC-3ED7-42D8-85E9-DA469965A85D - 8fc766e4b3b1d41a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processInstallHelper() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "228">
+               </Location>
+               <Location
+                  uuid = "5117B8FC-3ED7-42D8-85E9-DA469965A85D - 7e01b400237c133e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.String&gt;) -&gt; () in CodeGnome.ProcessManager.processDeepSearch() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "255"
+                  endingLineNumber = "255"
+                  offsetFromSymbolStart = "1296">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -190,10 +414,57 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "338"
-            endingLineNumber = "338"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "processSetupConntection()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A2998647-A6E3-4C44-985E-11E224C8DFCC - 2fa337cf87a53c8e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processSetupConntection() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "341"
+                  endingLineNumber = "341"
+                  offsetFromSymbolStart = "695">
+               </Location>
+               <Location
+                  uuid = "A2998647-A6E3-4C44-985E-11E224C8DFCC - 5e81b41c7cd22d61"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 @Sendable (__C.NSTimer) -&gt; () in CodeGnome.ProcessManager.processSetupConntection() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "341"
+                  endingLineNumber = "341"
+                  offsetFromSymbolStart = "71">
+               </Location>
+               <Location
+                  uuid = "A2998647-A6E3-4C44-985E-11E224C8DFCC - 47921e8fb4288211"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 (CodeGnome.HelperState) -&gt; () in CodeGnome.ProcessManager.processSetupConntection() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "341"
+                  endingLineNumber = "341"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -206,10 +477,42 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "328"
-            endingLineNumber = "328"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
             landmarkName = "processSetupConntection()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F04CF1F5-B886-4EB9-9539-1CA3F360CB3D - 2fa337cf87a53dd0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processSetupConntection() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "331"
+                  endingLineNumber = "331"
+                  offsetFromSymbolStart = "126">
+               </Location>
+               <Location
+                  uuid = "F04CF1F5-B886-4EB9-9539-1CA3F360CB3D - 2fa337cf87a53dd0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CodeGnome.ProcessManager.processSetupConntection() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "331"
+                  endingLineNumber = "331"
+                  offsetFromSymbolStart = "1077">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -222,10 +525,42 @@
             filePath = "Gnome/Managers/GProcessManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
             landmarkName = "processStatus()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "79E771BF-3994-4A29-AD09-519E1DB13D84 - 1da0f6d1e84ee7f2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.String&gt;) -&gt; () in CodeGnome.ProcessManager.processStatus() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "206"
+                  endingLineNumber = "206"
+                  offsetFromSymbolStart = "497">
+               </Location>
+               <Location
+                  uuid = "79E771BF-3994-4A29-AD09-519E1DB13D84 - 1da0f6d1e84ee7f2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.String&gt;) -&gt; () in CodeGnome.ProcessManager.processStatus() -&gt; ()"
+                  moduleName = "CodeGnome"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "206"
+                  endingLineNumber = "206"
+                  offsetFromSymbolStart = "421">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

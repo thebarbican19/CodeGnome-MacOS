@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>com.ovatar.gnome.brain</key>
+		<string>identifier &quot;com.ovatar.gnome.brain&quot; and anchor apple generic and certificate leaf[subject.CN] = &quot;Apple Development: Joe Barbour (9292KA78DX)&quot; and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+	</dict>
+	<key>G_HELPER_MACH</key>
+	<string>$(G_HELPER_MACH)</string>
+	<key>G_HELPER_ID</key>
+	<string>$(G_HELPER_ID)</string>
+	<key>SUPublicEDKey</key>
+	<string>t1V9elylrpBkN0l4EkNxs7eEGVLF3Yd0P0sKDXqxfoA=</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Inter.ttf</string>
+		<string>Gilroy-Black.otf</string>
+		<string>Gilroy-Medium.otf</string>
+		<string>Gilroy-Regular.otf</string>
+	</array>
+</dict>
+</plist>

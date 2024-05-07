@@ -8,9 +8,16 @@
 import SwiftUI
 
 struct BackgroundContainer: View {
+    @State var opacity:Double
+    
+    init(_ opacity: Double = 1.0) {
+        self._opacity = State(initialValue: opacity)
+        // TODO: Notification Layout!
+    }
+    
     var body: some View {
         LinearGradient(
-            gradient: Gradient(colors: [Color("BackgroundGradientTop"), Color("BackgroundGradientBottom")]),
+            gradient: Gradient(colors: [Color("BackgroundGradientTop").opacity(self.opacity), Color("BackgroundGradientBottom").opacity(self.opacity)]),
             startPoint: .top,
             endPoint: .bottom
         )

@@ -204,7 +204,7 @@ class WindowManager: ObservableObject {
         let status = NSStatusBar.system.thickness
         let properties = WindowTypes.main.size
         
-        var window = NSMakeRect(properties.width, 0.0 - status, properties.width, properties.height)
+        var window = NSMakeRect(properties.width, 0.0 - (status + 3.0), properties.width, properties.height)
 
         if SettingsManager.shared.windowPosition == .right {
             switch hidden {
@@ -280,7 +280,9 @@ class WindowManager: ObservableObject {
             
     }
     
-    private func windowNotification() {
+    private func windowNotification() -> NSWindow? {
+        let type: WindowTypes = .notification
+        let bounds = WindowScreenSize()
         let window = NSWindow()
         window.styleMask = [.borderless]
         window.titlebarAppearsTransparent = true
@@ -289,11 +291,16 @@ class WindowManager: ObservableObject {
         window.isMovableByWindowBackground = false
         window.hasShadow = false
         window.center()
-        window.setFrame(self.windowBounds(false), display: true, animate: false)
-        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        window.backgroundColor = .clear
+        window.setFrame(NSRect(x: (bounds.width / 2) - (type.size.width / 2), y: bounds.height - (type.size.height + 50), width: type.size.width, height: type.size.height), display: false)
+        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .moveToActiveSpace]
         window.acceptsMouseMovedEvents = true
         window.level = .statusBar
-        window.contentView = NSHostingController(rootView: MainController()).view
+        window.contentView = NSHostingController(rootView: NotificationController()).view
+        
+        //TODO: Window to snap to all spaces!!!
+        
+        return window
         
     }
     
@@ -312,6 +319,7 @@ class WindowManager: ObservableObject {
         window?.backgroundColor = .clear
         window?.setFrame(NSRect(x: (bounds.width / 2) - (type.size.width / 2), y: (bounds.height / 2) - (type.size.height / 2), width: type.size.width, height: type.size.height), display: false)
         window?.titlebarAppearsTransparent = true
+        window?.maxSize = CGSize(width: type.size.width, height: type.size.height)
         window?.titleVisibility = .hidden
         window?.toolbarStyle = .unifiedCompact
         window?.isReleasedWhenClosed = false
@@ -330,22 +338,31 @@ class WindowManager: ObservableObject {
 
     private func windowEvent() {
         DispatchQueue.main.async {
-            if let main = self.windowMain() {
-                if self.windowIsVisible(.main) {
-                    if SettingsManager.shared.enabledPinned == false && self.disableArea == true {
-                        if SettingsManager.shared.windowPosition == .right {
-                            if NSEvent.mouseLocation.x < (main.frame.minX - 40) {
-                                self.windowOpen(.main, present: .hide)
-                                
-                            }
-                        }
-                        else {
-                            if NSEvent.mouseLocation.x > (main.frame.width + 40) {
-                                self.windowOpen(.main, present: .hide)
-                                
-                            }
-                            
-                        }
+            guard OnboardingManager.shared.current == .complete else {
+                return
+                
+            }
+            
+            guard let main = self.windowMain() else {
+                return
+                
+            }
+            
+            guard self.windowIsVisible(.main) else {
+                return
+                
+            }
+            
+            if SettingsManager.shared.enabledPinned == false && self.disableArea == true {
+                if SettingsManager.shared.windowPosition == .right {
+                    if NSEvent.mouseLocation.x < (main.frame.minX - 40) {
+                        self.windowOpen(.main, present: .hide)
+                        
+                    }
+                }
+                else {
+                    if NSEvent.mouseLocation.x > (main.frame.width + 40) {
+                        self.windowOpen(.main, present: .hide)
                         
                     }
                     
@@ -357,7 +374,7 @@ class WindowManager: ObservableObject {
         
     }
        
-    private func windowExists(_ type: WindowTypes, onboarding:OnboardingSubview? = nil) -> NSWindow? {
+    private func windowExists(_ type: WindowTypes, onboarding:OnboardingSubview? = nil, task:TaskObject? = nil) -> NSWindow? {
         if let window = NSApplication.shared.windows.first(where: { WindowTypes(rawValue: $0.title) == type }) {
             return window
             
@@ -368,11 +385,12 @@ class WindowManager: ObservableObject {
                 case .onboarding : return self.windowDefault(type, onboarding: onboarding)
                 case .preferences : return self.windowDefault(type)
                 case .reporter : return self.windowDefault(type)
-                
+                case .notification : return  self.windowNotification()
+
             }
-                        
+            
         }
-                        
+                                
     }
     
     public func windowClose(_ type:WindowTypes, animate:Bool) {

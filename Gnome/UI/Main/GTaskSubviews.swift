@@ -51,7 +51,7 @@ struct TaskCell: View {
             
         }
         .padding(18)
-        .background(TileBackground())
+        .background(TileBackground(animate: false))
         .hover(cursor: NSCursor.pointingHand, value: { state in
             if hover == true {
                 withAnimation(Animation.easeOut(duration: 0.2)) {
@@ -69,6 +69,7 @@ struct TaskCell: View {
             }
             
         })
+        .onDrag {NSItemProvider(object: item.id.uuidString as NSString)}
         .padding(0)
         
     }
