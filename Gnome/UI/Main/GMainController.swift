@@ -14,9 +14,11 @@ struct MainContainer: View {
     let layout = [GridItem(.flexible(minimum: 30, maximum: 355))]
 
     var body: some View {
-        LazyVGrid(columns: layout, spacing:30) {
-            Spacer().frame(height: 30)
-            
+        LazyVGrid(columns: layout, spacing:18) {
+            Spacer().frame(height: 0)
+    
+            MainSection(.active)
+
             MainSection(.todo)
             
             MainSection(.done)
@@ -56,8 +58,11 @@ struct MainController: View {
             }
             .frame(width: 380, alignment: .center)
             .frame(maxWidth: .infinity, maxHeight: screen.height)
-            .background(BackgroundContainer())
+            .fade([.bottom], padding:50)
+            .background(.clear)
 
+            // TODO: Fix Scrolling Issue
+            
         }
         .modelContainer(persitence)
         .environmentObject(WindowManager.shared)

@@ -13,7 +13,7 @@ import SwiftUI
 class OnboardingManager:ObservableObject {
     static var shared = OnboardingManager()
     
-    @Published public var current:OnboardingSubview = .complete
+    @Published public var current:OnboardingSubview? = nil
     @Published public var tutorial:OnboardingTutorialStep = .passed
 
     @Published public var title:LocalizedStringKey = ""
@@ -35,10 +35,15 @@ class OnboardingManager:ObservableObject {
         }.store(in: &updates)
 
         $current.removeDuplicates().delay(for: 0.2, scheduler: RunLoop.main).sink { state in
-            if state != .complete {
+            if state != nil {
                 WindowManager.shared.windowOpen(.main, present: .hide)
                 WindowManager.shared.windowOpen(.onboarding, present: .present)
                 
+            }
+            else {
+                WindowManager.shared.windowClose(.onboarding, animate: true)
+                WindowManager.shared.windowOpen(.main, present: .toggle)
+
             }
             
         }.store(in: &updates)
@@ -87,8 +92,12 @@ class OnboardingManager:ObservableObject {
             self.current = .thankyou
 
         }
-        else {
+        else if self.onboardingStep(.complete) == .unseen {
             self.current = .complete
+            
+        }
+        else {
+            self.current = nil
             
         }
         
@@ -98,7 +107,7 @@ class OnboardingManager:ObservableObject {
         self.secondary = self.onboardingSecondary()
         self.tertiary = self.onboardingTertiary()
         
-        // TODO: Onboarding Transition Animation
+        // TODO: Onboarding Transition Animation!
 
     }
     
@@ -109,8 +118,8 @@ class OnboardingManager:ObservableObject {
             case .license : return "Enter License Key"
             case .thankyou : return "Thank You"
             case .tutorial : return "Create your First Task"
-            case .complete : return "All Done"
-
+            default : return "All Done"
+            
         }
     
     }
@@ -144,16 +153,16 @@ class OnboardingManager:ObservableObject {
         }
         else if self.current == .tutorial {
             switch self.tutorial {
-                case .todo : return "Open your IDE of choice and create your first inline Todo."
-                case .important : return "Great, now lets mark a todo as Important. This adding exclamation points to the end. The more you add the High level of Importance"
+                case .todo : return "Open your Code Editor of choice and create your first Inline-Todo."
+                case .important : return "Great, now lets mark a todo as Important by adding exclamation points to the end. The more you add the High level of Importance."
                 case .done : return "Now, mark it as Complete by simply deleting it."
-                case .passed : return "You did it! There is a few more tricks for pros which you can learn about on our GitHub page"
+                case .passed : return "You did it! There is a few more tricks for pros which you can learn about on our Community GitHub page"
                 
             }
             
         }
-        else if self.current == .complete {
-            return "Thats it, open CodeGnome from the Dock, the Menu Bar or with the Keyboard Shorcuts to see all your tasks."
+        else if self.current == .complete || self.current == nil {
+            return "Thats it, open CodeGnome from the Dock or with the Keyboard Shorcuts to see all your imported Tasks."
             
         }
         
@@ -187,7 +196,7 @@ class OnboardingManager:ObservableObject {
             return nil
             
         }
-        else if self.current == .complete {
+        else if self.current == .complete || self.current == nil {
             return "Open CodeGnome"
 
         }

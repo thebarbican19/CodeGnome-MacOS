@@ -35,7 +35,7 @@ enum WindowTypes:String,CaseIterable {
         switch self {
             case .main : return .init(width: 390, height: CGFloat(NSScreen.main?.frame.height ?? 0.0))
             case .preferences : return .init(width: 400, height: 480)
-            case .onboarding: return .init(width: 520, height: 500)
+            case .onboarding: return .init(width: 520, height: 540)
             case .reporter: return .init(width: 920, height: 580)
             case .notification: return .init(width: 360, height: 60)
 

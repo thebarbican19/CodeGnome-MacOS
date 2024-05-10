@@ -9,21 +9,24 @@ import SwiftUI
 
 struct BackgroundContainer: View {
     @State var opacity:Double
-    
-    init(_ opacity: Double = 1.0) {
+    @State var horizontal:Bool
+
+    init(_ opacity: Double = 1.0, horizontal:Bool = false) {
         self._opacity = State(initialValue: opacity)
+        self._horizontal = State(initialValue: horizontal)
+
         // TODO: Notification Layout!
+        
     }
     
     var body: some View {
         LinearGradient(
-            gradient: Gradient(colors: [Color("BackgroundGradientTop").opacity(self.opacity), Color("BackgroundGradientBottom").opacity(self.opacity)]),
-            startPoint: .top,
-            endPoint: .bottom
+            gradient: Gradient(colors: [Color("BackgroundGradientTop").opacity(self.opacity), Color("BackgroundGradientTop").opacity(self.opacity), Color("BackgroundGradientBottom").opacity(self.opacity)]),
+            startPoint: horizontal ? .leading : .top,
+            endPoint: horizontal ? .trailing : .bottom
         )
         .edgesIgnoringSafeArea(.all)
         .overlay(BackgroundAnimation())
-        .background(WindowViewBlur())
         
     }
     

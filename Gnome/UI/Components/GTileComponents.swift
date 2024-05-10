@@ -57,20 +57,23 @@ struct TileBackground: View {
     }
 }
 
-struct TileSection: View {
-    @State var geo:GeometryProxy
-    
+struct TileSection: View {    
     var body: some View {
-        ZStack {
-            TileShadow()
-            
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color("TileBackground"))
-                .strokeBorder(Color("TileBorder"),lineWidth: 1)
-            
-        }
-        .frame(width: geo.size.width - 12, height: 400 - 6)
-        .padding(12)
+        RoundedRectangle(cornerRadius: 18, style: .continuous)
+            .fill(Color("TileBackground"))
+            .strokeBorder(Color("TileBorder"),lineWidth: 1)
+            .background(
+                ZStack {
+                    WindowViewBlur()
+                                        
+                }
+                .mask(
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+
+                )
+                
+            )
+
             
     }
     

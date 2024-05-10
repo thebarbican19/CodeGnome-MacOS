@@ -15,6 +15,7 @@ class TaskManager:ObservableObject {
 
     @Published var tasks:[TaskObject]?
     @Published var project:[TaskProject]?
+    @Published var files:[TaskFile]?
     @Published var notification:TaskNotification? = nil
 
     private var updates = Set<AnyCancellable>()
@@ -22,17 +23,15 @@ class TaskManager:ObservableObject {
     init() {
         $tasks.delay(for: 0.1, scheduler: RunLoop.main).removeDuplicates().sink { _ in
             self.taskExpire()
-            
+                   
         }.store(in: &updates)
         
         $notification.debounce(for: 1.0, scheduler: RunLoop.main).removeDuplicates().sink { item in
-            switch item {
-                case nil : WindowManager.shared.windowClose(.notification, animate: true)
-                default: WindowManager.shared.windowOpen(.notification, present: .present)
-                
-                // TODO: Test Notification Open!!
-
-            }
+//            switch item {
+//                case nil : WindowManager.shared.windowClose(.notification, animate: true)
+//                default: WindowManager.shared.windowOpen(.notification, present: .present)
+//                
+//            }
             
         }.store(in: &updates)
         
@@ -48,34 +47,44 @@ class TaskManager:ObservableObject {
         
     }
     
-    public func taskCreate(_ type:HelperTaskState, task:String, line:Int, directory:String, project:TaskProject, total:Int) {
+    public func taskCreate(_ type:HelperTaskState, task:String, line:Int, directory:String, file:TaskFile, project:TaskProject, total:Int) {
         let context = PersistenceManager.context
-        let modifyed = self.taskModification(directory)
-        let application = ProcessManager.shared.application
         let total = tasks?.filter({ $0.state == TaskState(from: type) }).count
-
-        guard self.taskOwner(directory) == true else {
-            print("Task is not owned by user: \(directory)")
-            return
-            
-        }
         
+        var modified = false
+
+        print("Attenpting to Store '\(task)'")
         if task.replacingOccurrences(of: "\\s+", with: "", options: .regularExpression).isEmpty == false {
             do {
                 if let existing = self.taskMatch(task, directory: directory) {
                     let state = TaskState(from: type)
                     let importance = TaskImportance.init(string: task)
+                    let title = task.replacingOccurrences(of: "!+$", with: "", options: .regularExpression)
 
-                    existing.refreshed = Date.now
-                    existing.line = line
-                    existing.task = task.replacingOccurrences(of: "!+$", with: "", options: .regularExpression)
-                    existing.project = project
-                    existing.modifyed = modifyed
-                    existing.application = .init(name: application)
+                    if existing.line != line {
+                        existing.line = line
+                        existing.file.changes = Date.now
+                        existing.changes = Date.now
+
+                        modified = true
+                        
+                    }
+                    
+                    if existing.task != title {
+                        existing.task = title
+                        existing.file.changes = Date.now
+                        existing.changes = Date.now
+
+                        modified = true
+
+                    }
                     
                     if existing.state != state {
                         existing.changes = Date.now
                         existing.state = TaskState(from: type)
+                        existing.file.changes = Date.now
+
+                        modified = true
 
                         self.taskNotification(.state, task: existing)
                         
@@ -84,25 +93,32 @@ class TaskManager:ObservableObject {
                     if existing.importance != importance {
                         existing.changes = Date.now
                         existing.importance = importance
+                        existing.file.changes = Date.now
+
+                        modified = true
 
                         self.taskNotification(.state, task: existing)
 
                     }
-                
-                    os_log("Updated Task %@" ,existing.task)
                     
+                    print("\(modified ? "Updateing" : "Not Updating") Task '\(existing.task)'")
+                
                 }
                 else {
-                    let task = TaskObject.init(type, task: task, directory: directory, line: line, project: project, application: application, total: total, comments: nil, modifyed: modifyed)
+                    let task = TaskObject.init(type, task: task, directory: directory, line: line, project: project, file: file, total: total, comments: nil)
+                    modified = true
+                    file.addTask(task)
                     context.insert(task)
                     
                     self.taskNotification(.new, task: task)
-                    print("Storing New Task: \(task.task)")
-                    os_log("Storing New Task %@" ,task.task)
+                    print("Storing New Task '\(task.task)'")
 
                 }
                 
-                try PersistenceManager.save(context: context)
+                if modified == true {
+                    try PersistenceManager.save(context: context)
+
+                }
                 
             }
             catch {
@@ -114,9 +130,78 @@ class TaskManager:ObservableObject {
         
     }
     
+    public func taskUpdateFromDirectory(_ directory:String, state:TaskState) {
+        guard self.files?.first(where: { $0.directory == directory }) != nil else {
+            return
+            
+        }
+        
+        guard let tasks = self.tasks?.filter({ $0.directory == directory && $0.state != state }) else {
+            return
+            
+        }
+        
+        do {
+            let context = PersistenceManager.context
+
+            for task in tasks {
+                print("Set '\(task.task)' to \(state.rawValue)")
+                task.line = 0
+                task.state = state
+                
+            }
+            
+            try PersistenceManager.save(context: context)
+
+        }
+        catch {
+            
+        }
+
+    }
+    
+    private func taskExpire() {
+        let fetch = FetchDescriptor<TaskObject>()
+
+        do {
+            var modifyed:Bool = false
+
+            let context = PersistenceManager.context
+            let tasks = try context.fetch(fetch)
+            
+            for item in tasks.filter({ $0.state.complete == false }) {
+                let difference = item.file.changes.timeIntervalSince(item.changes)
+
+                if difference > 1 && item.state.complete == false {
+                    switch SettingsManager.shared.enabledArchive {
+                        case true : item.state = TaskState.archived
+                        case false : item.state = TaskState.done
+                        
+                    }
+                    
+                    modifyed = true
+                    
+                }
+                                    
+            }
+            
+            if modifyed == true {
+                try PersistenceManager.save(context: context)
+
+            }
+
+            
+        }
+        catch {
+            
+        }
+            
+    }
+        
     private func taskNotification(_ type:TaskNotificationType, task:TaskObject) {
         if self.notification == nil {
             self.notification = .init(type, task: task)
+            // TODO: Finish Task Notification View
             
         }
         
@@ -155,66 +240,23 @@ class TaskManager:ObservableObject {
                 
     }
     
-    public func taskOwner(_ directory: String) -> Bool {
-        do {
-            let attributes = try FileManager.default.attributesOfItem(atPath: directory)
-            if let owner = attributes[.ownerAccountID] as? NSNumber {
-                if owner.uint32Value == getuid() {
-                    return true
-                    
-                }
-                else {
-                    print("File \(directory) is not owned by the current user.")
-                    return false
-                    
-                }
-                
-            }
-            
-        }
-        catch {
-            print("Error retrieving file attributes: \(error)")
-            
-        }
-        
-        return false
-        
-    }
-    
-    public func taskModification(_ directory: String) -> Date? {
-        do {
-            let attributes = try FileManager.default.attributesOfItem(atPath: directory)
-            if let _ = attributes[.ownerAccountID] as? NSNumber {
-                return attributes[.modificationDate] as? Date
-                
-            }
-            
-        }
-        catch {
-            
-        }
-        
-        return nil
-        
-    }
-    
     public func taskOpen(_ task:TaskObject, directory:String) {
         var path:String? = nil
         var arguments:[String]? = nil
         
         print("Opening: " ,directory)
         if directory == task.directory {
-            if task.application == .vscode {
+            if task.file.application == .vscode {
                 path = "/usr/local/bin/code"
                 arguments = ["-g", "\(task.directory):\(task.line)"]
    
             }
-            else if task.application == .xcode {
+            else if task.file.application == .xcode {
                 path = "/usr/bin/xed"
                 arguments = ["--line", String(task.line), task.directory]
         
             }
-            else if task.application == .sublime {
+            else if task.file.application == .sublime {
                 path = "/usr/local/bin/subl"
                 arguments = ["\(task.directory):\(task.line)"]
                              
@@ -241,7 +283,7 @@ class TaskManager:ObservableObject {
             
         }
         catch {
-            print("Failed to open \(task.application?.rawValue ?? ""): \(error)")
+            print("Failed to open \(task.file.application?.rawValue ?? ""): \(error)")
             
         }
     
@@ -254,6 +296,25 @@ class TaskManager:ObservableObject {
             task.ignore = hide
             task.changes = Date.now
 
+            try PersistenceManager.save(context: context)
+            
+        }
+        catch {
+            
+        }
+        
+    }
+    
+    public func taskActive(_ task:TaskObject, active:Bool) {
+        do {
+            let context = PersistenceManager.context
+            let order = (self.tasks?.filter({ $0.active != nil }).count ?? 0) + 1
+            
+            task.ignore = false
+            task.snoozed = nil
+            task.active = active ? order : nil
+            task.changes = Date.now
+                        
             try PersistenceManager.save(context: context)
             
         }
@@ -294,58 +355,7 @@ class TaskManager:ObservableObject {
         }
         
     }
-    
-    private func taskExpire() {
-        let fetch = FetchDescriptor<TaskObject>()
-
-        do {
-            let context = PersistenceManager.context
-            let tasks = try context.fetch(fetch)
-            let sorted = tasks.sorted(by: { $0.refreshed > $1.refreshed && $0.state.complete != true })
-
-            if let newest = sorted.first {
-                for element in sorted.dropFirst() {
-                    let difference = newest.refreshed.timeIntervalSince(element.refreshed)
-                    
-                    if SettingsManager.shared.enabledArchive == true {
-                        if difference > 5 && element.state != TaskState.archived {
-                            element.state = TaskState.archived
-                            element.changes = Date.now
-                            
-                            print("ARCHIVED" ,element.task)
-
-                            AppSoundEffects.complete.play()
-
-                        }
-                        
-                    }
-                    else {
-                        if difference > 5 && element.state != TaskState.done {
-                            element.state = TaskState.done
-                            element.changes = Date.now
-                            
-                            print("DONE" ,element.task)
-
-                            AppSoundEffects.complete.play()
-                            WindowManager.shared.windowOpen(.main, present: .present)
-
-                        }
-                        
-                    }
-                    
-                }
-                
-            }
-            
-            try PersistenceManager.save(context: context)
-
-        }
-        catch {
-            
-        }
         
-    }
-    
     public func projectList() -> [TaskProject]? {
         let fetch = FetchDescriptor<TaskProject>()
         
@@ -368,11 +378,13 @@ class TaskManager:ObservableObject {
         let context = PersistenceManager.context
 
         guard let projects = self.projectList() else {
+            print("Project Not Stored as Projects List is Null")
             return nil
             
         }
         
         guard let root = self.projectFromDirectory(directory: directory) else {
+            print("Project Root Not Determined")
             return nil
             
         }
@@ -441,5 +453,58 @@ class TaskManager:ObservableObject {
         
     }
     
+    public func fileList() -> [TaskFile]? {
+        let fetch = FetchDescriptor<TaskFile>()
+        
+        do {
+            self.files = try PersistenceManager.context.fetch(fetch)
+            
+            return self.files
+            
+        }
+        catch {
+            print("Could Not Get Project")
+            
+        }
+        
+        return nil
+        
+    }
+    
+    public func fileStore(directory: String) -> TaskFile? {
+        let context = PersistenceManager.context
+        let application = ProcessManager.shared.application
+
+        guard let files = self.fileList() else {
+            print("File Not Stored as Files List is Null")
+            return nil
+            
+        }
+        
+        do {
+            if let existing = files.first(where: { $0.directory == directory }) {
+                return existing
+                
+            }
+            else {
+                let project = TaskFile.init(directory: directory, application: application)
+                
+                context.insert(project)
+                
+                try PersistenceManager.save(context: context)
+                
+                return project
+                
+            }
+            
+        }
+        catch {
+            print("Could not save Project")
+            
+        }
+        
+        return nil
+        
+    }
     
 }

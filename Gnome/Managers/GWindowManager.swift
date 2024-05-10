@@ -51,14 +51,14 @@ class WindowManager: ObservableObject {
         var type:WindowTypes = type
         
         if force == false {
-            if OnboardingManager.shared.current != .complete && type == .main {
+            if OnboardingManager.shared.current != nil && type == .main {
                 if type.allowed == false {
                     type = .onboarding
                     
                 }
                 
             }
-            else if OnboardingManager.shared.current == .complete && type == .onboarding {
+            else if OnboardingManager.shared.current == nil && type == .onboarding {
                 type = .main
                 
             }
@@ -203,8 +203,9 @@ class WindowManager: ObservableObject {
         let screen = WindowScreenSize()
         let status = NSStatusBar.system.thickness
         let properties = WindowTypes.main.size
-        
-        var window = NSMakeRect(properties.width, 0.0 - (status + 3.0), properties.width, properties.height)
+        let dock = self.windowDockSize
+
+        var window = NSMakeRect(properties.width, 0.0 - (status + 3.0), properties.width, screen.height)
 
         if SettingsManager.shared.windowPosition == .right {
             switch hidden {
@@ -268,9 +269,9 @@ class WindowManager: ObservableObject {
         window.isMovableByWindowBackground = false
         window.hasShadow = false
         window.center()
-        window.backgroundColor = NSColor.black.withAlphaComponent(0.1)
+        window.backgroundColor = NSColor.clear
         window.setFrame(self.windowBounds(false), display: true, animate: false)
-        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        window.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
         window.acceptsMouseMovedEvents = true
         window.level = .statusBar
         window.contentView = NSHostingController(rootView: MainController()).view
@@ -293,7 +294,7 @@ class WindowManager: ObservableObject {
         window.center()
         window.backgroundColor = .clear
         window.setFrame(NSRect(x: (bounds.width / 2) - (type.size.width / 2), y: bounds.height - (type.size.height + 50), width: type.size.width, height: type.size.height), display: false)
-        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .moveToActiveSpace]
+        window.collectionBehavior = [.fullScreenAuxiliary, .moveToActiveSpace]
         window.acceptsMouseMovedEvents = true
         window.level = .statusBar
         window.contentView = NSHostingController(rootView: NotificationController()).view

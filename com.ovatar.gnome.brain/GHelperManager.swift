@@ -16,23 +16,23 @@ final class HelperManager: NSObject, HelperProtocol {
     private var foreground: HelperSupportedApplications?
     private var counter:Int = 0
     private var processing:Date? = nil
-    
+    private var ignore: [String] = []
+
     func brainSetup(_ callback: @escaping (HelperState) -> Void) {
         if self.timer != nil {
             self.timer!.invalidate()
             
         }
-                    
+        
         DispatchQueue.main.async {
-            self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            self.timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
                 guard let counter = self?.counter else {
                     return
                     
                 }
                 
-                self?.helperSearchFiles(deep:(counter % 30 == 0) ? true : false)
+                self?.helperSearchFiles(deep:(counter % 600 == 0) ? true : false)
                 self?.helperForgroundApplication()
-                self?.helperCheckin()
                 
                 self?.counter += 1
                 
@@ -40,19 +40,18 @@ final class HelperManager: NSObject, HelperProtocol {
             
             if self.timer != nil {
                 RunLoop.main.add(self.timer!, forMode: .common)
-
+                
                 os_log("Helper Timer Started")
                 callback(.installed)
-
+                
             }
             else {
                 os_log("Failed to create timer")
                 callback(.error)
-
+                
             }
-                        
+            
         }
-        
         
     }
     
@@ -61,9 +60,8 @@ final class HelperManager: NSObject, HelperProtocol {
 
     }
     
-    func brainCheckin() {
-        os_log("Received Checkin from Helper")
-
+    func brainInvalidateTasks(_ directory: String) {
+        
     }
     
     func brainSwitchApplication(_ application: HelperSupportedApplications) {
@@ -98,7 +96,7 @@ final class HelperManager: NSObject, HelperProtocol {
         }
         
     }
-        
+            
     @objc private func helperForgroundApplication() {
         if let active = NSWorkspace.shared.runningApplications.filter({ $0.isActive }).first {
             guard let application = active.localizedName else {
@@ -129,16 +127,14 @@ final class HelperManager: NSObject, HelperProtocol {
     }
 
     @objc private func helperSearchFiles(deep:Bool = false) {
-        let tags = ["DONE", "TODO", "NOTE", "FIX"]
-        
-        var params:[String]? = nil
-        var query = tags.map { "(kMDItemTextContent == '//\($0):'c) || (kMDItemTextContent == '// \($0):'c)" }.joined(separator: " || ")
+        let tags = HelperSupportedLanguage.allCases.map({ $0.ext })
+        let query = "(\(tags.map({ "(kMDItemFSName == '*.\($0)')" }).joined(separator: " || ")))"
 
-        query = "(\(query))"
+        var params:[String]? = nil
         
         switch deep {
-            case true : params = [query]
-            case false : params = [query, "kMDItemContentModificationDate > $time.now(-30)"]
+            case true : params = [query, "kMDItemContentModificationDate > $time.now(-432000)"]
+            case false : params = [query, "kMDItemContentModificationDate > $time.now(-15)"]
             
         }
         
@@ -148,8 +144,6 @@ final class HelperManager: NSObject, HelperProtocol {
         }
         
         if self.processing == nil {
-            os_log("Running %@ Search" ,deep ? "Deep" : "Shallow")
-            
             self.processing = Date.now
             self.helperProcessTaskWithArguments("/usr/bin/mdfind", arguments: [arguments], whitespace: true) { output in
                 DispatchQueue.main.async {
@@ -159,32 +153,42 @@ final class HelperManager: NSObject, HelperProtocol {
                 
                 if let output = output?.components(separatedBy: "\n") {
                     guard output.first?.isEmpty == false else {
+                        print("\nZero Found")
                         return
                         
                     }
                     
-                    var stored:[HelperTaskObject] = []
+                    guard let proxy = self.helperProxy() else {
+                        return
+
+                    }
+                                 
                     for directory in output {
-                        guard let tasks = self.helperRetriveContent(directory) else {
+                        print("\nFound:" ,directory)
+
+                        guard self.helperRetriveOwner(directory) == true else {
                             return
                             
                         }
                         
-                        for task in tasks {
-                            print("TASK" ,task)
-                            stored.append(task)
+                        if let tasks = self.helperRetrieveContent(directory) {
+                            for task in tasks {
+                                print("\nCreating Tasks '\(task.task)'")
+
+                                proxy.brainTaskFound(task.tag, task: task.task, line: task.line, directory: task.directory, total: task.total)
+                                
+                            }
+                            
+                        }
+                        else if deep == false {
+                            proxy.brainInvalidateTasks(directory)
+                            print("\nInvalidate Tasks in '\(directory)")
                             
                         }
                         
                     }
-                    
-                    for task in stored {
-                        self.helperSendCallback(task)
-                        
-                    }
-                    
+                
                     os_log("Returned %d Files" ,output.count)
-                    os_log("Found %d Tasks" ,stored.count)
                     
                 }
                 else {
@@ -202,7 +206,12 @@ final class HelperManager: NSObject, HelperProtocol {
         
     }
         
-    @objc private func helperRetriveContent(_ directory:String) -> [HelperTaskObject]? {
+    @objc private func helperRetrieveContent(_ directory:String) -> [HelperTaskObject]? {
+        guard self.ignore.contains(directory) == false else {
+            return nil
+            
+        }
+        
         if FileManager.default.fileExists(atPath: directory) {
             if directory.contains("Application Support") == false {
                 do {
@@ -216,7 +225,7 @@ final class HelperManager: NSObject, HelperProtocol {
                         let pattern = "[ \t]*\\/\\/\\s*(TODO|FIX|DONE|NOTE|GENDOC|GEN|DOCGEN|ARCHIVE|DEPRICATE):(\\s*(.*))"
                         let regex = try! NSRegularExpression(pattern: pattern, options: [.anchorsMatchLines])
                         let results = regex.matches(in: line, options: [], range: NSRange(line.startIndex..., in: line))
-                                                
+                                                           
                         for match in results {
                             if let tagRange = Range(match.range(at: 1), in: line), let taskRange = Range(match.range(at: 2), in: line) {
                                 let tag = HelperTaskState(from: String(line[tagRange]))
@@ -235,12 +244,19 @@ final class HelperManager: NSObject, HelperProtocol {
                         
                     }
                     
-                    print("!output" ,output)
-                    
-                    return output
+                    switch output.isEmpty {
+                        case true : return nil
+                        case false : return output
+                        
+                    }
                     
                 }
                 catch {
+                    if self.ignore.contains(directory) == false {
+                        self.ignore.append(directory)
+                        
+                    }
+                    
                     print("Could not open Contents" ,error)
                     
                 }
@@ -255,27 +271,6 @@ final class HelperManager: NSObject, HelperProtocol {
         
         return nil
         
-    }
-
-    @objc private func helperSendCallback(_ task:HelperTaskObject) {
-        guard let proxy = self.helperProxy() else {
-            return
-
-        }
-        
-        proxy.brainTaskFound(task.tag, task: task.task, line: task.line, directory: task.directory, total:task.total)
-        os_log("Task Found sent to main app from Proxy.")
-              
-    }
-    
-    @objc private func helperCheckin() {
-        guard let proxy = self.helperProxy() else {
-            return
-
-        }
-        
-        proxy.brainCheckin()
-              
     }
     
     @objc private func helperProxy() -> HelperProtocol? {
@@ -366,5 +361,37 @@ final class HelperManager: NSObject, HelperProtocol {
         }
 
     }
+    
+    public func helperRetriveOwner(_ directory: String) -> Bool {
+        do {
+            let attributes = try FileManager.default.attributesOfItem(atPath: directory)
+            if let owner = attributes[.ownerAccountID] as? NSNumber {
+                if owner.uint32Value == getuid() {
+                    return true
+                    
+                }
+                else {
+                    if self.ignore.contains(directory) == false {
+                        self.ignore.append(directory)
+                        
+                    }
+                    
+                    print("File \(directory) is not owned by the current user.")
+                    return false
+                    
+                }
+                
+            }
+            
+        }
+        catch {
+            print("Error retrieving file attributes: \(error)")
+            
+        }
+        
+        return false
+        
+    }
+    
     
 }

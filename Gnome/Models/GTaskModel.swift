@@ -7,47 +7,42 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 @Model
 class TaskObject:Equatable,Hashable {
     @Attribute(.unique) var id:UUID
     
     @Relationship(deleteRule: .noAction) var project:TaskProject
+    @Relationship(deleteRule: .noAction) var file:TaskFile
 
     var created:Date
-    var refreshed:Date
-    var changes:Date?
-    var modifyed:Date?
+    var changes:Date
     var snoozed:Date?
     var state:TaskState
-    var order:Int
     var task:String
     var comments:String?
     var line:Int
     var directory:String
-    var language:TaskLanguage
     var importance:TaskImportance
-    var application:TaskApplication?
     var ignore:Bool = false
+    var active:Int? = nil
 
-    init(_ state:HelperTaskState, task: String, directory:String, line: Int, project:TaskProject, application:HelperSupportedApplications?, total:Int?, comments:String?, modifyed:Date?) {
+    init(_ state:HelperTaskState, task: String, directory:String, line: Int, project:TaskProject, file:TaskFile, total:Int?, comments:String?) {
         self.id = UUID()
         self.project = project
+        self.file = file
         self.created = Date.now
-        self.refreshed = Date.now
-        self.modifyed = modifyed
-        self.changes = nil
+        self.changes = Date.now
         self.snoozed = nil
         self.state = TaskState(from:state)
-        self.order = (total ?? 0) + 1
         self.task = task.replacingOccurrences(of: "!+$", with: "", options: .regularExpression)
         self.comments = comments?.replacingOccurrences(of: "!+$", with: "", options: .regularExpression)
         self.line = line
         self.directory = directory
-        self.language = .init(file: directory)
         self.importance = .init(string: task)
-        self.application = .init(name: application)
         self.ignore = false
+        self.active = nil
         
    }
     
@@ -78,6 +73,34 @@ class TaskProject:Equatable,Hashable {
 
     }
     
+}
+
+@Model
+class TaskFile:Equatable,Hashable {
+    @Attribute(.unique) var directory:String
+    
+    @Relationship(deleteRule: .cascade) var tasks:[TaskObject] = []
+
+    var filename:String
+    var language:TaskLanguage
+    var application:TaskApplication?
+    var added:Date
+    var changes:Date
+    
+    init(directory:String, application:HelperSupportedApplications?) {
+        self.directory = directory
+        self.filename = directory.filename()
+        self.language = .init(file: directory)
+        self.application = .init(name: application)
+        self.added = Date.now
+        self.changes = Date.now
+
+    }
+    
+    func addTask(_ task: TaskObject) {
+        tasks.append(task)
+    }
+
 }
 
 enum TaskNotificationType {
@@ -120,6 +143,7 @@ enum TaskLanguage:String,Codable {
     case perl = "pl"
     case shell = "sh"
     case typescript = "ts"
+    case readme = "md"
     case unknown
 
     init(file: String) {
@@ -160,6 +184,7 @@ enum TaskLanguage:String,Codable {
             case .perl: return "#0298C3"  // Perl blue
             case .shell: return "#89E051"  // Shell green
             case .typescript: return "#3178C6"  // TypeScript blue
+            case .readme : return "#3178C6"  // TypeScript blue
             case .unknown: return "#FFFFFF"  // Default white
             
         }
@@ -169,6 +194,7 @@ enum TaskLanguage:String,Codable {
 }
 
 enum TaskState:String,Codable {
+    case active
     case todo
     case done
     case hidden
@@ -186,14 +212,15 @@ enum TaskState:String,Codable {
         
     }
     
-    var title:String {
+    var title:LocalizedStringKey {
         switch self {
-            case .todo : return "TODO"
-            case .done : return "DONE"
-            case .note : return "NOTE"
-            case .archived : return "ARCHIVED"
-            case .snoozed : return "SNOOZED"
-            case .hidden : return "HIDDEN"
+            case .active : return "In-Progress"
+            case .todo : return "To-do"
+            case .done : return "Completed"
+            case .note : return "Notes"
+            case .archived : return "Archived"
+            case .snoozed : return "Snoozed"
+            case .hidden : return "Hidden"
 
         }
         
@@ -229,11 +256,12 @@ enum TaskState:String,Codable {
     
     var dropdown:[AppDropdownType] {
         switch self {
-            case .todo : [.taskHide, .divider, .openRoot, .openInline, .divider, .snoozeTomorrow, .snoozeWeek]
+            case .active : [.taskInactive, .taskHide, .divider, .openRoot, .openInline, .divider, .snoozeTomorrow, .snoozeWeek]
+            case .todo : [.taskActive, .taskHide, .divider, .openRoot, .openInline, .divider, .snoozeTomorrow, .snoozeWeek]
             case .done : [.taskHide, .divider, .openRoot, .openInline]
-            case .hidden : [.taskShow, .divider, .openRoot, .openInline]
+            case .hidden : [.taskActive, .taskShow, .divider, .openRoot, .openInline]
             case .archived : [.taskHide, .divider, .openRoot, .openInline]
-            case .snoozed : [.snoozeRemove, .divider, .openRoot, .openInline]
+            case .snoozed : [.taskActive, .snoozeRemove, .divider, .openRoot, .openInline]
             default : [.openRoot, .openInline]
             
         }
@@ -242,15 +270,14 @@ enum TaskState:String,Codable {
     
     func filter(_ tasks:[TaskObject]) -> [TaskObject] {
         switch self {
-            case .snoozed : tasks.filter({ Date.now < $0.snoozed ?? Date.distantPast }).sorted(by: { $0.order > $1.order })
-            case .hidden : tasks.filter({ $0.ignore == true }).sorted(by: { $0.changes ?? Date.now < $1.changes ?? Date.now })
-            default : tasks.filter({ Date.now > $0.snoozed ?? Date.distantPast && $0.state == self && $0.ignore == false }).sorted(by: { $0.snoozed ?? Date.now < $1.snoozed ?? Date.now })
+            case .snoozed : tasks.filter({ Date.now < $0.snoozed ?? Date.distantPast }).sorted(by: { $0.snoozed ?? Date.now < $1.snoozed ?? Date.now })
+            case .hidden : tasks.filter({ $0.ignore == true }).sorted(by: { $0.changes < $1.changes  })
+            case .active : tasks.filter({ $0.active != nil }).sorted(by: { $0.active ?? 0 > $1.active ?? 0 })
+            default : tasks.filter({ Date.now > $0.snoozed ?? Date.distantPast && $0.state == self && $0.ignore == false }).sorted(by: { $0.active ?? 0 < $1.active ?? 100 && $0.created > $1.created })
             
         }
         
     }
-    
-    
     
 }
 

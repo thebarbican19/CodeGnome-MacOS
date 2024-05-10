@@ -37,6 +37,7 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
     }
 
     func listener(_ listener: NSXPCListener, shouldAcceptNewConnection connection: NSXPCConnection) -> Bool {
+        print("Connection: \(connection)")
         connection.exportedInterface = NSXPCInterface(with: HelperProtocol.self)
         connection.exportedObject = self
         connection.resume()
@@ -48,25 +49,44 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
     func brainTaskFound(_ type: HelperTaskState, task: String, line: Int, directory: String, total:Int) {
         DispatchQueue.main.async {
             guard let project = TaskManager.shared.projectStore(directory: directory) else {
+                print("Importing Task but Project Not Stored")
                 return
                 
             }
             
-            TaskManager.shared.taskCreate(type, task: task, line: line, directory: directory, project:project, total:total)
+            guard let file = TaskManager.shared.fileStore(directory: directory) else {
+                print("Importing Task but File Not Stored")
+                return
+                
+            }
+            
+            TaskManager.shared.taskCreate(type, task: task, line: line, directory: directory, file: file, project:project, total:total)
+            
+            print("Importing Task Complete")
             os_log("Importing Task")
             
         }
         
-    }
-    
-    func brainCheckin() {
         DispatchQueue.main.async {
             ProcessManager.shared.checkin = Date.now
             ProcessManager.shared.processUpdateState(.allowed)
 
         }
         
-        print("CHECKIN")
+    }
+    
+    func brainInvalidateTasks(_ directory: String) {
+        DispatchQueue.main.async {
+            switch SettingsManager.shared.enabledArchive {
+                case true :  TaskManager.shared.taskUpdateFromDirectory(directory, state: .archived)
+                case false : TaskManager.shared.taskUpdateFromDirectory(directory, state: .done)
+                
+            }
+            
+            ProcessManager.shared.checkin = Date.now
+            ProcessManager.shared.processUpdateState(.allowed)
+
+        }
         
     }
 
@@ -79,7 +99,10 @@ class ProcessListener: NSObject, NSXPCListenerDelegate, HelperProtocol {
     }
     
     func brainVersion(_ version: (String?) -> Void) {
-        
+        DispatchQueue.main.async {
+            ProcessManager.shared.checkin = Date.now
+            
+        }
     }
     
     func brainSwitchApplication(_ application: HelperSupportedApplications) {
@@ -108,12 +131,12 @@ class ProcessManager:ObservableObject {
 
     init() {
         $checkin.receive(on: DispatchQueue.main).sink { checkin in
-            print("checkin" ,checkin)
-            
+           
         }.store(in: &updates)
         
         $application.receive(on: DispatchQueue.main).sink { app in
             // TODO: Tutorial Application Notification!
+            
         }.store(in: &updates)
         
         self.processStatus()
@@ -229,28 +252,6 @@ class ProcessManager:ObservableObject {
         }
         
         helper.brainDeepSearch { response in
-            guard let response = response else {
-                return
-                
-            }
-            
-            do {
-                let tasks = try Array<HelperTaskObject>.decode(response)
-                
-                for task in tasks {
-                    guard let project = TaskManager.shared.projectStore(directory: task.directory) else {
-                        return
-                        
-                    }
-                    
-                    TaskManager.shared.taskCreate(task.tag, task: task.task, line: task.line, directory: task.directory, project: project, total: task.total)
-                                        
-                }
-                
-            }
-            catch {
-                
-            }
             
         }
 
@@ -280,7 +281,11 @@ class ProcessManager:ObservableObject {
             let error = SecCopyErrorMessageString(status, nil) as String? ?? "Unknown error"
             print("AuthorizationCreate failed with \(status): \(error)")
             
-            self.processUpdateState(.error)
+            switch status {
+                case -60006 : self.processUpdateState(.cancelled)
+                default : self.processUpdateState(.error)
+                
+            }
             
         }
         else {
@@ -299,8 +304,7 @@ class ProcessManager:ObservableObject {
                         switch errorCode {
                             case -60005, -60006, -60008:self.processUpdateState(.denied)
                             default:self.processUpdateState(.error)
-                            // TODO: Test shit shit
-                            
+
                         }
                         
                     }
@@ -372,6 +376,32 @@ class ProcessManager:ObservableObject {
             
         }
         
+    }
+    
+    func processBootupHelper(named processName: String, at path: String) {
+        let taskList = Process()
+        taskList.launchPath = "/bin/ps"
+        taskList.arguments = ["-axco", "command"]
+
+        let pipe = Pipe()
+        taskList.standardOutput = pipe
+
+        taskList.launch()
+        taskList.waitUntilExit()
+
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(data: data, encoding: .utf8)
+
+        if output?.contains(processName) == false {
+            let process = Process()
+            process.launchPath = path
+            process.launch()
+            
+        } 
+        else {
+            print("\(processName) is already running.")
+            
+        }
     }
     
     public func processRun(_ path:String, arguments:[String], whitespace:Bool = false, completion: @escaping (String?) -> Void) {

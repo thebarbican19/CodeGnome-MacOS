@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum ProcessPermissionState:String {
+    case cancelled
     case error
     case allowed
     case undetermined
@@ -17,12 +19,11 @@ enum ProcessPermissionState:String {
     
     var title:String {
         switch self {
-//            case .error : return "PermissionsErrorLabel".localise(["pissnugget"])
-//            case .allowed : return "PermissionsEnabledLabel".localise()
-//            case .undetermined : return "PermissionsUndeterminedLabel".localise()
-//            case .denied : return "PermissionsDeniedLabel".localise()
-//            case .unknown : return "PermissionsUnknownLabel".localise()
-            default : return "TBA"
+            case .error : return "Requires Restart"
+            case .allowed : return "Enabled"
+            case .undetermined : return "Undetermined"
+            case .outdated : return "Requires Update"
+            default : return "Denied"
             
         }
         

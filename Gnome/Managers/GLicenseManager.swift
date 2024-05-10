@@ -7,21 +7,7 @@
 
 import Foundation
 import Combine
-
-enum LicenseEndpoint {
-    case subscription(String)
-    case customer(String)
-
-    var url: URL {
-        switch self {
-            case .subscription(let id):return URL(string: "https://api.stripe.com/v1/subscriptions/\(id)")!
-            case .customer(let id):return URL(string: "https://api.stripe.com/v1/customers/\(id)")!
-            
-        }
-        
-    }
-    
-}
+import SwiftUI
 
 enum LicenseState:String {
     case trial
@@ -34,6 +20,16 @@ enum LicenseState:String {
             case .trial : return true
             case .valid : return true
             default : return false
+            
+        }
+        
+    }
+    
+    var name:LocalizedStringKey {
+        switch self {
+            case .expired : return "Expired License"
+            case .valid : return "Valid License"
+            default : return "Trial"
             
         }
         
@@ -61,7 +57,7 @@ class LicenseManager:ObservableObject {
     private var updates = Set<AnyCancellable>()
 
     init() {
-        TaskManager.shared.$tasks.debounce(for: .seconds(10), scheduler: DispatchQueue.global()).removeDuplicates().sink() { _ in
+        TaskManager.shared.$tasks.debounce(for: .seconds(100), scheduler: DispatchQueue.main).removeDuplicates().sink() { _ in
             self.licenseValidate()
 
         }.store(in: &updates)
@@ -117,29 +113,28 @@ class LicenseManager:ObservableObject {
         }
         
         return .init(.trial, expires: days)
-        // TODO: This is a test
         
     }
         
-    private func fetchData(from endpoint: LicenseEndpoint) async throws -> [String: Any] {
-        var request = URLRequest(url: endpoint.url)
-        request.httpMethod = "GET"
-        request.setValue("Bearer YOUR_SECRET_KEY", forHTTPHeaderField: "Authorization")
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            throw NSError(domain: "", code: (response as? HTTPURLResponse)?.statusCode ?? -1, userInfo: nil)
-            
-        }
-        
-        guard let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-            throw NSError(domain: "", code: 0, userInfo: nil)
-            
-        }
-        
-        return jsonObject
-        
-    }
+//    private func fetchData(from endpoint: LicenseEndpoint) async throws -> [String: Any] {
+//        var request = URLRequest(url: endpoint.url)
+//        request.httpMethod = "GET"
+//        request.setValue("Bearer YOUR_SECRET_KEY", forHTTPHeaderField: "Authorization")
+//
+//        let (data, response) = try await URLSession.shared.data(for: request)
+//        
+//        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+//            throw NSError(domain: "", code: (response as? HTTPURLResponse)?.statusCode ?? -1, userInfo: nil)
+//            
+//        }
+//        
+//        guard let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+//            throw NSError(domain: "", code: 0, userInfo: nil)
+//            
+//        }
+//        
+//        return jsonObject
+//        
+//    }
     
 }

@@ -23,7 +23,6 @@ struct NotificationContent: View {
             
         }
 
-        // TODO: Test Notification View!
     }
     
 }

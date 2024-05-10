@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import UniformTypeIdentifiers
 
 struct MainSection: View {
     @State var type:TaskState
@@ -34,18 +35,15 @@ struct MainSection: View {
                 }
                 
             }
+            .padding(12)
+            .animation(Animation.easeInOut, value: expand)
+            .animation(Animation.easeInOut, value: limit)
+            .transition(.slide)
+            .background(
+                TileSection()
             
-        }
-        else if type == .todo {
-            GeometryReader { geo in
-                Text("Placeholder")
-                
-            }
-            
-        }
-        else {
-            EmptyView()
-            
+            )
+           
         }
         
     }
@@ -54,6 +52,7 @@ struct MainSection: View {
 
 struct MainHeader: View {
     @State var type:TaskState
+    @State var hover:Bool = false
 
     @Binding var expand:Bool
     @Binding var limit:Int
@@ -71,36 +70,50 @@ struct MainHeader: View {
         HStack {
             HStack(alignment: .center, spacing: 10) {
                 Text(type.title)
-                
-                Text(expand ? "Hide" : "Reveal").onTapGesture {
-                    expand.toggle()
                     
-                }
+                // TODO: Replace with dropdown icon!
+                Text(expand ? "Collapse" : "Expand")
+                    .foregroundColor(Color("TileSubtitle"))
+                    .font(.custom("Inter", size: 11))
+                    .kerning(-0.2)
+                    .fontWeight(.semibold)
+                    .onTapGesture {
+                        expand.toggle()
+                    
+                    }
                 
             }
-            .foregroundColor(Color.red)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 6)
+            .foregroundColor(Color("TileTitle"))
+            .font(.custom("Inter", size: 13))
+            .kerning(-0.2)
+            .fontWeight(.semibold)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 8)
             .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(Color("TileBackground"))
+                ButtonSecondaryBackground($hover)
                 
             )
+            .hover { state in
+                hover = state
+                
+            }
             
             Spacer()
                         
             if type.filter(tasks).count > limit {
                 HStack {
-                    Text("Show All")
+                    Text("Show All \(type.filter(tasks).count)")
                     
                 }
-                .foregroundColor(Color.red)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 6)
+                .foregroundColor(Color("TileSubtitle"))
+                .font(.custom("Inter", size: 11))
+                .kerning(-0.2)
+                .fontWeight(.semibold)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 8)
                 .background(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(Color("TileBackground"))
-                    
+                    ButtonSecondaryBackground(.constant(false))
+
                 )
                 .onTapGesture {
                     limit = 100
@@ -130,21 +143,13 @@ struct MainList: View {
     
     var body: some View {
         if type.filter(tasks).isEmpty == false {
-            ForEach(type.filter(tasks).prefix(limit)) { task in
-                TaskCell(task, section:type)
-                // TODO: Add Drag & Drop Repositioning
+            ForEach(type.filter(tasks).prefix(limit)) { item in
+                TaskCell(item, section:type)
                 
             }
-            .onMove(perform: move)
             
         }
        
-    }
-    
-    private func move(from source: IndexSet, to destination: Int) {
-        //tasks.move(fromOffsets: source, toOffset: destination)
-        print("New order: \(tasks)")
-        
     }
     
 }

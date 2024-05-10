@@ -7,6 +7,57 @@
 
 import Foundation
 
+@objc enum HelperSupportedLanguage: Int,CaseIterable {
+    case python
+    case swift
+    case objc
+    case javascript
+    case css
+    case html
+    case php
+    case java
+    case csharp
+    case c
+    case cpp
+    case ruby
+    case kotlin
+    case go
+    case rust
+    case scala
+    case perl
+    case shell
+    case typescript
+    case readme
+
+    public var ext: String {
+        switch self {
+            case .python: return "py"
+            case .swift: return "swift"
+            case .objc: return "m"
+            case .javascript: return "js"
+            case .css: return "css"
+            case .html: return "html"
+            case .php: return "php"
+            case .java: return "java"
+            case .csharp: return "cs"
+            case .c: return "c"
+            case .cpp: return "cpp"
+            case .ruby: return "rb"
+            case .kotlin: return "kt"
+            case .go: return "go"
+            case .rust: return "rs"
+            case .scala: return "scala"
+            case .perl: return "pl"
+            case .shell: return "sh"
+            case .typescript: return "ts"
+            case .readme: return "md"
+            
+        }
+        
+    }
+    
+}
+
 @objc enum HelperSupportedApplications:Int {
     case vscode
     case xcode
@@ -111,14 +162,14 @@ extension Array where Element: HelperTaskObject {
 }
 
 @objc(HelperProtocol) protocol HelperProtocol {
-    func brainCheckin()
     func brainTaskFound(_ type:HelperTaskState, task:String, line:Int, directory:String, total:Int)
     func brainSetup(_ completion: @escaping (HelperState) -> Void)
     func brainProcess(_ path: String, arguments: [String], whitespace: Bool, completion: @escaping (String?) -> Void)
     func brainSwitchApplication(_ application:HelperSupportedApplications)
     func brainVersion(_ completion: @escaping (String?) -> Void)
     func brainDeepSearch(_ completion: @escaping (String?) -> Void)
-
+    func brainInvalidateTasks(_ directory:String)
+    
 }
 
 struct HelperConstants {

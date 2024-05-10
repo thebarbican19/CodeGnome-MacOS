@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "..." : {
+
+    },
     "// TODO: Reporter View" : {
 
     },
@@ -11,6 +14,9 @@
 
     },
     "#%lld" : {
+
+    },
+    "+" : {
 
     },
     "All Done" : {
@@ -22,6 +28,12 @@
     "Allow the Gnome Access" : {
 
     },
+    "Archived" : {
+
+    },
+    "Build #%@" : {
+
+    },
     "Check for Updates" : {
 
     },
@@ -31,13 +43,22 @@
     "CodeGnome" : {
 
     },
+    "Collapse" : {
+
+    },
     "Community" : {
+
+    },
+    "Completed" : {
 
     },
     "Continue Trial" : {
 
     },
     "Create your First Task" : {
+
+    },
+    "Debug" : {
 
     },
     "Deep Search" : {
@@ -64,25 +85,10 @@
     "Enter License Key" : {
 
     },
-    "GeneralActionDebugLabel" : {
+    "Expand" : {
 
     },
-    "GeneralActionInteraceInstallLabel" : {
-
-    },
-    "GeneralActionPinLabel" : {
-
-    },
-    "GeneralActionUnpinLabel" : {
-
-    },
-    "GeneralActionWindowLeftLabel" : {
-
-    },
-    "GeneralActionWindowRightLabel" : {
-
-    },
-    "GeneralSummaryBuildLabel %@" : {
+    "Expired License" : {
 
     },
     "Get Started" : {
@@ -94,28 +100,37 @@
     "Grant Access" : {
 
     },
-    "Great, now lets mark a todo as Important. This adding exclamation points to the end. The more you add the High level of Importance" : {
+    "Great, now lets mark a todo as Important by adding exclamation points to the end. The more you add the High level of Importance." : {
 
     },
     "Help" : {
 
     },
-    "Hide" : {
+    "Hidden" : {
 
     },
     "Import %@" : {
 
     },
+    "In-Progress" : {
+
+    },
+    "Install Helper" : {
+
+    },
+    "Item is In Progress" : {
+
+    },
     "Key" : {
       "extractionState" : "manual"
+    },
+    "License" : {
+
     },
     "LICENSE" : {
 
     },
     "License %@" : {
-
-    },
-    "LicenseActionPurchaseLabel" : {
 
     },
     "Next" : {
@@ -124,49 +139,49 @@
     "NO TASKS SAVED" : {
 
     },
+    "Notes" : {
+
+    },
     "Now, mark it as Complete by simply deleting it." : {
 
     },
     "Open CodeGnome" : {
 
     },
-    "Open your IDE of choice and create your first inline Todo." : {
+    "Open from Left" : {
 
     },
-    "Option:" : {
+    "Open from Right" : {
 
     },
-    "Placeholder" : {
+    "Open your Code Editor of choice and create your first Inline-Todo." : {
+
+    },
+    "Pin to Screen" : {
 
     },
     "Please enter your License Key or try the 14 day trial" : {
 
     },
+    "Preferences" : {
+
+    },
     "Purchase License" : {
 
     },
-    "Purge" : {
+    "Purge Local Data" : {
 
     },
     "Restart" : {
 
     },
-    "Reveal" : {
+    "Show All %lld" : {
 
     },
-    "SettingsMenuLicenseLabel" : {
-
-    },
-    "SettingsMenuTitle" : {
-
-    },
-    "Show All" : {
+    "Snoozed" : {
 
     },
     "Snoozed Until: %@" : {
-
-    },
-    "Start" : {
 
     },
     "Start Trial" : {
@@ -178,7 +193,7 @@
     "Thank you for supporting Indie Developers. We hope you enjoy CodeGnome." : {
 
     },
-    "Thats it, open CodeGnome from the Dock, the Menu Bar or with the Keyboard Shorcuts to see all your tasks." : {
+    "Thats it, open CodeGnome from the Dock or with the Keyboard Shorcuts to see all your imported Tasks." : {
 
     },
     "The Gnome Helper received an error and needs to be restarted. " : {
@@ -193,7 +208,19 @@
     "To Be Added" : {
 
     },
+    "To-do" : {
+
+    },
+    "Trial" : {
+
+    },
+    "Unpin from Screen" : {
+
+    },
     "Update" : {
+
+    },
+    "Valid License" : {
 
     },
     "Validate" : {
@@ -202,7 +229,7 @@
     "Version %@" : {
 
     },
-    "You did it! There is a few more tricks for pros which you can learn about on our GitHub page" : {
+    "You did it! There is a few more tricks for pros which you can learn about on our Community GitHub page" : {
 
     },
     "Your %@ has expired. Please enter your License Key." : {

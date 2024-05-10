@@ -31,6 +31,8 @@
 		D85220112BD0227F00C1D8FB /* GProcessModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8521FF52BCEE4D700C1D8FB /* GProcessModel.swift */; };
 		D85220132BD0295700C1D8FB /* GHelperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85220122BD0295700C1D8FB /* GHelperModel.swift */; };
 		D85220142BD0296700C1D8FB /* GHelperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85220122BD0295700C1D8FB /* GHelperModel.swift */; };
+		D8565F732BEE742A00863838 /* GOnboardingAnimatedComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8565F722BEE742A00863838 /* GOnboardingAnimatedComponents.swift */; };
+		D8565F752BEE8B0800863838 /* GTaskComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8565F742BEE8B0800863838 /* GTaskComponents.swift */; };
 		D85CD5CB2BE55E640092189B /* GButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85CD5CA2BE55E640092189B /* GButtonComponent.swift */; };
 		D85CD5CE2BE561430092189B /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D85CD5CD2BE561420092189B /* Inter.ttf */; };
 		D85CD5D62BE567A50092189B /* GTileComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85CD5D52BE567A50092189B /* GTileComponents.swift */; };
@@ -108,6 +110,8 @@
 		D85220052BCF6B9B00C1D8FB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D852200B2BCF6BE000C1D8FB /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
 		D85220122BD0295700C1D8FB /* GHelperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHelperModel.swift; sourceTree = "<group>"; };
+		D8565F722BEE742A00863838 /* GOnboardingAnimatedComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GOnboardingAnimatedComponents.swift; sourceTree = "<group>"; };
+		D8565F742BEE8B0800863838 /* GTaskComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskComponents.swift; sourceTree = "<group>"; };
 		D85CD5CA2BE55E640092189B /* GButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GButtonComponent.swift; sourceTree = "<group>"; };
 		D85CD5CD2BE561420092189B /* Inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.ttf; sourceTree = "<group>"; };
 		D85CD5D52BE567A50092189B /* GTileComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTileComponents.swift; sourceTree = "<group>"; };
@@ -176,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				D8521FE02BCEDEA400C1D8FB /* GOnboardingController.swift */,
+				D8565F722BEE742A00863838 /* GOnboardingAnimatedComponents.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -324,6 +329,7 @@
 				D8521FDE2BCEDE9800C1D8FB /* GMainSubviews.swift */,
 				D895F02D2BD706BB0068C6D5 /* GTaskSubviews.swift */,
 				D895F01E2BD37E010068C6D5 /* GMainController.swift */,
+				D8565F742BEE8B0800863838 /* GTaskComponents.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -494,6 +500,7 @@
 				D813682A2BE4078C008D471A /* GUpdateManager.swift in Sources */,
 				D895EFFF2BD1BA0E0068C6D5 /* GTaskManager.swift in Sources */,
 				D813682C2BE407D1008D471A /* GUpdateModel.swift in Sources */,
+				D8565F752BEE8B0800863838 /* GTaskComponents.swift in Sources */,
 				D8521FCE2BCEDDDB00C1D8FB /* ContentView.swift in Sources */,
 				D8521FF62BCEE4D700C1D8FB /* GProcessModel.swift in Sources */,
 				D8521FCC2BCEDDDB00C1D8FB /* GnomeApp.swift in Sources */,
@@ -503,6 +510,7 @@
 				D8521FF32BCEE32800C1D8FB /* GProcessManager.swift in Sources */,
 				D895F0192BD376210068C6D5 /* GWindowModel.swift in Sources */,
 				D85CD5D62BE567A50092189B /* GTileComponents.swift in Sources */,
+				D8565F732BEE742A00863838 /* GOnboardingAnimatedComponents.swift in Sources */,
 				D8022E1A2BE0931D00906C74 /* GOnboardingModel.swift in Sources */,
 				D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */,
 				D8BD27E42BE2DDB8002655A1 /* GBackgroundContainer.swift in Sources */,
@@ -655,7 +663,7 @@
 				CODE_SIGN_ENTITLEMENTS = Gnome/Gnome.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Gnome/Preview Content\"";
 				DEVELOPMENT_TEAM = QYKKXLKZD6;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -669,7 +677,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.9.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ovatar.gnome;
 				PRODUCT_NAME = CodeGnome;
@@ -687,7 +695,7 @@
 				CODE_SIGN_ENTITLEMENTS = Gnome/Gnome.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Gnome/Preview Content\"";
 				DEVELOPMENT_TEAM = QYKKXLKZD6;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -701,7 +709,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.9.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ovatar.gnome;
 				PRODUCT_NAME = CodeGnome;
@@ -716,9 +724,11 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
+				CURRENT_PROJECT_VERSION = 1.11;
 				DEVELOPMENT_TEAM = QYKKXLKZD6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/$(TARGET_NAME)/info.plist";
+				MARKETING_VERSION = 1.11;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -736,9 +746,11 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
+				CURRENT_PROJECT_VERSION = 1.11;
 				DEVELOPMENT_TEAM = QYKKXLKZD6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/$(TARGET_NAME)/info.plist";
+				MARKETING_VERSION = 1.11;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,

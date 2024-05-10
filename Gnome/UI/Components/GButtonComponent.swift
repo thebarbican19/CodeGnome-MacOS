@@ -8,13 +8,29 @@
 import SwiftUI
 import FluidGradient
 
+enum ButtonIcon:String {
+    case next
+    case purchase
+    case github
+    case validate
+    
+}
+
 struct ButtonPrimary: View {
     @State public var title: LocalizedStringKey
-    @State public var icon:String? = nil
+    @State public var icon:ButtonIcon? = nil
 
     @State private var hover:Bool = false
     
     let callback: () -> Void
+    
+    init(_ title: LocalizedStringKey, icon: ButtonIcon? = nil, callback: @escaping () -> Void) {
+        self._title = State(initialValue: title)
+        self._icon = State(initialValue: icon)
+        
+        self.callback = callback
+        
+    }
     
     var body: some View {
         HStack(spacing: 8) {
@@ -27,7 +43,7 @@ struct ButtonPrimary: View {
                 .shadow(color: Color.black.opacity(0.4), radius: 6, x: 0, y: 6)
 
             if let icon = icon {
-                Image(icon)
+                Image(icon.rawValue)
                     .foregroundColor(Color("TileTitle"))
                     .font(.system(size: 12).weight(.heavy))
                     .animation(Animation.easeOut(duration: 0.6), value: self.title)
@@ -38,39 +54,7 @@ struct ButtonPrimary: View {
         .padding(.horizontal, 18)
         .padding(.vertical, 12)
         .background(
-            ZStack {
-                TileShadow()
-                
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(.clear)
-                    .stroke(Color("TileTitle").blendMode(.softLight), lineWidth: 1.2)
-                    .background(
-                        ZStack {
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color("GradientMagenta"), Color("GradientNeon")]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                            .edgesIgnoringSafeArea(.all)
-                            
-                            Circle()
-                                .fill(Color("GradientYellow"))
-                                .opacity(hover ? 0.8 : 0.5)
-                                .blur(radius: 6)
-                                .scaleEffect(3)
-                                .offset(y:hover ? -48 : -50)
-                            
-                        }
-                        
-                    )
-                    .mask(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.black)
-                            .allowsHitTesting(false)
-                        
-                    )
-                
-            }
+            ButtonPrimaryBackground($hover)
             
         )
         .hover(cursor: .pointingHand) { state in
@@ -93,6 +77,56 @@ struct ButtonPrimary: View {
             callback()
             
         }
+
+    }
+    
+}
+
+struct ButtonPrimaryBackground: View {
+    @Binding var hover:Bool
+    
+    @State var radius:Double
+
+    init(_ hover: Binding<Bool>, radius:Double = 12) {
+        self._hover = hover
+        self._radius = State(initialValue: radius)
+
+    }
+    
+    var body: some View {
+        ZStack {
+            TileShadow()
+            
+            RoundedRectangle(cornerRadius: radius)
+                .fill(.clear)
+                .stroke(Color("TileTitle").blendMode(.softLight), lineWidth: 1.2)
+                .background(
+                    ZStack {
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color("GradientMagenta"), Color("GradientNeon")]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        .edgesIgnoringSafeArea(.all)
+                        
+                        Circle()
+                            .fill(Color("GradientYellow"))
+                            .opacity(hover ? 0.8 : 0.5)
+                            .blur(radius: 6)
+                            .scaleEffect(3)
+                            .offset(y:hover ? -48 : -50)
+                        
+                    }
+                    
+                )
+                .mask(
+                    RoundedRectangle(cornerRadius: radius)
+                        .fill(.black)
+                        .allowsHitTesting(false)
+                    
+                )
+            
+        }
         
     }
     
@@ -100,12 +134,20 @@ struct ButtonPrimary: View {
 
 struct ButtonSecondary: View {
     @State public var title: LocalizedStringKey
-    @State public var icon:String? = nil
+    @State public var icon:ButtonIcon? = nil
     
     @State private var rotate = 0.0
     @State private var hover:Bool = false
 
     let callback: () -> Void
+    
+    init(_ title: LocalizedStringKey, icon: ButtonIcon? = nil, callback: @escaping () -> Void) {
+        self._title = State(initialValue: title)
+        self._icon = State(initialValue: icon)
+        
+        self.callback = callback
+        
+    }
     
     var body: some View {
         HStack(spacing: 8) {
@@ -117,7 +159,7 @@ struct ButtonSecondary: View {
                 .animation(Animation.easeOut(duration: 0.6), value: self.title)
 
             if let icon = icon {
-                Image(icon)
+                Image(icon.rawValue)
                     .foregroundColor(Color("TileTitle"))
                     .font(.system(size: 12).weight(.heavy))
                     .animation(Animation.easeOut(duration: 0.6), value: self.title)
@@ -128,27 +170,7 @@ struct ButtonSecondary: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
         .background(
-            ZStack {
-                TileShadow()
-                
-                LinearGradient(
-                    gradient: Gradient(colors: [Color("BackgroundGradientTop"), Color("BackgroundGradientBottom"), ]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .edgesIgnoringSafeArea(.all)
-                .mask(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(.black)
-                        .allowsHitTesting(false)
-                    
-                )
-                
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(.clear)
-                    .border($hover, radius: 12)
-                
-            }
+            ButtonSecondaryBackground($hover)
             
         )
         .onTapGesture() {
@@ -164,3 +186,40 @@ struct ButtonSecondary: View {
     
 }
 
+struct ButtonSecondaryBackground: View {
+    @Binding var hover:Bool
+    
+    @State var radius:Double
+
+    init(_ hover: Binding<Bool>, radius:Double = 12) {
+        self._hover = hover
+        self._radius = State(initialValue: radius)
+
+    }
+    
+    var body: some View {
+        ZStack {
+            TileShadow()
+            
+            LinearGradient(
+                gradient: Gradient(colors: [Color("BackgroundGradientTop"), Color("BackgroundGradientBottom")]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .edgesIgnoringSafeArea(.all)
+            .mask(
+                RoundedRectangle(cornerRadius: radius)
+                    .fill(.black)
+                    .allowsHitTesting(false)
+                
+            )
+            
+            RoundedRectangle(cornerRadius: radius)
+                .fill(.clear)
+                .border($hover, radius: radius)
+            
+        }
+        
+    }
+    
+}

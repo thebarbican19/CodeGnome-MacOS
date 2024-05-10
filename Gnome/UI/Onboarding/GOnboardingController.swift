@@ -17,10 +17,11 @@ struct OnboardingLicense: View {
             
             Spacer()
             
-            Button("Start") {
+            ButtonPrimary("Validate") {
                 manager.onboardingAction(button: .primary)
 
             }
+            .padding(10)
             
         }
         
@@ -56,7 +57,6 @@ struct OnboardingDisplay: View {
                 .fontWeight(.regular)
             
         }
-        .offset(y:6)
         .frame(width: 320, height: 160)
         
     }
@@ -72,19 +72,29 @@ struct OnboardingContainer: View {
     var body: some View {
         VStack {
             VStack(spacing: 14) {
-                
                 if onboarding.current == .license {
                     OnboardingLicense()
                     
                 }
                 else {
                     Spacer()
-
-                    OnboardingDisplay()
                     
+                    VStack {
+                        switch onboarding.current {
+                            case .intro : EmptyView()
+                            case .complete : AnimationShortcutView()
+                            case nil : AnimationShortcutView()
+                            default : OnboardingDisplay()
+                            
+                        }
+                        
+                    }
+                    .frame(width: 400, height: 180)
+                    .offset(y:6)
+
                     Spacer()
                     
-                    VStack(spacing:18) {
+                    VStack(spacing:14) {
                         Text(onboarding.title)
                             .foregroundColor(Color("TileTitle"))
                             .font(.custom("Inter", size: 25))
@@ -93,20 +103,20 @@ struct OnboardingContainer: View {
                         
                         Text(onboarding.subtitle)
                             .foregroundColor(Color("TileSubtitle"))
-                            .font(.custom("Inter", size: 13))
+                            .font(.custom("Inter", size: 14))
                             .kerning(-0.3)
                             .fontWeight(.regular)
                             .opacity(0.8)
                             .lineSpacing(/*@START_MENU_TOKEN@*/10.0/*@END_MENU_TOKEN@*/)
-                        
+                                                
                     }
-                    .padding(.horizontal, 30)
+                    .padding(.horizontal, 46)
                     .multilineTextAlignment(.center)
                     
                     Spacer()
                     
                     if let primary = onboarding.primary {
-                        ButtonPrimary(title:primary) {
+                        ButtonPrimary(primary) {
                             onboarding.onboardingAction(button: .primary)
                             
                         }
@@ -117,11 +127,12 @@ struct OnboardingContainer: View {
                 }
                 
             }
+            .animation(Animation.smooth, value: onboarding.title)
             .offset(y:6)
 
             HStack {
                 if let tertiary = onboarding.tertiary {
-                    ButtonSecondary(title:tertiary) {
+                    ButtonSecondary(tertiary) {
                         onboarding.onboardingAction(button: .tertiary)
                         
                     }
@@ -131,13 +142,11 @@ struct OnboardingContainer: View {
                 Spacer()
                 
                 if let secondary = onboarding.secondary {
-                    ButtonSecondary(title:secondary) {
+                    ButtonSecondary(secondary) {
                         onboarding.onboardingAction(button: .secondary)
                         
                     }
-                    
-                    // TODO: Redesign Primary & Secondary Button Gnome!
-                    
+                                        
                 }
                 
             }
@@ -161,7 +170,15 @@ struct OnboardingController: View {
             }
             .ignoresSafeArea(.all, edges: .all)
             .frame(maxWidth: geo.size.width, maxHeight: geo.size.height + 60)
-            .background(BackgroundContainer())
+            .background(
+                ZStack {
+                    WindowViewBlur()
+                    
+                    BackgroundContainer()
+
+                }
+                
+            )
             .edgesIgnoringSafeArea(.all)
             .modelContainer(persitence)
             .environmentObject(WindowManager.shared)

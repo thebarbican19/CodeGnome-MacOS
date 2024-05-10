@@ -16,7 +16,15 @@ struct ReporterController: View {
             Text("// TODO: Reporter View")
 
         }
-        .background(BackgroundContainer())
+        .background(
+            ZStack {
+                WindowViewBlur()
+                
+                BackgroundContainer()
+
+            }
+            
+        )
         .modelContainer(persitence)
         .environmentObject(WindowManager.shared)
         .environmentObject(TaskManager.shared)

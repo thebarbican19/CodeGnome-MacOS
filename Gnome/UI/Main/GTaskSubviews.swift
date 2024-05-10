@@ -6,6 +6,57 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
+
+struct TaskDropDelegate: DropDelegate {
+    let item: TaskObject
+    
+    @State var items: [TaskObject]
+    @Binding var dragging: TaskObject?
+
+    func validateDrop(info: DropInfo) -> Bool {
+        return info.hasItemsConforming(to: [UTType.text])
+        
+    }
+    
+    func performDrop(info: DropInfo) -> Bool {
+        guard let source = items.firstIndex(where: { $0 == self.dragging }) else {
+            return false
+            
+        }
+        
+        guard let targetIndex = items.firstIndex(of: item) else {
+           return false
+            
+        }
+               
+           // Perform actual item move
+       let movingItem = items.remove(at: source)
+       items.insert(movingItem, at: targetIndex)
+       
+       // Update orders based on new positions
+       for index in items {
+           //items[index].order = index
+           print("\n\nitems" ,index.task)
+
+       }
+               // Clear the hovered item
+        self.dragging = nil
+               return true
+        
+    }
+    
+    func dropEntered(info: DropInfo) {
+        dragging = item
+        
+    }
+
+    func dropExited(info: DropInfo) {
+        dragging = nil
+        
+    }
+    
+}
 
 struct TaskCell: View {
     @State var item:TaskObject
@@ -20,37 +71,28 @@ struct TaskCell: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // TODO: Import Fonts & Import Colours
-            // TODO: Options Button to Add with Hide and Open Functionality
-            Text("Option:").dropdown(section.dropdown, triggers: [.left], task: item, callback: { dropdown in
-                switch dropdown {
-                    case .taskShow : TaskManager.shared.taskIgnore(item, hide: false)
-                    case .taskHide : TaskManager.shared.taskIgnore(item, hide: true)
-                    case .openRoot : TaskManager.shared.taskOpen(item, directory: item.project.directory)
-                    case .openInline : TaskManager.shared.taskOpen(item, directory: item.directory)
-                    case .snoozeTomorrow : TaskManager.shared.taskSnooze(item, action: .snoozeTomorrow)
-                    case .snoozeWeek : TaskManager.shared.taskSnooze(item, action: .snoozeWeek)
-                    case .snoozeRemove : TaskManager.shared.taskSnooze(item, action: .snoozeRemove)
-                    case .divider : break
-                    
-                }
-                
-            })
-            
             TaskHirachy(item)
             
             Text(item.task)
                 .foregroundColor(Color("TileTitle"))
                 .lineLimit(3)
+                .font(.system(size: 16, weight: .bold))
+                .kerning(-0.4)
 
             Spacer().frame(height: 10)
             
-            TaskTags(item)
+            //TaskTags(item)
             
-            TaskSnoozed(item)
+            TaskDetails(item, section: section)
+            
+            // TODO: Cell Layout UI
             
         }
         .padding(18)
+        .overlay(
+            TaskOverlayContainer(item, section: section).opacity(hover ? 1.0 : 0.0), alignment: .topTrailing
+
+        )
         .background(TileBackground(animate: false))
         .hover(cursor: NSCursor.pointingHand, value: { state in
             if hover == true {
@@ -61,7 +103,7 @@ struct TaskCell: View {
                 
             }
             else {
-                withAnimation(Animation.easeIn(duration: 0.6).delay(0.2)) {
+                withAnimation(Animation.easeIn(duration: 0.6)) {
                     self.hover = state
                     
                 }
@@ -69,9 +111,8 @@ struct TaskCell: View {
             }
             
         })
-        .onDrag {NSItemProvider(object: item.id.uuidString as NSString)}
         .padding(0)
-        
+
     }
     
 }
@@ -173,12 +214,12 @@ struct TaskTags: View {
                 
             }
             
-            if item.language != .unknown {
-                Text(item.language.rawValue)
+            if item.file.language != .unknown {
+                Text(item.file.language.rawValue)
                 
             }
             
-            // TODO: Tags View Layout
+            // TODO: Tags View LayoutUI!
             
         }
         .padding(5)
@@ -188,23 +229,43 @@ struct TaskTags: View {
     
 }
 
-struct TaskSnoozed: View {
+struct TaskDetails: View {
     @State var item:TaskObject
-    
-    init(_ item: TaskObject) {
+    @State var section:TaskState
+
+    init(_ item: TaskObject, section:TaskState) {
         self._item = State(initialValue: item)
-        
+        self._section = State(initialValue: section)
+
     }
     
     var body: some View {
-        if let snoozed = item.snoozed {
-            if snoozed > Date() {
-                Text("Snoozed Until: \(snoozed.formatted())")
-                    .foregroundColor(Color.red)
+        HStack {
+            HStack {
+                if let snoozed = item.snoozed {
+                    if snoozed > Date() {
+                        Text("Snoozed Until: \(snoozed.formatted())")
+                        
+                    }
+                    
+                }
+                else if item.active != nil && section != .active {
+                    Text("In Progress")
+                    
+                }
+                
+            }
+            
+            Spacer()
+            
+            HStack {
+                Text(item.created.display(.narrow))
                 
             }
 
         }
+        .foregroundStyle(Color("TileBorderShine"))
+        .font(.system(size: 10, weight: .semibold))
         
     }
     

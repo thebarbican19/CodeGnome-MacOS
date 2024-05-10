@@ -52,6 +52,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
                 SettingsManager.shared.enabledPinned = false
                 SettingsManager.shared.windowPosition = .left
                 
+                if OnboardingManager.shared.current == .complete {
+                    OnboardingManager.shared.onboardingAction(button: .primary)
+                    
+                }
+                
                 if WindowManager.shared.animating == false {
                     WindowManager.shared.windowOpen(.main, present: .toggle)
 
@@ -65,7 +70,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
             DispatchQueue.main.async {
                 SettingsManager.shared.enabledPinned = false
                 SettingsManager.shared.windowPosition = .right
-
+                
+                if OnboardingManager.shared.current == .complete {
+                    OnboardingManager.shared.onboardingAction(button: .primary)
+                    
+                }
+                
                 if WindowManager.shared.animating == false {
                     WindowManager.shared.windowOpen(.main, present: .toggle)
 
@@ -108,6 +118,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
 struct AppMenuBar: Commands {
     @StateObject var settings = SettingsManager.shared
     @StateObject var update = UpdateManager.shared
+    @StateObject var license = LicenseManager.shared
+    @StateObject var process = ProcessManager.shared
 
     var body: some Commands {
         CommandGroup(replacing: .pasteboard) {
@@ -133,7 +145,7 @@ struct AppMenuBar: Commands {
         CommandGroup(after: CommandGroupPlacement.singleWindowList) {
             VStack {
                 if SettingsManager.shared.windowPosition == .left {
-                    Button("GeneralActionWindowRightLabel") {
+                    Button("Open from Right") {
                         SettingsManager.shared.windowPosition = .right
                         SettingsManager.shared.enabledPinned = false
                         
@@ -142,7 +154,7 @@ struct AppMenuBar: Commands {
                     
                 }
                 else {
-                    Button("GeneralActionWindowLeftLabel") {
+                    Button("Open from Left") {
                         SettingsManager.shared.windowPosition = .left
                         SettingsManager.shared.enabledPinned = false
                         
@@ -154,7 +166,7 @@ struct AppMenuBar: Commands {
                 Divider()
                 
                 if settings.enabledPinned {
-                    Button("GeneralActionUnpinLabel") {
+                    Button("Unpin from Screen") {
                         SettingsManager.shared.enabledPinned = false
                         
                     }
@@ -162,7 +174,7 @@ struct AppMenuBar: Commands {
                     
                 }
                 else {
-                    Button("GeneralActionPinLabel") {
+                    Button("Pin to Screen") {
                         SettingsManager.shared.enabledPinned = true
                         
                     }
@@ -175,7 +187,7 @@ struct AppMenuBar: Commands {
         }
         
         CommandGroup(before: CommandGroupPlacement.appInfo) {
-            Button("SettingsMenuTitle") {
+            Button("Preferences") {
                 WindowManager.shared.windowOpen(.preferences, present: .present)
                 
             }
@@ -189,7 +201,7 @@ struct AppMenuBar: Commands {
             }
             else {
                 Button("Check for Updates") {
-                    UpdateManager.shared.updateCheck(false)
+                    update.updateCheck(false)
                     
                 }
                 
@@ -202,39 +214,64 @@ struct AppMenuBar: Commands {
             
             Divider()
             
-            Menu("SettingsMenuLicenseLabel") {
-                Text("LICENSE")
+            Menu("License") {
+                if license.state.state == .valid {
+                    Text("LICENSE")
+                    
+                }
+                else {
+                    Text(license.state.state.name)
 
-                Button("LicenseActionPurchaseLabel") {
-//                    WindowManager.shared.windowOpenWebsite(.custom, view: .preferences, redirect:URL.retrieve(.purchase))
+                    Button("Purchase License") {
+                        AppLinks.stripe.launch()
 
+                    }
+                    
                 }
                 
             }
             
             Divider()
             
-            Menu("GeneralActionDebugLabel") {
+            Menu("Debug") {
                 VStack {
-                    Button("GeneralActionInteraceInstallLabel") {
-                        ProcessManager.shared.processInstallHelper()
+                    if process.helper != .allowed {
+                        Text(process.helper.title)
                         
                     }
                     
-                    Button("Purge") {
-                        UserDefaults.purge()
-                        
-                    }
-                    
-                    Button("Deep Search") {
-                        ProcessManager.shared.processDeepSearch()
+                    Button("Install Helper") {
+                        process.processInstallHelper()
                         
                     }
                     
                     Divider()
+                    
+                    Button("Purge Local Data") {
+                        UserDefaults.purge()
+                        
+                        WindowManager.shared.windowOpen(.main, present: .hide)
+                        WindowManager.shared.windowOpen(.onboarding, present: .toggle)
 
+
+                    }
+                
+                    Divider()
+                    
+                    Button("Deep Search") {
+                        process.processDeepSearch()
+                        
+                    }
+                    
+                    Divider()
+                    
                     if let build = Bundle.env("CFBundleVersion") {
-                        Text("GeneralSummaryBuildLabel \(build)")
+                        Text("Build #\(build)")
+                        
+                    }
+                    
+                    if let version = Bundle.env("CFBundleShortVersionString") {
+                        Text("Version \(version)")
                         
                     }
                     

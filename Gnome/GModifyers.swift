@@ -61,6 +61,7 @@ struct ViewModifyerHover: ViewModifier {
             switch hover {
                 case true : cursor.push()
                 default : cursor.pop()
+                // FIX: Fix Cursor Hover State
                 
             }
                             
@@ -79,7 +80,7 @@ struct ComponentMenuModifier: ViewModifier {
     var triggers:[AppDropdownActionType] = [.left]
 
     func body(content: Content) -> some View {
-        content.background(
+        content.overlay(
             GeometryReader { geometry in
                 ViewMenuRepresentable(task: task, buttons: buttons, callback: callback, geometry: geometry, triggers: triggers)
                 
@@ -148,7 +149,7 @@ class ViewMenu: NSView {
 
             }
             else {
-                let menuItem = NSMenuItem(title: button.label(task), action: #selector(menuItemClicked(_:)), keyEquivalent: "")
+                let menuItem = NSMenuItem(title: "\(button.label(task))", action: #selector(menuItemClicked(_:)), keyEquivalent: "")
                 menuItem.target = self
                 menuItem.tag = button.rawValue
                 menu.addItem(menuItem)
@@ -167,6 +168,7 @@ class ViewMenu: NSView {
             let menuPosition = NSPoint(x: menuPositionX, y: menuPositionY)
             
             menu.popUp(positioning: nil, at: menuPosition, in: self)
+            // TODO: Position Menu from Top to Bottom instead of Center
             
         }
         else {
@@ -210,6 +212,39 @@ class ViewMenu: NSView {
     
 }
 
+struct ViewMask: ViewModifier {
+    @State var positions:Array<AppMaskPosition>
+    @State var padding:CGFloat
+
+    func body(content: Content) -> some View {
+        content.mask(
+            GeometryReader { geo in
+                VStack(spacing:0) {
+                    LinearGradient(gradient: Gradient(colors: [
+                        .black.opacity(self.positions.contains(.top) ? 0 : 1),
+                        .black.opacity(1),
+                    ]), startPoint: .top, endPoint: .bottom).frame(height: padding)
+                    
+                    if geo.size.height > padding {
+                        Rectangle().fill(.black).frame(height:geo.size.height - (padding * 2))
+                        
+                    }
+                    
+                    LinearGradient(gradient: Gradient(colors: [
+                        .black.opacity(1),
+                        .black.opacity(self.positions.contains(.bottom) ? 0 : 1),
+                    ]), startPoint: .top, endPoint: .bottom).frame(height: padding)
+                    
+                }
+                
+            }
+            
+        )
+        
+    }
+    
+}
+
 extension View {
     func hover(cursor:NSCursor = NSCursor.pointingHand, value: @escaping (Bool) -> Void = { _ in }) -> some View {
         self.modifier(ViewModifyerHover(cursor:cursor, value: value))
@@ -224,6 +259,11 @@ extension View {
     func border(_ animate: Binding<Bool>, radius:Double) -> some View {
         self.modifier(ViewBorder(animate: animate, radius: radius))
         
+    }
+    
+    func fade(_ position:Array<AppMaskPosition> = [.top, .bottom], padding:CGFloat = 10) -> some View {
+        self.modifier(ViewMask(positions: position, padding: padding))
+
     }
     
 }

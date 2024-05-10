@@ -2,6 +2,7 @@
 .DS_Store
 Gnome/Config.xcconfig
 UI.sketch
+/Builds/
 .DS_Store
 .DS_Store
 Gnome/Resources/Fonts/Inter-VariableFont_slnt,wght.ttf

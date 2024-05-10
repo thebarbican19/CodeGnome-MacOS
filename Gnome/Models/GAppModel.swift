@@ -7,6 +7,7 @@
 
 import Foundation
 import Cocoa
+import SwiftUI
 
 public enum AppSoundEffects:String {
     case reveal = "reveal"
@@ -61,6 +62,8 @@ enum AppDefaultsKeys: String {
 enum AppDropdownType:Int {
     case taskHide
     case taskShow
+    case taskActive
+    case taskInactive
     case openRoot
     case openInline
     case snoozeTomorrow
@@ -71,6 +74,8 @@ enum AppDropdownType:Int {
     func label(_ task:TaskObject?) -> String {
         switch self {
             case .taskHide : return "Hide"
+            case .taskActive : return "Move to 'In Progress'"
+            case .taskInactive : return "Remove from 'In Progress'"
             case .taskShow : return "Undo Hide"
             case .openRoot : return "Open \(task?.project.name ?? "") Folder"
             case .openInline : return "Open at Line #\(task?.line ?? 0)"
@@ -134,7 +139,7 @@ enum AppLinks {
     func launch() {
         var url:URL?
         switch self {
-            case .stripe : url = URL(string: "https://stripe.com/")
+            case .stripe : url = URL(string: "https://buy.stripe.com/bIYg2R6HF9TM6WY6oD")
             case .github : url = URL(string: "https://github.com/thebarbican19/CodeGnoma-MacOS")
             
         }
@@ -148,4 +153,38 @@ enum AppLinks {
         
     }
     
+}
+
+enum AppMaskPosition {
+    case top
+    case bottom
+    
+}
+
+enum AppShortcutKeys:String {
+    case command = "⌘"
+    case option = "⌥"
+    case leftBracket = "["
+    case rightBracket = "]"
+    
+    var system:Bool {
+        switch self {
+            case .command : return true
+            case .option : return true
+            default : return false
+            
+        }
+        
+    }
+    
+    var name:String? {
+        switch self {
+            case .command : return "command"
+            case .option : return "option"
+            default : return nil
+            
+        }
+        
+    }
+
 }
