@@ -29,6 +29,7 @@ enum WindowTypes:String,CaseIterable {
     case preferences = "Preferences_Window"
     case onboarding = "Onboarding_Window"
     case reporter = "Reporter_Window"
+    case license = "License_Window" // TODO: Add License Window
     case notification = "Notification_Modal"
 
     var size:WindowSize {
@@ -36,6 +37,7 @@ enum WindowTypes:String,CaseIterable {
             case .main : return .init(width: 390, height: CGFloat(NSScreen.main?.frame.height ?? 0.0))
             case .preferences : return .init(width: 400, height: 480)
             case .onboarding: return .init(width: 520, height: 540)
+            case .license: return .init(width: 520, height: 540)
             case .reporter: return .init(width: 920, height: 580)
             case .notification: return .init(width: 360, height: 60)
 
@@ -49,6 +51,7 @@ enum WindowTypes:String,CaseIterable {
             case .preferences:return false
             case .onboarding:return false
             case .reporter:return false
+            case .license:return false
             case .notification:return true
 
         }
@@ -61,6 +64,7 @@ enum WindowTypes:String,CaseIterable {
             case .preferences : return NSHostingController(rootView: PreferencesController()).view
             case .onboarding : return NSHostingController(rootView: OnboardingController()).view
             case .reporter : return NSHostingController(rootView: ReporterController()).view
+            case .license : return NSHostingController(rootView: OnboardingController()).view
             case .notification : return NSHostingController(rootView: NotificationController()).view
 
         }
@@ -73,6 +77,7 @@ enum WindowTypes:String,CaseIterable {
             case .preferences:return "Preferences"
             case .onboarding:return "Onboarding"
             case .reporter:return "Reporter"
+            case .license:return "License Manager"
             case .notification:return "Notification"
 
         }

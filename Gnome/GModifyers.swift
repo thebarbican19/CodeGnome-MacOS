@@ -266,4 +266,115 @@ extension View {
 
     }
     
+    func paste(text: Binding<String>, perform paste: @escaping (String) -> Void, updated: @escaping (String) -> Void) -> some View {
+        self.modifier(ViewPasteDetection(text: text, paste: paste, updated: updated))
+        
+    }
+    
+}
+
+struct ViewPasteDetection: ViewModifier {
+    @Binding var text: String
+    
+    var paste: (String) -> Void
+    var updated: (String) -> Void
+
+    func body(content: Content) -> some View {
+        content.background(ViewTextFieldDetection(text: $text, paste: paste, updated: updated).frame(width: 0, height: 0))
+        
+    }
+    
+}
+
+class ViewTextField: NSTextField {
+    var paste: ((String) -> Void)?
+    var updated: ((String) -> Void)?
+
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        if event.type == .keyDown, event.modifierFlags.contains(.command), event.charactersIgnoringModifiers == "v" {
+            if let pastedString = NSPasteboard.general.string(forType: .string) {
+                paste?(pastedString)
+
+            }
+            
+        }
+        
+        return super.performKeyEquivalent(with: event)
+        
+    }
+    
+    override func textDidChange(_ notification: Notification) {
+       super.textDidChange(notification)
+       if let textChangeHandler = updated {
+           textChangeHandler(self.stringValue)
+           
+       }
+        
+   }
+    
+}
+
+struct ViewTextFieldDetection: NSViewRepresentable {
+    @Binding var text: String
+    
+    var paste: (String) -> Void
+    var updated: (String) -> Void
+
+    func makeNSView(context: Context) -> ViewTextField {
+        let textField = ViewTextField()
+        textField.delegate = context.coordinator
+        textField.paste = { pastedText in
+            context.coordinator.handlePaste(pastedText)
+            
+        }
+        textField.updated = { changedText in
+            context.coordinator.handleTextChange(changedText)
+            
+        }
+
+        return textField
+    }
+
+    func updateNSView(_ nsView: ViewTextField, context: Context) {
+        nsView.stringValue = text
+        
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self, paste: paste, updated: updated)
+        
+    }
+
+    class Coordinator: NSObject, NSTextFieldDelegate {
+        var parent: ViewTextFieldDetection
+        var paste: (String) -> Void
+        var updated: (String) -> Void
+
+        init(_ parent: ViewTextFieldDetection, paste: @escaping (String) -> Void, updated: @escaping (String) -> Void) {
+            self.parent = parent
+            self.paste = paste
+            self.updated = updated
+
+        }
+
+        func controlTextDidChange(_ obj: Notification) {
+            if let textField = obj.object as? NSTextField {
+                parent.text = textField.stringValue
+
+            }
+            
+        }
+
+        func handlePaste(_ pastedText: String) {
+            paste(pastedText)
+            
+        }
+        
+        func handleTextChange(_ changedText: String) {
+            updated(changedText)
+
+        }
+        
+    }
+    
 }

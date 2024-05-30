@@ -8,25 +8,19 @@
 import SwiftUI
 import FluidGradient
 
-enum ButtonIcon:String {
-    case next
-    case purchase
-    case github
-    case validate
-    
-}
-
 struct ButtonPrimary: View {
-    @State public var title: LocalizedStringKey
-    @State public var icon:ButtonIcon? = nil
+    @State public var title:LocalizedStringKey
+    @State public var type:AppButtonType
+    @State public var icon:String? = nil
 
     @State private var hover:Bool = false
     
     let callback: () -> Void
     
-    init(_ title: LocalizedStringKey, icon: ButtonIcon? = nil, callback: @escaping () -> Void) {
-        self._title = State(initialValue: title)
-        self._icon = State(initialValue: icon)
+    init(_ button: AppButtonObject, callback: @escaping () -> Void) {
+        self._title = State(initialValue: button.value)
+        self._type = State(initialValue: button.type)
+        self._icon = State(initialValue: button.icon)
         
         self.callback = callback
         
@@ -43,7 +37,7 @@ struct ButtonPrimary: View {
                 .shadow(color: Color.black.opacity(0.4), radius: 6, x: 0, y: 6)
 
             if let icon = icon {
-                Image(icon.rawValue)
+                Image(icon)
                     .foregroundColor(Color("TileTitle"))
                     .font(.system(size: 12).weight(.heavy))
                     .animation(Animation.easeOut(duration: 0.6), value: self.title)
@@ -133,17 +127,19 @@ struct ButtonPrimaryBackground: View {
 }
 
 struct ButtonSecondary: View {
-    @State public var title: LocalizedStringKey
-    @State public var icon:ButtonIcon? = nil
+    @State public var title:LocalizedStringKey
+    @State public var type:AppButtonType
+    @State public var icon:String? = nil
     
     @State private var rotate = 0.0
     @State private var hover:Bool = false
 
     let callback: () -> Void
     
-    init(_ title: LocalizedStringKey, icon: ButtonIcon? = nil, callback: @escaping () -> Void) {
-        self._title = State(initialValue: title)
-        self._icon = State(initialValue: icon)
+    init(_ button: AppButtonObject, callback: @escaping () -> Void) {
+        self._title = State(initialValue: button.value)
+        self._type = State(initialValue: button.type)
+        self._icon = State(initialValue: button.icon)
         
         self.callback = callback
         
@@ -152,21 +148,20 @@ struct ButtonSecondary: View {
     var body: some View {
         HStack(spacing: 8) {
             Text(title)
-                .foregroundColor(Color("TileTitle"))
                 .font(.custom("Inter", size: 12))
                 .kerning(-0.2)
                 .fontWeight(.semibold)
                 .animation(Animation.easeOut(duration: 0.6), value: self.title)
 
             if let icon = icon {
-                Image(icon.rawValue)
-                    .foregroundColor(Color("TileTitle"))
+                Image(icon)
                     .font(.system(size: 12).weight(.heavy))
                     .animation(Animation.easeOut(duration: 0.6), value: self.title)
                 
             }
             
         }
+        .foregroundColor(type == .standard ? Color("TileTitle") : Color("TileSubtitle"))
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
         .background(

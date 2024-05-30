@@ -58,6 +58,9 @@
     "Create your First Task" : {
 
     },
+    "Deactivate Seat" : {
+
+    },
     "Debug" : {
 
     },
@@ -85,10 +88,16 @@
     "Enter License Key" : {
 
     },
+    "Enter your License" : {
+
+    },
     "Expand" : {
 
     },
     "Expired License" : {
+
+    },
+    "Expires: %@" : {
 
     },
     "Get Started" : {
@@ -112,25 +121,19 @@
     "Import %@" : {
 
     },
+    "In Progress" : {
+
+    },
     "In-Progress" : {
 
     },
     "Install Helper" : {
 
     },
-    "Item is In Progress" : {
-
-    },
     "Key" : {
       "extractionState" : "manual"
     },
     "License" : {
-
-    },
-    "LICENSE" : {
-
-    },
-    "License %@" : {
 
     },
     "Next" : {
@@ -152,6 +155,9 @@
 
     },
     "Open from Right" : {
+
+    },
+    "Open License Manager" : {
 
     },
     "Open your Code Editor of choice and create your first Inline-Todo." : {
@@ -214,6 +220,9 @@
     "Trial" : {
 
     },
+    "Trial Expired" : {
+
+    },
     "Unpin from Screen" : {
 
     },
@@ -226,6 +235,9 @@
     "Validate" : {
 
     },
+    "Validating.." : {
+
+    },
     "Version %@" : {
 
     },
@@ -233,6 +245,9 @@
 
     },
     "Your %@ has expired. Please enter your License Key." : {
+
+    },
+    "Your License Key" : {
 
     }
   },

@@ -20,9 +20,9 @@ class WindowManager: ObservableObject {
     private var updates = Set<AnyCancellable>()
 
     init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(windowWillUpdate(notification:)), name: NSWindow.willCloseNotification, object:nil)
         NotificationCenter.default.addObserver(self, selector: #selector(windowWillUpdate(notification:)), name: NSWindow.didUpdateNotification, object:nil)
-
+        NotificationCenter.default.addObserver(self, selector: #selector(windowWillUpdate(notification:)), name: NSApplication.didChangeScreenParametersNotification,object: nil)
+        
         NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseUp, .rightMouseUp]) { event in
             self.windowEvent()
             
@@ -31,20 +31,26 @@ class WindowManager: ObservableObject {
     }
         
     @objc private func windowWillUpdate(notification: NSNotification) {
-        if let window = notification.object as? NSWindow {
-            if let type = WindowTypes(rawValue: window.title) {
-                if notification.name == NSWindow.willCloseNotification {
-                    if self.active == type {
-                        self.active = nil
-
-                    }
-        
-                }
+        if notification.name == NSWindow.willCloseNotification {
+            guard let window = notification.object as? NSWindow else {
+                return
+                
+            }
             
+            if let type = WindowTypes(rawValue: window.title) {
+                if self.active == type {
+                    self.active = nil
+
+                }
+    
             }
 
         }
+        else if notification.name == NSApplication.didChangeScreenParametersNotification {
+            self.windowOpen(.main, present: .hide)
             
+        }
+
     }
     
     public func windowOpen(_ type:WindowTypes, present:WindowPresentMode?, force:Bool = false, animate:Bool = true) {
@@ -384,6 +390,7 @@ class WindowManager: ObservableObject {
             switch type {
                 case .main : return self.windowMain()
                 case .onboarding : return self.windowDefault(type, onboarding: onboarding)
+                case .license : return self.windowDefault(type)
                 case .preferences : return self.windowDefault(type)
                 case .reporter : return self.windowDefault(type)
                 case .notification : return  self.windowNotification()

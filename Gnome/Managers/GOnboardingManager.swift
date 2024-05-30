@@ -18,22 +18,13 @@ class OnboardingManager:ObservableObject {
 
     @Published public var title:LocalizedStringKey = ""
     @Published public var subtitle:LocalizedStringKey = ""
-    @Published public var primary:LocalizedStringKey? = nil
-    @Published public var secondary:LocalizedStringKey? = nil
-    @Published public var tertiary:LocalizedStringKey? = nil
+    @Published public var primary:AppButtonObject? = nil
+    @Published public var secondary:AppButtonObject? = nil
+    @Published public var tertiary:AppButtonObject? = nil
 
     private var updates = Set<AnyCancellable>()
 
     init() {
-        $tutorial.removeDuplicates().delay(for: 0.2, scheduler: RunLoop.main).sink { state in
-            if state == .passed {
-                
-            }
-            
-            NSApp.requestUserAttention(.criticalRequest)
-            
-        }.store(in: &updates)
-
         $current.removeDuplicates().delay(for: 0.2, scheduler: RunLoop.main).sink { state in
             if state != nil {
                 WindowManager.shared.windowOpen(.main, present: .hide)
@@ -48,20 +39,26 @@ class OnboardingManager:ObservableObject {
             
         }.store(in: &updates)
         
-        ProcessManager.shared.$helper.delay(for: 0.1, scheduler: RunLoop.main).removeDuplicates().sink { _ in
+        ProcessManager.shared.$helper.delay(for: 0.01, scheduler: RunLoop.main).removeDuplicates().sink { _ in
             self.onboardingNextState()
 
         }.store(in: &updates)
         
         UserDefaults.changed.receive(on: DispatchQueue.main).sink { key in
-            if key == .onboardingStep {
+            if key == .onboardingStep || key == .licenseKey {
                 self.onboardingNextState()
 
             }
             
         }.store(in: &updates)
         
-        TaskManager.shared.$tasks.delay(for: 0.1, scheduler: RunLoop.main).removeDuplicates().sink { _ in
+        LicenseManager.shared.$state.delay(for: 0.01, scheduler: RunLoop.main).sink { state in
+            self.onboardingTutorial()
+            self.onboardingNextState()
+            
+        }.store(in: &updates)
+
+        TaskManager.shared.$tasks.delay(for: 0.01, scheduler: RunLoop.main).removeDuplicates().sink { _ in
             self.onboardingTutorial()
             self.onboardingNextState()
 
@@ -84,7 +81,7 @@ class OnboardingManager:ObservableObject {
             self.current = .tutorial
             
         }
-        else if LicenseManager.shared.state.state.valid == false || self.onboardingStep(.license) == .unseen {
+        else if LicenseManager.shared.state.state.valid == false {
             self.current = .license
 
         }
@@ -170,26 +167,26 @@ class OnboardingManager:ObservableObject {
     
     }
     
-    private func onboardingPrimary() -> LocalizedStringKey? {
+    private func onboardingPrimary() -> AppButtonObject? {
         if self.current == .intro {
-            return "Get Started"
+            return .init(.standard, value: "Get Started")
             
         }
         else if self.current == .helper {
             switch ProcessManager.shared.helper {
-                case .outdated : return "Update"
-                case .error : return "Restart"
-                default : return "Grant Access"
+                case .outdated : return .init(.standard, value: "Update")
+                case .error : return .init(.standard, value: "Restart")
+                default : return .init(.standard, value: "Grant Access")
                 
             }
 
         }
         else if self.current == .license {
-            return "Validate"
+            return .init(.standard, value: "Validate")
             
         }
         else if self.current == .thankyou {
-            return "Next"
+            return .init(.standard, value: "Next")
             
         }
         else if self.current == .tutorial {
@@ -197,7 +194,7 @@ class OnboardingManager:ObservableObject {
             
         }
         else if self.current == .complete || self.current == nil {
-            return "Open CodeGnome"
+            return .init(.standard, value: "Open CodeGnome")
 
         }
         
@@ -205,22 +202,23 @@ class OnboardingManager:ObservableObject {
         
     }
     
-    private func onboardingSecondary() -> LocalizedStringKey? {
+    private func onboardingSecondary() -> AppButtonObject? {
         if self.current == .intro {
-            return "Community"
+            return .init(.standard, value: "Community")
 
         }
         else if self.current == .license {
             switch LicenseManager.shared.state.state {
-                case .undetermined : return "Start Trial"
-                case .trial : return "Continue Trial"
+                case .undetermined : return .init(.standard, value: "Start Trial")
+                case .trial : return .init(.standard, value: "Continue Trial")
+                case .expired : return .init(.disabled, value: "Trial Expired")
                 default : return nil
                 
             }
             
         }
         else if self.current == .tutorial {
-            return "Help"
+            return .init(.standard, value: "Help")
             
         }
         
@@ -228,11 +226,11 @@ class OnboardingManager:ObservableObject {
         
     }
     
-    private func onboardingTertiary() -> LocalizedStringKey? {
+    private func onboardingTertiary() -> AppButtonObject? {
         switch LicenseManager.shared.state.state {
             case .valid : return nil
             case .undetermined : return nil
-            default : return "Purchase License"
+            default : return .init(.standard, value: "Purchase License")
             
         }
     }
@@ -240,7 +238,7 @@ class OnboardingManager:ObservableObject {
     public func onboardingAction(button:OnboardingButtonType) {
         if current == .intro {
             switch button {
-                case .primary : _ = self.onboardingStep(.intro, insert: true)
+                case .primary : _ = self.onboardingStep(.intro, step: .insert)
                 case .secondary : AppLinks.github.launch()
                 case .tertiary : AppLinks.stripe.launch()
                 
@@ -259,7 +257,7 @@ class OnboardingManager:ObservableObject {
         else if current == .license {
             switch button {
                 case .primary : break
-                case .secondary : _ = self.onboardingStep(.license, insert: true)
+                case .secondary : _ = self.onboardingStep(.license, step: .insert)
                 case .tertiary : AppLinks.stripe.launch()
 
             }
@@ -267,7 +265,7 @@ class OnboardingManager:ObservableObject {
         }
         else if current == .thankyou {
             switch button {
-                case .primary : _ = self.onboardingStep(.intro, insert: true)
+                case .primary : _ = self.onboardingStep(.thankyou, step: .insert)
                 case .secondary : break
                 case .tertiary : AppLinks.stripe.launch()
 
@@ -285,7 +283,7 @@ class OnboardingManager:ObservableObject {
         }
         else if current == .complete {
             switch button {
-                case .primary : _ = self.onboardingStep(.complete, insert: true)
+                case .primary : _ = self.onboardingStep(.complete, step: .insert)
                 case .secondary : break
                 case .tertiary : AppLinks.stripe.launch()
 
@@ -323,7 +321,7 @@ class OnboardingManager:ObservableObject {
                 
     }
     
-    private func onboardingStep(_ step:OnboardingSubview, insert:Bool = false) -> OnboardingStepViewed {
+    public func onboardingStep(_ view:OnboardingSubview, step:OnboardingStepAction? = nil) -> OnboardingStepViewed {
         var list:Array<OnboardingSubview> = []
         
         if let existing = UserDefaults.object(.onboardingStep) as? [Int] {
@@ -331,14 +329,30 @@ class OnboardingManager:ObservableObject {
             
         }
         
-        if insert == true {
-            list.append(step)
-
+        if let step = step {
+            let index = list.firstIndex(of: view)
+            if step == .insert {
+                switch index {
+                    case nil : list.append(view)
+                    default : break
+                    
+                }
+                
+            }
+            else {
+                switch index {
+                    case nil : break
+                    default : list.remove(at: index!)
+                    
+                }
+                
+            }
+            
             UserDefaults.save(.onboardingStep, value: list.compactMap({ $0.rawValue }))
-
+            
         }
-        
-        return list.filter({ $0 == step }).isEmpty ? .unseen : .seen
+
+        return list.filter({ $0 == view }).isEmpty ? .unseen : .seen
 
     }
     

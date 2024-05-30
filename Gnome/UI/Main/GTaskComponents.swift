@@ -62,7 +62,9 @@ struct TaskOverlayAdd: View {
                 
             }
         
+        
     }
+    
 }
 
 struct TaskOverlayContainer: View {
@@ -77,7 +79,6 @@ struct TaskOverlayContainer: View {
     }
     
     var body: some View {
-        // TODO: Add option and add button icons
         HStack(spacing: 5) {
             if item.active == nil && item.state.complete == false {
                 TaskOverlayAdd().onTapGesture {
@@ -108,4 +109,5 @@ struct TaskOverlayContainer: View {
         .padding(14)
         
     }
+    
 }

@@ -41,7 +41,7 @@ struct MainSection: View {
             .transition(.slide)
             .background(
                 TileSection()
-            
+
             )
            
         }
@@ -143,13 +143,16 @@ struct MainList: View {
     
     var body: some View {
         if type.filter(tasks).isEmpty == false {
-            ForEach(type.filter(tasks).prefix(limit)) { item in
-                TaskCell(item, section:type)
+            VStack(spacing:8) {
+                ForEach(type.filter(tasks).prefix(limit)) { item in
+                    TaskCell(item, section:type)
+                    
+                }
                 
             }
             
         }
-       
+
     }
     
 }

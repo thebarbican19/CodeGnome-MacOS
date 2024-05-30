@@ -9,79 +9,89 @@ import Foundation
 import Combine
 import SwiftUI
 
-enum LicenseState:String {
-    case trial
-    case expired
-    case valid
-    case undetermined
-    
-    var valid:Bool {
-        switch self {
-            case .trial : return true
-            case .valid : return true
-            default : return false
-            
-        }
-        
-    }
-    
-    var name:LocalizedStringKey {
-        switch self {
-            case .expired : return "Expired License"
-            case .valid : return "Valid License"
-            default : return "Trial"
-            
-        }
-        
-    }
-    
-}
-
-struct LicenseObject {
-    var state:LicenseState
-    var expires:Date?
-    
-    init(_ state: LicenseState, expires: Date? = nil) {
-        self.state = state
-        self.expires = expires
-        
-    }
-    
-}
-
 class LicenseManager:ObservableObject {
     static var shared = LicenseManager()
 
     @Published var state:LicenseObject = .init(.undetermined)
+    @Published var error:LicenseResponseState? = nil
+    @Published var customer:LicenseCustomerObject? = nil
+    @Published var expiry:Date? = nil
     
+    //TODO: License Checked Date Functionality to add
+    //Check if license has been verifyed last, store date so it doesn't need to check every time the app has launched
+
     private var updates = Set<AnyCancellable>()
 
     init() {
         TaskManager.shared.$tasks.debounce(for: .seconds(100), scheduler: DispatchQueue.main).removeDuplicates().sink() { _ in
-            self.licenseValidate()
+            self.licenseValidate(true)
 
         }.store(in: &updates)
         
-        self.licenseValidate()
+        UserDefaults.changed.receive(on: DispatchQueue.main).dropFirst(3).sink { key in
+            print("key updated" ,key)
+            if key == .licenseKey {
+                self.licenseValidate(true)
+
+            }
+            
+        }.store(in: &updates)
+
+        self.licenseValidate(false)
         
     }
     
     static var licenseKey:String? {
         get {
-            // TODO: License Backend Logic
+            if let key = UserDefaults.object(.licenseKey) as? String {
+                return key
+                
+            }
+            
             return nil
             
         }
         
         set {
+            guard let key = newValue else {
+                UserDefaults.save(.licenseKey, value: nil)
+                return
+                
+            }
+            
+            if key.filter({ $0 == "-" }).count == 4 && key.hasPrefix("CG") {
+                UserDefaults.save(.licenseKey, value: newValue)
+                
+            }
+            else {
+                UserDefaults.save(.licenseKey, value: nil)
+                LicenseManager.shared.error = .validation
+                
+            }
             
         }
         
     }
     
-    public func licenseValidate() {
-        if let _ = LicenseManager.licenseKey {
-            self.state = .init(.valid)
+    public func licenseValidate(_ force:Bool) {
+        if let key = LicenseManager.licenseKey {
+            self.licenseServerCheck(key: key, force: force) { state, expiry in
+                DispatchQueue.main.async {
+                    switch state {
+                        case .valid : self.state = .init(.valid, expires: expiry)
+                        case .expired : self.state = .init(.expired, expires: expiry)
+                        case .invalid : self.state = .init(.expired, expires: expiry)
+                        case .unknown : self.state = .init(.undetermined, expires: expiry)
+                        case .capacity : self.state = .init(.expired, expires: expiry)
+                        case .validation : self.state = .init(.undetermined, expires: expiry)
+                        
+                    }
+                    
+                    self.error = state
+                    
+                }
+               
+            }
             
         }
         else {
@@ -115,26 +125,208 @@ class LicenseManager:ObservableObject {
         return .init(.trial, expires: days)
         
     }
+    
+    public func licenseRevoke(_ completion: @escaping (Bool) -> Void) {
+        guard let serial = self.licenseSerialNumber() else {
+            completion(false)
+            return
+            
+        }
         
-//    private func fetchData(from endpoint: LicenseEndpoint) async throws -> [String: Any] {
-//        var request = URLRequest(url: endpoint.url)
-//        request.httpMethod = "GET"
-//        request.setValue("Bearer YOUR_SECRET_KEY", forHTTPHeaderField: "Authorization")
-//
-//        let (data, response) = try await URLSession.shared.data(for: request)
-//        
-//        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-//            throw NSError(domain: "", code: (response as? HTTPURLResponse)?.statusCode ?? -1, userInfo: nil)
-//            
-//        }
-//        
-//        guard let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-//            throw NSError(domain: "", code: 0, userInfo: nil)
-//            
-//        }
-//        
-//        return jsonObject
-//        
-//    }
+        var params:[String:String] = [:]
+        params["sn"] = serial
+        
+        guard let endpoint = self.licenceEndpoint("https://ovatar.io/api/license", parameters:params) else {
+            completion(false)
+            return
+            
+        }
+        
+        print("calling \(endpoint)")
+        var request = URLRequest(url: endpoint)
+        request.httpMethod = "DELETE"
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                guard let response = response as? HTTPURLResponse else {
+                    print("no response")
+                    
+                    completion(false)
+                    return
+                    
+                }
+                
+                switch response.statusCode {
+                    case 200 : completion(true)
+                    case 201 : completion(true)
+                    default : completion(false)
+                    
+                }
+                
+            }
+            
+        }.resume()
+                
+    }
+        
+    private func licenseServerCheck(key: String, force:Bool, completion: @escaping (LicenseResponseState, Date?) -> Void) {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        
+        guard let expiry = Calendar.current.date(byAdding: .day, value: -1, to: Date()) else {
+            completion(.unknown, nil)
+            return
+            
+        }
+        
+        if UserDefaults.timestamp(.licensePayload) ?? Date() < expiry || force == true {
+            if force == true {
+                print("Force License Check")
+                
+            }
+            
+            guard let serial = self.licenseSerialNumber() else {
+                completion(.unknown, nil)
+                return
+                
+            }
+            
+            DispatchQueue.main.async {
+                self.state = .init(.updating)
+                
+            }
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                var params:[String:String] = [:]
+                params["key"] = key
+                params["name"] = self.licenseDeviceName()
+                params["sn"] = serial
+                
+                guard let endpoint = self.licenceEndpoint("https://ovatar.io/api/license", parameters:params) else {
+                    completion(.unknown, nil)
+                    return
+                    
+                }
+                
+                print("calling \(endpoint)")
+                var request = URLRequest(url: endpoint)
+                request.httpMethod = "GET"
+                
+                URLSession.shared.dataTask(with: request) { data, response, error in
+                    DispatchQueue.main.async {
+                        guard let response = response as? HTTPURLResponse else {
+                            print("no response")
+                            
+                            completion(.unknown, nil)
+                            return
+                            
+                        }
+                        
+                        if let data = data {
+                            if let payload = try? decoder.decode(LicenseResponse.self, from: data) {
+                                self.expiry = payload.license.expiry
+                                self.customer = payload.license.customer
+                                
+                                
+                                
+                            }
+                            
+                            if let json = String(data: data, encoding: .utf8) {
+                                UserDefaults.save(.licensePayload, value: json)
+                                
+                            }
+                            
+                        }
+                        
+                        print("response" ,response.statusCode)
+                        
+                        switch response.statusCode {
+                            case 403 : completion(.expired, self.expiry)
+                            case 415 : completion(.invalid, self.expiry)
+                            case 429 : completion(.capacity, self.expiry)
+                            case 200 : completion(.valid, self.expiry)
+                            default : completion(.unknown, self.expiry)
+                            
+                        }
+                        
+                    }
+                    
+                }.resume()
+                
+            }
+            
+        }
+        else {
+            guard let json = UserDefaults.object(.licensePayload) as? String else {
+                completion(.unknown, nil)
+                return
+                
+            }
+            
+            guard let data = json.data(using: .utf8) else {
+                completion(.unknown, nil)
+                return
+                
+            }
+            
+            if let payload = try? decoder.decode(LicenseResponse.self, from: data) {
+                self.expiry = payload.license.expiry
+                self.customer = payload.license.customer
+             
+                switch payload.status {
+                    case 403 : completion(.expired, self.expiry)
+                    case 415 : completion(.invalid, self.expiry)
+                    case 429 : completion(.capacity, self.expiry)
+                    case 200 : completion(.valid, self.expiry)
+                    default : completion(.unknown, self.expiry)
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    private func licenceEndpoint(_ base: String, parameters: [String: String]) -> URL? {
+        guard var components = URLComponents(string: base) else {
+            return nil
+            
+        }
+
+        components.queryItems = parameters.map { key, value in
+            URLQueryItem(name: key, value: value)
+        }
+
+        return components.url
+        
+    }
+    
+    private func licenseDeviceName() -> String {
+        return Host.current().localizedName ?? ""
+        
+    }
+
+    private func licenseSerialNumber() -> String? {
+        let platform = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+
+        defer {
+            IOObjectRelease(platform)
+            
+        }
+
+        guard platform != 0 else {
+            return nil
+            
+        }
+
+        guard let serial = IORegistryEntryCreateCFProperty(platform, "IOPlatformSerialNumber" as CFString, kCFAllocatorDefault, 0).takeRetainedValue() as? String else {
+            return nil
+            
+        }
+
+        return serial
+        
+    }
     
 }

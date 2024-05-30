@@ -61,6 +61,7 @@
 		D895F0352BD71DF30068C6D5 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = D895F0342BD71DF30068C6D5 /* Sparkle */; };
 		D895F0382BD71E080068C6D5 /* DynamicColor in Frameworks */ = {isa = PBXBuildFile; productRef = D895F0372BD71E080068C6D5 /* DynamicColor */; };
 		D8BD27E42BE2DDB8002655A1 /* GBackgroundContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BD27E32BE2DDB8002655A1 /* GBackgroundContainer.swift */; };
+		D8D2CE922C0823DF007B0106 /* GLicenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D2CE912C0823DF007B0106 /* GLicenseModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -135,6 +136,7 @@
 		D895F02B2BD7059A0068C6D5 /* GModifyers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GModifyers.swift; sourceTree = "<group>"; };
 		D895F02D2BD706BB0068C6D5 /* GTaskSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskSubviews.swift; sourceTree = "<group>"; };
 		D8BD27E32BE2DDB8002655A1 /* GBackgroundContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBackgroundContainer.swift; sourceTree = "<group>"; };
+		D8D2CE912C0823DF007B0106 /* GLicenseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLicenseModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,6 +271,7 @@
 				D895F01C2BD37C310068C6D5 /* GSettingsModel.swift */,
 				D8022E192BE0931D00906C74 /* GOnboardingModel.swift */,
 				D813682B2BE407D1008D471A /* GUpdateModel.swift */,
+				D8D2CE912C0823DF007B0106 /* GLicenseModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -515,6 +518,7 @@
 				D895F0062BD2C4740068C6D5 /* GExtensions.swift in Sources */,
 				D8BD27E42BE2DDB8002655A1 /* GBackgroundContainer.swift in Sources */,
 				D895F0082BD2C4D30068C6D5 /* GTaskModel.swift in Sources */,
+				D8D2CE922C0823DF007B0106 /* GLicenseModel.swift in Sources */,
 				D895F02C2BD7059A0068C6D5 /* GModifyers.swift in Sources */,
 				D85CD5CB2BE55E640092189B /* GButtonComponent.swift in Sources */,
 			);

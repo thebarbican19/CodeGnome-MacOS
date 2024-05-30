@@ -371,70 +371,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "093FBDAF-84B6-4F36-A163-0725B2BCB098"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Gnome/Managers/GProcessManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
-            landmarkName = "processDeepSearch()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "093FBDAF-84B6-4F36-A163-0725B2BCB098 - 7e01b400237c133e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.String&gt;) -&gt; () in CodeGnome.ProcessManager.processDeepSearch() -&gt; ()"
-                  moduleName = "CodeGnome"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "255"
-                  endingLineNumber = "255"
-                  offsetFromSymbolStart = "174">
-               </Location>
-               <Location
-                  uuid = "093FBDAF-84B6-4F36-A163-0725B2BCB098 - 7e01b400237c131f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.String&gt;) -&gt; () in CodeGnome.ProcessManager.processDeepSearch() -&gt; ()"
-                  moduleName = "CodeGnome"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "256"
-                  endingLineNumber = "256"
-                  offsetFromSymbolStart = "19">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "777EB3B9-3279-4CED-879B-31E732328DB3"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Gnome/Managers/GTaskManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
-            landmarkName = "taskUpdateFromDirectory(_:state:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "8AA7BFA0-2968-47F3-976E-FFE7C92DC782"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -475,6 +411,21 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "89"
                   endingLineNumber = "89"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "8AA7BFA0-2968-47F3-976E-FFE7C92DC782 - c9a4d94b200acbd8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "com_ovatar_gnome_brain.HelperManager.brainDeepSearch((Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "com.ovatar.gnome.brain"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/com.ovatar.gnome.brain/GHelperManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
                   offsetFromSymbolStart = "40">
                </Location>
             </Locations>
@@ -525,70 +476,70 @@
                   endingLineNumber = "86"
                   offsetFromSymbolStart = "1153">
                </Location>
+               <Location
+                  uuid = "89BDDEFC-786D-4D88-86D9-7C70C78CC309 - c9a4d94b200acbd8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "com_ovatar_gnome_brain.HelperManager.brainDeepSearch((Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "com.ovatar.gnome.brain"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joe/Orrivo/App/Gnome/com.ovatar.gnome.brain/GHelperManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "40">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B11DE5CB-E84C-4049-BA25-821BE2D80D93"
+            uuid = "04A0F6C1-711C-4DC9-AC62-1751A2E37342"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Gnome/Managers/GProcessManager.swift"
+            filePath = "Gnome/UI/Onboarding/GOnboardingController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "254"
-            endingLineNumber = "254"
-            landmarkName = "processDeepSearch()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "B11DE5CB-E84C-4049-BA25-821BE2D80D93 - bfb6c519e1df0efe"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "CodeGnome.ProcessManager.processDeepSearch() -&gt; ()"
-                  moduleName = "CodeGnome"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "254"
-                  endingLineNumber = "254"
-                  offsetFromSymbolStart = "88">
-               </Location>
-               <Location
-                  uuid = "B11DE5CB-E84C-4049-BA25-821BE2D80D93 - 7e01b400237c133e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.String&gt;) -&gt; () in CodeGnome.ProcessManager.processDeepSearch() -&gt; ()"
-                  moduleName = "CodeGnome"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "255"
-                  endingLineNumber = "255"
-                  offsetFromSymbolStart = "174">
-               </Location>
-               <Location
-                  uuid = "B11DE5CB-E84C-4049-BA25-821BE2D80D93 - 7e01b400237c131f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.String&gt;) -&gt; () in CodeGnome.ProcessManager.processDeepSearch() -&gt; ()"
-                  moduleName = "CodeGnome"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joe/Orrivo/App/Gnome/Gnome/Managers/GProcessManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "256"
-                  endingLineNumber = "256"
-                  offsetFromSymbolStart = "19">
-               </Location>
-            </Locations>
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E4FC73E6-5596-4811-8937-F4E4C19E9935"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Gnome/UI/Onboarding/GOnboardingController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "31121979-BF1B-4F04-B3DB-B7CB37AC0757"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Gnome/GnomeApp.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "body"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

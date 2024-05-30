@@ -44,7 +44,7 @@ enum AppDefaultsKeys: String {
     case onboardingStep = "g_onboarding_step"
     case onboardingComplete = "g_onboarding_updated"
 
-    case licenseTrial = "g_license_trial"
+    case licensePayload = "g_license_payload"
     case licenseKey = "g_license_key"
 
     var purgable:Bool {
@@ -187,4 +187,25 @@ enum AppShortcutKeys:String {
         
     }
 
+}
+
+enum AppButtonType {
+    case standard
+    case processing
+    case disabled
+    
+}
+
+struct AppButtonObject {
+    var type:AppButtonType
+    var value:LocalizedStringKey
+    var icon:String?
+
+    init(_ type: AppButtonType, value: LocalizedStringKey, icon:String? = nil) {
+        self.type = type
+        self.value = value
+        self.icon = icon
+        
+    }
+    
 }

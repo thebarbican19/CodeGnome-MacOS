@@ -159,6 +159,9 @@ struct TaskHirachyItem: View {
             else {
                 Text(item.directory.filename().lowercased())
 
+            }
+            
+            if item.line > 0 {
                 Text("#\(item.line)")
 
             }

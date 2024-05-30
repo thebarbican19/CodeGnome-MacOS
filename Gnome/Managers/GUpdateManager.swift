@@ -142,7 +142,7 @@ class UpdateManager: NSObject,SPUUpdaterDelegate,ObservableObject {
             }
             
             if error.code == 4005 {
-                //WindowManager.shared.windowOpenWebsite(.update, view: .main)
+                AppLinks.github.launch()
                 
             }
             

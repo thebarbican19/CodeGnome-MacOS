@@ -27,17 +27,17 @@ class TaskManager:ObservableObject {
         }.store(in: &updates)
         
         $notification.debounce(for: 1.0, scheduler: RunLoop.main).removeDuplicates().sink { item in
-//            switch item {
-//                case nil : WindowManager.shared.windowClose(.notification, animate: true)
-//                default: WindowManager.shared.windowOpen(.notification, present: .present)
-//                
-//            }
+            switch item {
+                case nil : WindowManager.shared.windowClose(.notification, animate: true)
+                default: WindowManager.shared.windowOpen(.notification, present: .present)
+                
+            }
             
         }.store(in: &updates)
         
         $notification.delay(for: 6, scheduler: RunLoop.main).removeDuplicates().sink { item in
             if item != nil {
-                self.notification = nil
+//                self.notification = nil
                 
             }
             

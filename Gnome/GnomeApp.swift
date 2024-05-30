@@ -122,11 +122,6 @@ struct AppMenuBar: Commands {
     @StateObject var process = ProcessManager.shared
 
     var body: some Commands {
-        CommandGroup(replacing: .pasteboard) {
-            EmptyView()
-            
-        }
-        
         CommandGroup(replacing: .undoRedo) {
             EmptyView()
             
@@ -216,8 +211,29 @@ struct AppMenuBar: Commands {
             
             Menu("License") {
                 if license.state.state == .valid {
-                    Text("LICENSE")
+                    if let license = LicenseManager.licenseKey {
+                        Text(license)
+
+                    }
                     
+                    if let expiry = license.expiry {
+                        Text("Expires: \(expiry.formatted())")
+
+                    }
+                    
+                    Button("Deactivate Seat") {
+                        LicenseManager.shared.licenseRevoke { state in
+                            if state == true {
+                                LicenseManager.licenseKey = nil
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    Divider()
+ 
                 }
                 else {
                     Text(license.state.state.name)
@@ -226,6 +242,11 @@ struct AppMenuBar: Commands {
                         AppLinks.stripe.launch()
 
                     }
+                    
+                }
+                
+                Button("Open License Manager") {
+                    WindowManager.shared.windowOpen(.license, present: .present)
                     
                 }
                 

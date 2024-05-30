@@ -15,8 +15,6 @@ enum OnboardingSubview:Int,CaseIterable,Codable {
     case thankyou = 5
     case complete = 6
     
-    // TODO: Add Empty State for Onboarding
-    
 }
 
 enum OnboardingButtonType {
@@ -29,6 +27,12 @@ enum OnboardingButtonType {
 enum OnboardingStepViewed {
     case seen
     case unseen
+    
+}
+
+enum OnboardingStepAction {
+    case insert
+    case remove
     
 }
 
