@@ -16,6 +16,26 @@
     "#%lld" : {
 
     },
+    "%@ (%lld days)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$lld days)"
+          }
+        }
+      }
+    },
+    "%lld/%lld Devices Used" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld Devices Used"
+          }
+        }
+      }
+    },
     "+" : {
 
     },
@@ -58,7 +78,10 @@
     "Create your First Task" : {
 
     },
-    "Deactivate Seat" : {
+    "Deactivate Device" : {
+
+    },
+    "Deactivating..." : {
 
     },
     "Debug" : {
@@ -95,6 +118,9 @@
 
     },
     "Expired License" : {
+
+    },
+    "Expired on %@" : {
 
     },
     "Expires: %@" : {
@@ -134,6 +160,12 @@
       "extractionState" : "manual"
     },
     "License" : {
+
+    },
+    "License Manager" : {
+
+    },
+    "Need Help?" : {
 
     },
     "Next" : {
@@ -223,6 +255,19 @@
     "Trial Expired" : {
 
     },
+    "Trial Expired on %@" : {
+
+    },
+    "Trial Expires on %@ (%lld days)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Trial Expires on %1$@ (%2$lld days)"
+          }
+        }
+      }
+    },
     "Unpin from Screen" : {
 
     },
@@ -235,7 +280,7 @@
     "Validate" : {
 
     },
-    "Validating.." : {
+    "Validating..." : {
 
     },
     "Version %@" : {

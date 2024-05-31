@@ -37,7 +37,7 @@ enum WindowTypes:String,CaseIterable {
             case .main : return .init(width: 390, height: CGFloat(NSScreen.main?.frame.height ?? 0.0))
             case .preferences : return .init(width: 400, height: 480)
             case .onboarding: return .init(width: 520, height: 540)
-            case .license: return .init(width: 520, height: 540)
+            case .license: return .init(width: 570, height: 420)
             case .reporter: return .init(width: 920, height: 580)
             case .notification: return .init(width: 360, height: 60)
 
@@ -64,7 +64,7 @@ enum WindowTypes:String,CaseIterable {
             case .preferences : return NSHostingController(rootView: PreferencesController()).view
             case .onboarding : return NSHostingController(rootView: OnboardingController()).view
             case .reporter : return NSHostingController(rootView: ReporterController()).view
-            case .license : return NSHostingController(rootView: OnboardingController()).view
+            case .license : return NSHostingController(rootView: LicenseController()).view
             case .notification : return NSHostingController(rootView: NotificationController()).view
 
         }

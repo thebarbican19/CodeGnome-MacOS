@@ -262,7 +262,7 @@ struct TaskDetails: View {
             Spacer()
             
             HStack {
-                Text(item.created.display(.narrow))
+                Text(item.created.display())
                 
             }
 

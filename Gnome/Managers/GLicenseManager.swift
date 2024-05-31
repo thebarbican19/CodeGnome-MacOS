@@ -12,10 +12,9 @@ import SwiftUI
 class LicenseManager:ObservableObject {
     static var shared = LicenseManager()
 
-    @Published var state:LicenseObject = .init(.undetermined)
+    @Published var state:LicenseObject = .init(.undetermined, type: .full)
     @Published var error:LicenseResponseState? = nil
-    @Published var customer:LicenseCustomerObject? = nil
-    @Published var expiry:Date? = nil
+    @Published var details:LicenseResponseObject? = nil
     
     //TODO: License Checked Date Functionality to add
     //Check if license has been verifyed last, store date so it doesn't need to check every time the app has launched
@@ -55,6 +54,14 @@ class LicenseManager:ObservableObject {
         set {
             guard let key = newValue else {
                 UserDefaults.save(.licenseKey, value: nil)
+                
+                LicenseManager.shared.error = nil
+                LicenseManager.shared.details = nil
+                
+                _ = OnboardingManager.shared.onboardingStep(.complete, step: .remove)
+
+                WindowManager.shared.windowClose(.license, animate: true)
+                
                 return
                 
             }
@@ -62,9 +69,12 @@ class LicenseManager:ObservableObject {
             if key.filter({ $0 == "-" }).count == 4 && key.hasPrefix("CG") {
                 UserDefaults.save(.licenseKey, value: newValue)
                 
+                LicenseManager.shared.error = nil
+
             }
             else {
                 UserDefaults.save(.licenseKey, value: nil)
+                
                 LicenseManager.shared.error = .validation
                 
             }
@@ -78,12 +88,12 @@ class LicenseManager:ObservableObject {
             self.licenseServerCheck(key: key, force: force) { state, expiry in
                 DispatchQueue.main.async {
                     switch state {
-                        case .valid : self.state = .init(.valid, expires: expiry)
-                        case .expired : self.state = .init(.expired, expires: expiry)
-                        case .invalid : self.state = .init(.expired, expires: expiry)
-                        case .unknown : self.state = .init(.undetermined, expires: expiry)
-                        case .capacity : self.state = .init(.expired, expires: expiry)
-                        case .validation : self.state = .init(.undetermined, expires: expiry)
+                        case .valid : self.state = .init(.valid, type: .full, expires: expiry)
+                        case .expired : self.state = .init(.expired, type: .full, expires: expiry)
+                        case .invalid : self.state = .init(.expired, type: .full, expires: expiry)
+                        case .unknown : self.state = .init(.undetermined, type: .full, expires: expiry)
+                        case .capacity : self.state = .init(.expired, type: .full, expires: expiry)
+                        case .validation : self.state = .init(.undetermined, type: .full, expires: expiry)
                         
                     }
                     
@@ -96,6 +106,7 @@ class LicenseManager:ObservableObject {
         }
         else {
             self.state = self.licenseTrialExpired()
+            self.details = .init(usage: .init(used: 1, total: 1), expiry: self.state.expires, customer: nil)
             
         }
         
@@ -103,32 +114,31 @@ class LicenseManager:ObservableObject {
     
     private func licenseTrialExpired() -> LicenseObject {
         guard let tasks = TaskManager.shared.tasks else {
-            return .init(.trial, expires: Calendar.current.date(byAdding: .day, value: 14, to: Date.now))
+            return .init(.trial, type: .trial, expires: Calendar.current.date(byAdding: .day, value: 14, to: Date.now))
             
         }
         
         guard let oldest = tasks.sorted(by: { $0.created < $1.created }).first else {
-            return .init(.trial, expires: Calendar.current.date(byAdding: .day, value: 14, to: Date.now))
+            return .init(.trial, type: .trial, expires: Calendar.current.date(byAdding: .day, value: 14, to: Date.now))
 
         }
                 
         guard let days = Calendar.current.date(byAdding: .day, value: -14, to: Date.now) else {
-            return .init(.trial, expires: Calendar.current.date(byAdding: .day, value: 14, to: Date.now))
+            return .init(.trial, type: .trial, expires: Calendar.current.date(byAdding: .day, value: 14, to: Date.now))
 
         }
     
         if oldest.created < days {
-            return .init(.expired, expires: days)
+            return .init(.expired, type: .trial, expires: days)
             
         }
         
-        return .init(.trial, expires: days)
+        return .init(.trial, type: .trial, expires: days)
         
     }
     
-    public func licenseRevoke(_ completion: @escaping (Bool) -> Void) {
+    public func licenseRevoke() {
         guard let serial = self.licenseSerialNumber() else {
-            completion(false)
             return
             
         }
@@ -137,7 +147,6 @@ class LicenseManager:ObservableObject {
         params["sn"] = serial
         
         guard let endpoint = self.licenceEndpoint("https://ovatar.io/api/license", parameters:params) else {
-            completion(false)
             return
             
         }
@@ -150,22 +159,26 @@ class LicenseManager:ObservableObject {
             DispatchQueue.main.async {
                 guard let response = response as? HTTPURLResponse else {
                     print("no response")
-                    
-                    completion(false)
                     return
                     
                 }
                 
-                switch response.statusCode {
-                    case 200 : completion(true)
-                    case 201 : completion(true)
-                    default : completion(false)
+                if response.statusCode == 200 || response.statusCode == 201 {
+                    self.error = nil
+                    self.details = nil
+                    
+                    LicenseManager.licenseKey = nil
                     
                 }
-                
+            
             }
             
         }.resume()
+        
+        DispatchQueue.main.async {
+            self.state = .init(.updating, type: .full)
+            
+        }
                 
     }
         
@@ -192,7 +205,7 @@ class LicenseManager:ObservableObject {
             }
             
             DispatchQueue.main.async {
-                self.state = .init(.updating)
+                self.state = .init(.updating, type: .full)
                 
             }
             
@@ -215,40 +228,41 @@ class LicenseManager:ObservableObject {
                 URLSession.shared.dataTask(with: request) { data, response, error in
                     DispatchQueue.main.async {
                         guard let response = response as? HTTPURLResponse else {
-                            print("no response")
-                            
                             completion(.unknown, nil)
                             return
                             
                         }
                         
-                        if let data = data {
-                            if let payload = try? decoder.decode(LicenseResponse.self, from: data) {
-                                self.expiry = payload.license.expiry
-                                self.customer = payload.license.customer
-                                
-                                
-                                
-                            }
+                        guard let data = data else {
+                            completion(.unknown, nil)
+                            return
                             
-                            if let json = String(data: data, encoding: .utf8) {
-                                UserDefaults.save(.licensePayload, value: json)
-                                
-                            }
+                        }
+                        
+                        guard let payload = try? decoder.decode(LicenseResponse.self, from: data) else {
+                            completion(.unknown, nil)
+                            return
+                            
+                        }
+                        
+                        if let json = String(data: data, encoding: .utf8) {
+                            UserDefaults.save(.licensePayload, value: json)
                             
                         }
                         
                         print("response" ,response.statusCode)
                         
                         switch response.statusCode {
-                            case 403 : completion(.expired, self.expiry)
-                            case 415 : completion(.invalid, self.expiry)
-                            case 429 : completion(.capacity, self.expiry)
-                            case 200 : completion(.valid, self.expiry)
-                            default : completion(.unknown, self.expiry)
+                            case 403 : completion(.expired, payload.license.expiry)
+                            case 415 : completion(.invalid, payload.license.expiry)
+                            case 429 : completion(.capacity, payload.license.expiry)
+                            case 200 : completion(.valid, payload.license.expiry)
+                            default : completion(.unknown, payload.license.expiry)
                             
                         }
                         
+                        self.details = payload.license
+
                     }
                     
                 }.resume()
@@ -270,17 +284,17 @@ class LicenseManager:ObservableObject {
             }
             
             if let payload = try? decoder.decode(LicenseResponse.self, from: data) {
-                self.expiry = payload.license.expiry
-                self.customer = payload.license.customer
-             
                 switch payload.status {
-                    case 403 : completion(.expired, self.expiry)
-                    case 415 : completion(.invalid, self.expiry)
-                    case 429 : completion(.capacity, self.expiry)
-                    case 200 : completion(.valid, self.expiry)
-                    default : completion(.unknown, self.expiry)
+                    case 403 : completion(.expired, payload.license.expiry)
+                    case 415 : completion(.invalid, payload.license.expiry)
+                    case 429 : completion(.capacity, payload.license.expiry)
+                    case 200 : completion(.valid, payload.license.expiry)
+                    default : completion(.unknown, payload.license.expiry)
                     
                 }
+                
+                self.details = payload.license
+
                 
             }
             

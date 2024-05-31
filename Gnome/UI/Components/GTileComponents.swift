@@ -20,9 +20,9 @@ struct TileHeader: View {
 struct TileShadow: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 16)
-            .fill(LinearGradient(gradient: Gradient(colors: [Color("TileBackground").opacity(0.0), Color("TileBackground").opacity(0.9)]), startPoint: .top, endPoint: .bottom))
+            .fill(LinearGradient(gradient: Gradient(colors: [Color("TileBackground").opacity(0.0), Color("TileBackground").opacity(0.8)]), startPoint: .top, endPoint: .bottom))
             .offset(y:5)
-            .blur(radius: 8)
+            .blur(radius: 10)
         
     }
 }

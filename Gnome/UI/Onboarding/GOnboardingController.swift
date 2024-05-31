@@ -7,70 +7,6 @@
 
 import SwiftUI
 
-struct OnboardingLicense: View {
-    @EnvironmentObject var license:LicenseManager
-
-    @State var input:String = LicenseManager.licenseKey ?? ""
-    
-    var body: some View {
-        VStack {
-            Spacer()
-            
-            VStack(spacing: 10) {
-                Text("Enter your License")
-                    .foregroundColor(Color("TileTitle"))
-                    .font(.custom("Inter", size: 25))
-                    .fontWeight(.semibold)
-                    .multilineTextAlignment(.center)
-                    .kerning(-0.4)
-                            
-                TextField("Your License Key", text: $input)
-                    .textFieldStyle(.plain)
-                    .multilineTextAlignment(.center)
-                    .padding(16)
-                    .font(.custom("Inter", size: 12))
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: 300)
-                    .kerning(0.8)
-                    .background(TileBackground(animate: false))
-                    .paste(text: $input) { _ in
-                        LicenseManager.licenseKey = input
-                        LicenseManager.shared.licenseValidate(true)
-                        
-                    } updated: { value in
-                        LicenseManager.licenseKey = value
-
-                    }
-                
-            }
-          
-
-            Spacer()
-            
-            if license.state.state == .updating {
-                ButtonPrimary(.init(.processing, value: "Validating..")) {
-                    // Nothing will happen
-                    
-                }
-                .padding(10)
-                
-            }
-            else {
-                ButtonPrimary(.init(.standard, value: "Validate")) {
-                    LicenseManager.licenseKey = input
-                    LicenseManager.shared.licenseValidate(true)
-                    
-                }
-                .padding(10)
-                
-            }
-            
-        }
-        
-    }
-    
-}
-
 struct OnboardingTutorial: View {
     @EnvironmentObject var onboarding:OnboardingManager
 
@@ -115,7 +51,7 @@ struct OnboardingContainer: View {
         VStack {
             VStack(spacing: 14) {
                 if onboarding.current == .license {
-                    OnboardingLicense()
+                    LicenseEntry(.onboarding, input: LicenseManager.licenseKey ?? "")
                     
                 }
                 else {

@@ -216,19 +216,13 @@ struct AppMenuBar: Commands {
 
                     }
                     
-                    if let expiry = license.expiry {
+                    if let expiry = license.details?.expiry {
                         Text("Expires: \(expiry.formatted())")
 
                     }
                     
-                    Button("Deactivate Seat") {
-                        LicenseManager.shared.licenseRevoke { state in
-                            if state == true {
-                                LicenseManager.licenseKey = nil
-                                
-                            }
-                            
-                        }
+                    Button("Deactivate Device") {
+                        LicenseManager.shared.licenseRevoke()
                         
                     }
                     

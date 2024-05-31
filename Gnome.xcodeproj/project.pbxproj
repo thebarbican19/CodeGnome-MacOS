@@ -62,6 +62,7 @@
 		D895F0382BD71E080068C6D5 /* DynamicColor in Frameworks */ = {isa = PBXBuildFile; productRef = D895F0372BD71E080068C6D5 /* DynamicColor */; };
 		D8BD27E42BE2DDB8002655A1 /* GBackgroundContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BD27E32BE2DDB8002655A1 /* GBackgroundContainer.swift */; };
 		D8D2CE922C0823DF007B0106 /* GLicenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D2CE912C0823DF007B0106 /* GLicenseModel.swift */; };
+		D8D2CE942C08328D007B0106 /* GLicenseSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D2CE932C08328D007B0106 /* GLicenseSubview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -137,6 +138,7 @@
 		D895F02D2BD706BB0068C6D5 /* GTaskSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTaskSubviews.swift; sourceTree = "<group>"; };
 		D8BD27E32BE2DDB8002655A1 /* GBackgroundContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBackgroundContainer.swift; sourceTree = "<group>"; };
 		D8D2CE912C0823DF007B0106 /* GLicenseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLicenseModel.swift; sourceTree = "<group>"; };
+		D8D2CE932C08328D007B0106 /* GLicenseSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLicenseSubview.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +318,7 @@
 		D895F0222BD4A5870068C6D5 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				D8D2CE952C083293007B0106 /* License */,
 				D85CD5D72BE5FE700092189B /* Notification */,
 				D8BD27E52BE2DDC8002655A1 /* Components */,
 				D8022E1B2BE0980200906C74 /* Reporter */,
@@ -369,6 +372,14 @@
 				D85CD5D52BE567A50092189B /* GTileComponents.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		D8D2CE952C083293007B0106 /* License */ = {
+			isa = PBXGroup;
+			children = (
+				D8D2CE932C08328D007B0106 /* GLicenseSubview.swift */,
+			);
+			path = License;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -492,6 +503,7 @@
 				D8521FDB2BCEDE7900C1D8FB /* GPersistanceManager.swift in Sources */,
 				D85CD5D92BE5FE880092189B /* GNotificationController.swift in Sources */,
 				D8521FDD2BCEDE8500C1D8FB /* GWindowManager.swift in Sources */,
+				D8D2CE942C08328D007B0106 /* GLicenseSubview.swift in Sources */,
 				D852200D2BCF6CE000C1D8FB /* GHelperManager.swift in Sources */,
 				D895F00C2BD36E010068C6D5 /* GAppModel.swift in Sources */,
 				D828E9962BE0277C00D06830 /* GLicenseManager.swift in Sources */,

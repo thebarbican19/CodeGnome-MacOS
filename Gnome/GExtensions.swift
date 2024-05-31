@@ -241,8 +241,11 @@ extension Date {
         
     }
     
-    func display(_ style: Date.RelativeFormatStyle.UnitsStyle = .wide) -> String {
-        return self.formatted(.relative(presentation: .named, unitsStyle: style))
+    func display(_ format:String = "d MMMM yyyy") -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        
+        return formatter.string(from: self)
 
     }
     

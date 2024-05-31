@@ -323,6 +323,7 @@ struct ViewTextFieldDetection: NSViewRepresentable {
     func makeNSView(context: Context) -> ViewTextField {
         let textField = ViewTextField()
         textField.delegate = context.coordinator
+        textField.focusRingType = .none
         textField.paste = { pastedText in
             context.coordinator.handlePaste(pastedText)
             

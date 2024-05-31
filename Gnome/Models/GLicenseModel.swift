@@ -18,7 +18,14 @@ struct LicenseResponse:Decodable {
 struct LicenseResponseObject: Decodable {
     let usage: LicensUsageObject
     let expiry: Date
-    let customer: LicenseCustomerObject
+    let customer: LicenseCustomerObject?
+    
+    init(usage: LicensUsageObject, expiry: Date?, customer: LicenseCustomerObject?) {
+        self.usage = usage
+        self.expiry = expiry ?? Date()
+        self.customer = customer
+        
+    }
     
 }
 
@@ -45,12 +52,25 @@ enum LicenseResponseState:Error {
     
     var description: String {
         switch self {
-            case .unknown : return "Unknown error occurred."
-            case .expired : return "License has expired. (403)"
-            case .valid : return "License is valid. (200)"
-            case .capacity : return "Capacity limit reached. (429)"
-            case .validation : return "License Key is Wrong Format"
-            case .invalid : return "Invalid license. (415)"
+            case .unknown : return "Unknown error occurred"
+            case .expired : return "License has expired"
+            case .valid : return "License is valid"
+            case .capacity : return "Capacity limit reached"
+            case .validation : return "License key is invalid"
+            case .invalid : return "Invalid license"
+            
+        }
+        
+    }
+    
+    var colour:Color {
+        switch self {
+            case .unknown : return Color("GradientMagenta")
+            case .expired : return Color("GradientMagenta")
+            case .valid : return Color("GradientGreen")
+            case .capacity : return Color("GradientYellow")
+            case .validation : return Color("GradientMagenta")
+            case .invalid : return Color("GradientMagenta")
             
         }
         
@@ -88,13 +108,21 @@ enum LicenseState:String {
     
 }
 
+enum LicenseType {
+    case trial
+    case full
+    
+}
+
 struct LicenseObject {
     var state:LicenseState
+    var type:LicenseType
     var expires:Date?
     
-    init(_ state: LicenseState, expires: Date? = nil) {
+    init(_ state: LicenseState, type:LicenseType, expires: Date? = nil) {
         self.state = state
         self.expires = expires
+        self.type = type
         
     }
     
